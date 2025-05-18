@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+$basetexture "models\hands\us_hands_L_color"
+$bumpmap "models\hands\us_hands_L_normals"
+$phong 1
+}

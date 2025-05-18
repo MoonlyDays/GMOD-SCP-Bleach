@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+$basetexture "models\ZombieD\black"
+$bumpmap "models\ZombieD\boots_n"
+
+$phong 1
+$phongboost ".25"
+$phongexponent 3
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[1 1 30]"
+$ambientocclusion 1
+$detail "models\scp\detail_leather"
+	$detailscale 4
+
+
+$rimlight "1"	
+$rimlightexponent "1"
+$rimlightboost "1"
+
+}

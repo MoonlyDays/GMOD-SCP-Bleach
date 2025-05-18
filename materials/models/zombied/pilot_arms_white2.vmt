@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\ZombieD\Pilot_Arms_White2"
+	"$bumpmap" "models\ZombieD\Pilot_Arms_N"
+}

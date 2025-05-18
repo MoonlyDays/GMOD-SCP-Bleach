@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 	"models\ZombieD\Tanker_Uniform_Black"
+	"$bumpmap" "models\ZombieD\Tanker_Uniform_N"
+
+	"$normalmapalphaenvmapmask" 1
+	"$envmapcontrast" 1
+	"$surfaceprop" "flesh"
+        "$nocull" 1
+}
