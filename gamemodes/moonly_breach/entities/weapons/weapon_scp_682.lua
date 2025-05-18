@@ -60,8 +60,10 @@ function SWEP:Holster()
     self.Owner:SetJumpPower(self.OrigJump)
     return true
 end
+
 function SWEP:DrawWorldModel()
 end
+
 function SWEP:Initialize()
     self:SetHoldType("normal")
 end
@@ -69,7 +71,7 @@ end
 function SWEP:RenderLight()
     if self.toggleLight ~= true then
         return
-    end --If Not true, return.
+    end
     if CLIENT then
         if IsValid(scp_nightVision) == false then
             scp_nightVision = DynamicLight(self.Owner:EntIndex()) --Do not take 0, Used for NV. This should be
@@ -113,7 +115,7 @@ function SWEP:PrimaryAttack()
     end
     if preparing then
         return
-    end --Do nothing while in preparing mode
+    end
 
     self.NextAttackH = CurTime() + self.AttackDelay1
     if SERVER then
@@ -135,9 +137,7 @@ function SWEP:PrimaryAttack()
                 if ent:Team() == TEAM_SPEC then
                     return
                 end
-                --ent:SilentKill()
                 ent:Kill()
-
             else
                 if ent:GetClass() == "func_breakable" then
                     ent:TakeDamage(100, self.Owner, self.Owner)
@@ -172,22 +172,12 @@ function SWEP:SecondaryAttack()
     ply:SetMaxSpeed(350)
     ply:SetJumpPower(0)
 
-    --This should fix an issue where having more than 1 SCP-682 would break the ability's reset timer.
     timer.Simple(10, function()
         ply:SetWalkSpeed(60)
         ply:SetRunSpeed(60)
         ply:SetMaxSpeed(60)
         ply:SetJumpPower(0)
     end)
-    --[[
-    local function RemoveBuff()
-        ply:SetWalkSpeed(60)
-        ply:SetRunSpeed(60)
-        ply:SetMaxSpeed(60)
-        ply:SetJumpPower(0)
-    end
-    timer.Create("SCP_PLAYER_WILL_LOSE_BUFF", 7, 1, RemoveBuff)
-    ]]--
     ply:EmitSound('roar.ogg')
 end
 
@@ -210,7 +200,7 @@ function SWEP:DrawHUD()
     local NvKey = input.LookupBinding('+reload') --Get key for reload
     if type(NvKey) == 'no value' then
         NvKey = 'NOT BOUND'
-    end -- The key is not bound!
+    end
 
     draw.Text({
         text = "Press " .. NvKey .. " for nightvision",
@@ -229,19 +219,4 @@ function SWEP:DrawHUD()
         xalign = TEXT_ALIGN_CENTER,
         yalign = TEXT_ALIGN_CENTER,
     })
-
-    local x = ScrW() / 2.0
-    local y = ScrH() / 2.0
-
-    --[[
-    local scale = 0.3
-    surface.SetDrawColor( self.CColor.r, self.CColor.g, self.CColor.b, 255 )
-
-    local gap = 5
-    local length = gap + 20 * scale
-    surface.DrawLine( x - length, y, x - gap, y )
-    surface.DrawLine( x + length, y, x + gap, y )
-    surface.DrawLine( x, y - length, x, y - gap )
-    surface.DrawLine( x, y + length, x, y + gap )
-    ]]--
 end

@@ -60,143 +60,39 @@ ROLE_CHAOSCOM = "CI Commander"
 ROLE_CLASSD = "Class D Personell"
 ROLE_RES = "Researcher"
 ROLE_SPEC = "Spectator"
--- scp table for a gamemode
+
 SCPS = {
 	{
 		name = "SCP 035",
-		func = function(pl) pl:SetSCP035() end
+		func = function(pl) pl:SetSCP_035() end
 	},
 	{
 		name = "SCP 049",
-		func = function(pl) pl:SetSCP049() end
+		func = function(pl) pl:SetSCP_049() end
 	},
 	{
 		name = "SCP 096",
-		func = function(pl) pl:SetSCP096() end
+		func = function(pl) pl:SetSCP_096() end
 	},
 	{
 		name = "SCP 106",
-		func = function(pl) pl:SetSCP106() end
+		func = function(pl) pl:SetSCP_106() end
 	},
 	{
 		name = "SCP 173",
-		func = function(pl) pl:SetSCP173() end
+		func = function(pl) pl:SetSCP_173() end
 	},
 	{
 		name = "SCP 457",
-		func = function(pl) pl:SetSCP457() end
+		func = function(pl) pl:SetSCP_457() end
 	},
 	{
 		name = "SCP 939",
-		func = function(pl) pl:SetSCP939() end
+		func = function(pl) pl:SetSCP_939() end
 	},
 	{
 		name = "SCP 682",
-		func = function(pl) pl:SetSCP682() end
-	}
-}
-
---ULX FORCECLASS
--- scp table for ulx forceclass
-SCPCLASSES = {
-	{
-		name = "SCP 035",
-		func = function(pl) pl:SetSCP035() end
-	},
-	{
-		name = "SCP 049",
-		func = function(pl) pl:SetSCP049() end
-	},
-	{
-		name = "SCP 049 2",
-		func = function(pl) pl:SetSCP0492() end
-	},
-	{
-		name = "SCP 096",
-		func = function(pl) pl:SetSCP096() end
-	},
-	{
-		name = "SCP 106",
-		func = function(pl) pl:SetSCP106() end
-	},
-	{
-		name = "SCP 173",
-		func = function(pl) pl:SetSCP173() end
-	},
-	{
-		name = "SCP 457",
-		func = function(pl) pl:SetSCP457() end
-	},
-	{
-		name = "SCP 939",
-		func = function(pl) pl:SetSCP939() end
-	}
-}
-
--- class table for ulx forceclass
-ALLCLASSES = {
-	{
-		name = "Class D",
-		func = function(pl)
-			pl:SetClassD()
-			local dspawns = table.Copy(SPAWN_CLASSD)
-			local spawn = table.Random(dspawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "Scientist",
-		func = function(pl)
-			pl:SetScientist()
-			local scispawns = table.Copy(SPAWN_SCIENTIST)
-			local spawn = table.Random(scispawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "MTF Commander",
-		func = function(pl)
-			pl:SetCommander()
-			local guardspawns = table.Copy(SPAWN_GUARD)
-			local spawn = table.Random(guardspawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "MTF Guard",
-		func = function(pl)
-			pl:SetGuard()
-			local guardspawns = table.Copy(SPAWN_GUARD)
-			local spawn = table.Random(guardspawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "MTF NTF",
-		func = function(pl)
-			pl:SetNTF()
-			local outsidespawns = table.Copy(SPAWN_OUTSIDE)
-			local spawn = table.Random(outsidespawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "CI Commander", --dont work, spawn as normal CI, to fix
-		func = function(pl)
-			pl:SetChaosInsCom()
-			local outsidespawns = table.Copy(SPAWN_OUTSIDE)
-			local spawn = table.Random(outsidespawns)
-			pl:SetPos(spawn)
-		end
-	},
-	{
-		name = "Chaos Insurgency",
-		func = function(pl)
-			pl:SetChaosInsurgency(3)
-			local outsidespawns = table.Copy(SPAWN_OUTSIDE)
-			local spawn = table.Random(outsidespawns)
-			pl:SetPos(spawn)
-		end
+		func = function(pl) pl:SetSCP_682() end
 	}
 }
 

@@ -1,7 +1,7 @@
 AddCSLuaFile()
 if CLIENT then
-	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_049")
-	SWEP.BounceWeaponIcon = false
+    SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_049")
+    SWEP.BounceWeaponIcon = false
 end
 
 SWEP.Author = "Kanade"
@@ -23,7 +23,7 @@ SWEP.AdminSpawnable = false
 SWEP.AttackDelay = 0.25
 SWEP.ISSCP = true
 SWEP.droppable = false
-SWEP.teams = {1}
+SWEP.teams = { 1 }
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
@@ -35,14 +35,14 @@ SWEP.Secondary.Automatic = false
 SWEP.Secondary.Automatic = false
 SWEP.NextAttackW = 0
 function SWEP:Deploy()
-	self.Owner:DrawViewModel(false)
+    self.Owner:DrawViewModel(false)
 end
 
 function SWEP:DrawWorldModel()
 end
 
 function SWEP:Initialize()
-	self:SetHoldType("normal")
+    self:SetHoldType("normal")
 end
 
 function SWEP:Think()
@@ -52,72 +52,89 @@ function SWEP:Reload()
 end
 
 function SWEP:PrimaryAttack()
-	--if ( !self:CanPrimaryAttack() ) then return end
-	if preparing or postround then return end
-	if not IsFirstTimePredicted() then return end
-	if self.NextAttackW > CurTime() then return end
-	self.NextAttackW = CurTime() + self.AttackDelay
-	if SERVER then
-		local ent = nil
-		local tr = util.TraceHull({
-			start = self.Owner:GetShootPos(),
-			endpos = self.Owner:GetShootPos() + (self.Owner:GetAimVector() * 100),
-			filter = self.Owner,
-			mins = Vector(-10, -10, -10),
-			maxs = Vector(10, 10, 10),
-			mask = MASK_SHOT_HULL
-		})
+    if preparing or postround then
+        return
+    end
+    if not IsFirstTimePredicted() then
+        return
+    end
+    if self.NextAttackW > CurTime() then
+        return
+    end
+    self.NextAttackW = CurTime() + self.AttackDelay
+    if SERVER then
+        local ent = nil
+        local tr = util.TraceHull({
+            start = self.Owner:GetShootPos(),
+            endpos = self.Owner:GetShootPos() + (self.Owner:GetAimVector() * 100),
+            filter = self.Owner,
+            mins = Vector(-10, -10, -10),
+            maxs = Vector(10, 10, 10),
+            mask = MASK_SHOT_HULL
+        })
 
-		ent = tr.Entity
-		if IsValid(ent) then
-			if ent:IsPlayer() then
-				if ent:Team() == TEAM_SCP then return end
-				if ent:Team() == TEAM_SPECTATOR then return end
-				if ent:GetNClass() == ROLE_SCP035 then return end
-				if ent.Using714 then return end
-				ent:SetSCP0492()
-				roundstats.zombies = roundstats.zombies + 1
-				self.Owner:SetHealth(self.Owner:Health() + 350)
-			else
-				if ent:GetClass() == "func_breakable" then ent:TakeDamage(100, self.Owner, self.Owner) end
-			end
-		end
-	end
+        ent = tr.Entity
+        if IsValid(ent) then
+            if ent:IsPlayer() then
+                if ent:Team() == TEAM_SCP then
+                    return
+                end
+                if ent:Team() == TEAM_SPECTATOR then
+                    return
+                end
+                if ent:GetNClass() == ROLE_SCP035 then
+                    return
+                end
+                if ent.Using714 then
+                    return
+                end
+                ent:SetSCP_049_2()
+                roundstats.zombies = roundstats.zombies + 1
+                self.Owner:SetHealth(self.Owner:Health() + 350)
+            else
+                if ent:GetClass() == "func_breakable" then
+                    ent:TakeDamage(100, self.Owner, self.Owner)
+                end
+            end
+        end
+    end
 end
 
 function SWEP:SecondaryAttack()
 end
 
 function SWEP:CanPrimaryAttack()
-	return true
+    return true
 end
 
 function SWEP:DrawHUD()
-	if disablehud == true then return end
-	local showtext = clang.readytoattack
-	local showcolor = Color(0, 255, 0)
-	if self.NextAttackW > CurTime() then
-		showtext = clang.nextattack .. math.Round(self.NextAttackW - CurTime()) .. clang.seconds
-		showcolor = Color(255, 0, 0)
-	end
+    if disablehud == true then
+        return
+    end
+    local showtext = clang.readytoattack
+    local showcolor = Color(0, 255, 0)
+    if self.NextAttackW > CurTime() then
+        showtext = clang.nextattack .. math.Round(self.NextAttackW - CurTime()) .. clang.seconds
+        showcolor = Color(255, 0, 0)
+    end
 
-	draw.Text({
-		text = showtext,
-		pos = {ScrW() / 2, ScrH() - 30},
-		font = "173font",
-		color = showcolor,
-		xalign = TEXT_ALIGN_CENTER,
-		yalign = TEXT_ALIGN_CENTER,
-	})
+    draw.Text({
+        text = showtext,
+        pos = { ScrW() / 2, ScrH() - 30 },
+        font = "173font",
+        color = showcolor,
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    })
 
-	local x = ScrW() / 2.0
-	local y = ScrH() / 2.0
-	local scale = 0.3
-	surface.SetDrawColor(0, 255, 0, 255)
-	local gap = 5
-	local length = gap + 20 * scale
-	surface.DrawLine(x - length, y, x - gap, y)
-	surface.DrawLine(x + length, y, x + gap, y)
-	surface.DrawLine(x, y - length, x, y - gap)
-	surface.DrawLine(x, y + length, x, y + gap)
+    local x = ScrW() / 2.0
+    local y = ScrH() / 2.0
+    local scale = 0.3
+    surface.SetDrawColor(0, 255, 0, 255)
+    local gap = 5
+    local length = gap + 20 * scale
+    surface.DrawLine(x - length, y, x - gap, y)
+    surface.DrawLine(x + length, y, x + gap, y)
+    surface.DrawLine(x, y - length, x, y - gap)
+    surface.DrawLine(x, y + length, x, y + gap)
 end
