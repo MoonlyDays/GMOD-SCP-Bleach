@@ -1,7 +1,7 @@
 "moonly_breach"
 {
 	"base"		"base"
-	"title"		"Breach [Moonly Edition]"
+	"title"		"Moonly Breach"
 	"maps"		"gm_site19_old"
 	"menusystem"	"1"
 	
@@ -62,5 +62,6 @@
 			"type"		"CheckBox"
 			"default"	"0"
 		}
+		
 	}
 }
