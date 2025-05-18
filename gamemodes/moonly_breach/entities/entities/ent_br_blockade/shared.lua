@@ -1,6 +1,5 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
- 
 ENT.PrintName = "Blockade"
 ENT.Author = "Kanade"
 ENT.Contact = "Steam"

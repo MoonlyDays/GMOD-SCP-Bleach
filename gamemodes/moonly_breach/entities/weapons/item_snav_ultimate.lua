@@ -1,58 +1,53 @@
 AddCSLuaFile()
-
 if CLIENT then
-	SWEP.WepSelectIcon 	= surface.GetTextureID("breach/wep_snav_ult")
+	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_snav_ult")
 	SWEP.BounceWeaponIcon = false
 end
 
-SWEP.Author			= "Kanade"
-SWEP.Contact		= "Look at this gamemode in workshop and search for creators"
-SWEP.Purpose		= "Find a way to go and scan for enemies"
-SWEP.Instructions	= "If you hold it, click RMB to change the view"
-
-SWEP.ViewModelFOV	= 62
-SWEP.ViewModelFlip	= false
-SWEP.ViewModel		= "models/props_junk/cardboard_box004a.mdl"
-SWEP.WorldModel		= "models/props_junk/cardboard_box004a.mdl"
-SWEP.PrintName		= "S-Nav Ultimate"
-SWEP.Slot			= 1
-SWEP.SlotPos		= 1
-SWEP.DrawAmmo		= false
-SWEP.DrawCrosshair	= false
-SWEP.HoldType		= "normal"
-SWEP.Spawnable		= false
-SWEP.AdminSpawnable	= false
-
-SWEP.droppable				= true
-SWEP.teams					= {2,3,5,6}
-
-SWEP.Primary.ClipSize		= -1
-SWEP.Primary.DefaultClip	= -1
-SWEP.Primary.Ammo			=  "none"
-SWEP.Primary.Automatic		= false
-
-SWEP.Secondary.ClipSize		= -1
-SWEP.Secondary.DefaultClip	= -1
-SWEP.Secondary.Ammo			=  "none"
-SWEP.Secondary.Automatic	=  false
-
+SWEP.Author = "Kanade"
+SWEP.Contact = "Look at this gamemode in workshop and search for creators"
+SWEP.Purpose = "Find a way to go and scan for enemies"
+SWEP.Instructions = "If you hold it, click RMB to change the view"
+SWEP.ViewModelFOV = 62
+SWEP.ViewModelFlip = false
+SWEP.ViewModel = "models/props_junk/cardboard_box004a.mdl"
+SWEP.WorldModel = "models/props_junk/cardboard_box004a.mdl"
+SWEP.PrintName = "S-Nav Ultimate"
+SWEP.Slot = 1
+SWEP.SlotPos = 1
+SWEP.DrawAmmo = false
+SWEP.DrawCrosshair = false
+SWEP.HoldType = "normal"
+SWEP.Spawnable = false
+SWEP.AdminSpawnable = false
+SWEP.droppable = true
+SWEP.teams = {2, 3, 5, 6}
+SWEP.Primary.ClipSize = -1
+SWEP.Primary.DefaultClip = -1
+SWEP.Primary.Ammo = "none"
+SWEP.Primary.Automatic = false
+SWEP.Secondary.ClipSize = -1
+SWEP.Secondary.DefaultClip = -1
+SWEP.Secondary.Ammo = "none"
+SWEP.Secondary.Automatic = false
 SWEP.Enabled = false
 SWEP.NextChange = 0
 function SWEP:Deploy()
-	self.Owner:DrawViewModel( false )
+	self.Owner:DrawViewModel(false)
 end
+
 function SWEP:DrawWorldModel()
-	if !IsValid(self.Owner) then
-		self:DrawModel()
-	end
+	if not IsValid(self.Owner) then self:DrawModel() end
 end
+
 function SWEP:Initialize()
 	self:SetHoldType("normal")
 end
-function SWEP:CalcView( ply, pos, ang, fov )
+
+function SWEP:CalcView(ply, pos, ang, fov)
 	if self.Enabled then
-		ang = Vector(90,0,0)
-		pos = pos + Vector(0,0,900)
+		ang = Vector(90, 0, 0)
+		pos = pos + Vector(0, 0, 900)
 		fov = 90
 	end
 	return pos, ang, fov
@@ -64,23 +59,24 @@ SWEP.ScanDelay = 0
 function SWEP:Think()
 	if CLIENT then
 		if self.Enabled then
-			for k,v in pairs(player.GetAll()) do
-				v:SetNoDraw( true )
+			for k, v in pairs(player.GetAll()) do
+				v:SetNoDraw(true)
 			end
 		else
-			for k,v in pairs(player.GetAll()) do
-				v:SetNoDraw( false )
+			for k, v in pairs(player.GetAll()) do
+				v:SetNoDraw(false)
 			end
 		end
+
 		if self.ScanDelay > CurTime() then return end
 		self.ScanDelay = CurTime() + 1
 		self.warnings = {}
 		self.toshow = {}
 		local lp = LocalPlayer()
-		for k,v in pairs(ents.FindInSphere( lp:GetPos(), 1000 )) do
+		for k, v in pairs(ents.FindInSphere(lp:GetPos(), 1000)) do
 			if v:IsPlayer() then
 				if v == lp then continue end
-				if v:Team() != TEAM_SPECTATOR then
+				if v:Team() ~= TEAM_SPECTATOR then
 					if v:Team() == TEAM_GUARD then
 						table.ForceInsert(self.warnings, clang.snu_mtfguard)
 						continue
@@ -99,63 +95,61 @@ function SWEP:Think()
 						table.ForceInsert(self.warnings, clang.snu_classd)
 						continue
 					elseif v:Team() == TEAM_SCP then
-						if not v.GetNClass then
-							player_manager.RunClass( v, "SetupDataTables" )
-						end
-						table.ForceInsert(self.warnings, clang.snu_detected .. v:GetNClass() )
+						if not v.GetNClass then player_manager.RunClass(v, "SetupDataTables") end
+						table.ForceInsert(self.warnings, clang.snu_detected .. v:GetNClass())
 					else
 						table.ForceInsert(self.warnings, clang.snu_humanoid)
 					end
 				end
 			elseif v:IsWeapon() then
 				local found = false
-				if IsValid(v.Owner) then
-					found = true
-				end
-				if v.ISSCP != nil then
-					if v.ISSCP == true then
-						found = true
-					end
-				end
-				if !found then
+				if IsValid(v.Owner) then found = true end
+				if v.ISSCP ~= nil then if v.ISSCP == true then found = true end end
+				if not found then
 					table.ForceInsert(self.toshow, v)
-					table.ForceInsert(self.warnings, clang.snu_detected .. language.GetPhrase( v:GetPrintName() ) )
+					table.ForceInsert(self.warnings, clang.snu_detected .. language.GetPhrase(v:GetPrintName()))
 				end
 			end
 		end
 	end
 end
+
 function SWEP:Reload()
 end
+
 function SWEP:PrimaryAttack()
 end
+
 function SWEP:OnRemove()
 	if CLIENT then
-		for k,v in pairs(player.GetAll()) do
-			v:SetNoDraw( false )
+		for k, v in pairs(player.GetAll()) do
+			v:SetNoDraw(false)
 		end
 	end
 end
+
 function SWEP:Holster()
 	if CLIENT then
-		for k,v in pairs(player.GetAll()) do
-			v:SetNoDraw( false )
+		for k, v in pairs(player.GetAll()) do
+			v:SetNoDraw(false)
 		end
 	end
 	return true
 end
+
 function SWEP:SecondaryAttack()
 	if SERVER then return end
 	if self.NextChange > CurTime() then return end
-	self.Enabled = !self.Enabled
+	self.Enabled = not self.Enabled
 	self.NextChange = CurTime() + 0.25
 end
+
 function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:DrawHUD()
 	if self.Enabled then
-		/*
+		--[[
 		if BUTTONS != nil then
 			for k,v in pairs(BUTTONS) do
 				DrawInfo(v.pos, v.name, Color(0,255,50))
@@ -173,26 +167,20 @@ function SWEP:DrawHUD()
 				DrawInfo(v, "Item", Color(255,255,255))
 			end
 		end
-		*/
-		for k,v in pairs(self.toshow) do
-			if IsValid(v) then
-				if v:GetPos():Distance(LocalPlayer():GetPos()) < 425 then
-					DrawInfo(v:GetPos(), v:GetPrintName(), Color(255,255,255))
-				end
-			end
+		]]
+		for k, v in pairs(self.toshow) do
+			if IsValid(v) then if v:GetPos():Distance(LocalPlayer():GetPos()) < 425 then DrawInfo(v:GetPos(), v:GetPrintName(), Color(255, 255, 255)) end end
 		end
-		for i,v in ipairs(self.warnings) do
-			draw.Text( {
+
+		for i, v in ipairs(self.warnings) do
+			draw.Text({
 				text = v,
-				pos = { ScrW() / 2, ScrH() / 2 - ((i * -25) - 125) },
+				pos = {ScrW() / 2, ScrH() / 2 - ((i * -25) - 125)},
 				font = "173font",
-				color = Color(255,0,0),
+				color = Color(255, 0, 0),
 				xalign = TEXT_ALIGN_CENTER,
 				yalign = TEXT_ALIGN_CENTER,
 			})
 		end
 	end
 end
-
-
-

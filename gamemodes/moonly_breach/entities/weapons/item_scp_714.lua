@@ -1,42 +1,36 @@
 AddCSLuaFile()
-
 if CLIENT then
-	SWEP.WepSelectIcon 	= surface.GetTextureID("breach/wep_scp714")
+	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_scp714")
 	SWEP.BounceWeaponIcon = false
 end
 
-SWEP.ViewModelFOV	= 60
-SWEP.ViewModelFlip	= false
-SWEP.ViewModel		= "models/mishka/models/scp714.mdl"
-SWEP.WorldModel		= "models/mishka/models/scp714.mdl"
-SWEP.PrintName		= "SCP-714"
-SWEP.Slot			= 1
-SWEP.SlotPos			= 1
-SWEP.DrawAmmo		= false
-SWEP.DrawCrosshair	= true
-SWEP.HoldType		= "normal"
-SWEP.Spawnable		= false
-SWEP.AdminSpawnable	= false
-
-SWEP.droppable				= true
-SWEP.teams					= {2,3,5,6}
-
-SWEP.Primary.ClipSize		= -1
-SWEP.Primary.DefaultClip	= -1
-SWEP.Primary.Ammo			=  "none"
-SWEP.Primary.Automatic		= false
-
-SWEP.Secondary.ClipSize		= -1
-SWEP.Secondary.DefaultClip	= -1
-SWEP.Secondary.Ammo			=  "none"
-SWEP.Secondary.Automatic	=  false
-
+SWEP.ViewModelFOV = 60
+SWEP.ViewModelFlip = false
+SWEP.ViewModel = "models/mishka/models/scp714.mdl"
+SWEP.WorldModel = "models/mishka/models/scp714.mdl"
+SWEP.PrintName = "SCP-714"
+SWEP.Slot = 1
+SWEP.SlotPos = 1
+SWEP.DrawAmmo = false
+SWEP.DrawCrosshair = true
+SWEP.HoldType = "normal"
+SWEP.Spawnable = false
+SWEP.AdminSpawnable = false
+SWEP.droppable = true
+SWEP.teams = {2, 3, 5, 6}
+SWEP.Primary.ClipSize = -1
+SWEP.Primary.DefaultClip = -1
+SWEP.Primary.Ammo = "none"
+SWEP.Primary.Automatic = false
+SWEP.Secondary.ClipSize = -1
+SWEP.Secondary.DefaultClip = -1
+SWEP.Secondary.Ammo = "none"
+SWEP.Secondary.Automatic = false
 SWEP.InUse = false
 SWEP.Durability = 100
-
 function SWEP:Deploy()
 	if not IsFirstTimePredicted() then return end
-	self.Owner:DrawViewModel( false )
+	self.Owner:DrawViewModel(false)
 	self.InUse = true
 	self.Owner.Using714 = true
 end
@@ -49,9 +43,7 @@ function SWEP:Holster()
 end
 
 function SWEP:DrawWorldModel()
-	if !IsValid(self.Owner) then
-		self:DrawModel()
-	end
+	if not IsValid(self.Owner) then self:DrawModel() end
 end
 
 function SWEP:Initialize()
@@ -59,26 +51,21 @@ function SWEP:Initialize()
 end
 
 SWEP.LastTime = 0
-
 function SWEP:Think()
 	if not IsFirstTimePredicted() then return end
-	if !self.InUse then return end
+	if not self.InUse then return end
 	if self.LastTime > CurTime() then return end
 	self.LastTime = CurTime() + 0.45
 	self.Durability = self.Durability - 1
 	if SERVER then
-		if self.Durability > 0 then
-			if self.Owner:GetMaxHealth() > self.Owner:Health() then
-				self.Owner:SetHealth( self.Owner:Health() + 1 )
-			end
-		end
-		if self.Durability < 1 then self.Owner:StripWeapon( "item_scp_714" ) end
+		if self.Durability > 0 then if self.Owner:GetMaxHealth() > self.Owner:Health() then self.Owner:SetHealth(self.Owner:Health() + 1) end end
+		if self.Durability < 1 then self.Owner:StripWeapon("item_scp_714") end
 	end
 end
 
-function SWEP:OnRemove() 
+function SWEP:OnRemove()
 	self.InUse = false
-	for k, v in pairs( player.GetAll() ) do
+	for k, v in pairs(player.GetAll()) do
 		v.Using714 = false
 	end
 end
@@ -88,7 +75,7 @@ end
 
 function SWEP:OwnerChanged()
 	self.InUse = false
-	for k, v in pairs( player.GetAll() ) do
+	for k, v in pairs(player.GetAll()) do
 		v.Using714 = false
 	end
 end
@@ -104,33 +91,27 @@ end
 
 function SWEP:DrawHUD()
 	if disablehud == true then return end
-	
 	local cRed = (100 - self.Durability) / 100 * 255
 	local cGreen = self.Durability / 100 * 255
-	
-	color = Color( cRed, cGreen, 0 )
-	text = clang.durability.." "..self.Durability.."%"
+	color = Color(cRed, cGreen, 0)
+	text = clang.durability .. " " .. self.Durability .. "%"
 	disp = clang.protect
-	if self.Durability < 15 then
-		disp = clang.protend
-	end
-	
-	draw.Text( {
+	if self.Durability < 15 then disp = clang.protend end
+	draw.Text({
 		text = text,
-		pos = { ScrW() / 2, ScrH() - 60 },
+		pos = {ScrW() / 2, ScrH() - 60},
 		font = "173font",
 		color = color,
 		xalign = TEXT_ALIGN_CENTER,
 		yalign = TEXT_ALIGN_CENTER,
-	} )
-	
-		draw.Text( {
+	})
+
+	draw.Text({
 		text = disp,
-		pos = { ScrW() / 2, ScrH() - 30 },
+		pos = {ScrW() / 2, ScrH() - 30},
 		font = "173font",
 		color = color,
 		xalign = TEXT_ALIGN_CENTER,
 		yalign = TEXT_ALIGN_CENTER,
-	} )
-	
+	})
 end
