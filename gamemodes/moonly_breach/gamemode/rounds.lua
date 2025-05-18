@@ -18,7 +18,7 @@ function ZombieGamemode()
 	local allspawns = {}
 	table.Add(allspawns, SPAWN_GUARD)
 	--table.Add(allspawns, SPAWN_OUTSIDE)
-	table.Add(allspawns, SPAWN_SCIENT)
+	table.Add(allspawns, SPAWN_SCIENTIST)
 	table.Add(allspawns, SPAWN_CLASSD)
 	for i = 1, #all do
 		local pl = table.Random(all)
@@ -44,7 +44,7 @@ function SpyGamemode()
 	local allspawns = {}
 	table.Add(allspawns, SPAWN_GUARD)
 	--table.Add(allspawns, SPAWN_OUTSIDE)
-	table.Add(allspawns, SPAWN_SCIENT)
+	table.Add(allspawns, SPAWN_SCIENTIST)
 	table.Add(allspawns, SPAWN_CLASSD)
 	for i = 1, #GetActivePlayers() / 3 do
 		local pl = table.Random(all)

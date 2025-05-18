@@ -34,7 +34,7 @@ surface.CreateFont("173font", {
 })
 
 clang = nil
-ALLLANGUAGES = {}
+ALL_LANGUAGES = {}
 local files, dirs = file.Find(GM.FolderName .. "/gamemode/languages/*.lua", "LUA")
 for k, v in pairs(files) do
 	local path = "languages/" .. v
@@ -51,21 +51,21 @@ langtouse = CreateClientConVar("br_language", "english", true, false):GetString(
 --end
 cvars.AddChangeCallback("br_language", function(convar_name, value_old, value_new)
 	langtouse = value_new
-	if ALLLANGUAGES[langtouse] then clang = ALLLANGUAGES[langtouse] end
+	if ALL_LANGUAGES[langtouse] then clang = ALL_LANGUAGES[langtouse] end
 end)
 
 print("langtouse:")
 print(langtouse)
 --print("Alllangs:")
 --PrintTable(ALLLANGUAGES)
-if ALLLANGUAGES[langtouse] then
-	clang = ALLLANGUAGES[langtouse]
+if ALL_LANGUAGES[langtouse] then
+	clang = ALL_LANGUAGES[langtouse]
 else
-	clang = ALLLANGUAGES.english
+	clang = ALL_LANGUAGES.english
 end
 
-mapfile = "mapconfigs/" .. game.GetMap() .. ".lua"
-include(mapfile)
+mapFile = "mapconfigs/" .. game.GetMap() .. ".lua"
+include(mapFile)
 include("cl_hud.lua")
 --include("other/cl_hudnew.lua") --new hud (unused)
 RADIO4SOUNDSHC = {{"breach/radio/chatter1", 39}, {"breach/radio/chatter2", 72}, {"breach/radio/chatter4", 12}, {"breach/radio/franklin1", 8}, {"breach/radio/franklin2", 13}, {"breach/radio/franklin3", 12}, {"breach/radio/franklin4", 19}, {"breach/radio/ohgod", 25}}
@@ -287,7 +287,7 @@ local f_started = false
 function tick_flash()
 	if LocalPlayer().Team == nil then return end
 	if LocalPlayer():Team() ~= TEAM_SPECTATOR then
-		for k, v in pairs(ents.FindInSphere(OUTSIDESOUNDS, 300)) do
+		for k, v in pairs(ents.FindInSphere(OUTSIDE_SOUNDS, 300)) do
 			if v == LocalPlayer() then StartOutisdeSounds() end
 		end
 	end

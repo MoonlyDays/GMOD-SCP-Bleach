@@ -79,6 +79,7 @@ function Getrl()
 	if rl == ROLE_SCP0082 then return 18 end
 	if rl == ROLE_SCP096 then return 20 end
 	if rl == ROLE_SCP939 then return 21 end
+	if rl == ROLE_SCP682 then return 22 end
 	return 19
 end
 
@@ -111,68 +112,7 @@ local info1 = Material("breach/info_mtf.png")
 hook.Add("HUDPaint", "Breach_DrawHUD", function()
 	if disablehud == true then return end
 	if POS_914B_BUTTON ~= nil and isstring(buttonstatus) then if LocalPlayer():GetPos():Distance(POS_914B_BUTTON) < 200 then DrawInfo(POS_914B_BUTTON, buttonstatus, Color(255, 255, 255)) end end
-	--[[
-	if BUTTONS != nil then
-		for k,v in pairs(BUTTONS) do
-			//DrawInfo(v.pos, v.name, Color(0,255,50))
-		end
-		for k,v in pairs(SPAWN_KEYCARD2) do
-			//DrawInfo(v, "Keycard2", Color(255,255,0))
-		end
-		for k,v in pairs(SPAWN_KEYCARD3) do
-			//DrawInfo(v, "Keycard3", Color(255,120,0))
-		end
-		for k,v in pairs(SPAWN_KEYCARD4) do
-			//DrawInfo(v, "Keycard4", Color(255,0,0))
-		end
-		for k,v in pairs(SPAWN_ITEMS) do
-			DrawInfo(v, "Item", Color(255,255,255))
-		end
-		for k,v in pairs(SPAWN_SMGS) do
-			//DrawInfo(v, "SMG", Color(255,255,255))
-		end
-	end
-	]]
-	--[[
-	if #player.GetAll() < MINPLAYERS then
-		draw.TextShadow( {
-			text = "Not enough players to start the round",
-			pos = { ScrW() / 2, ScrH() / 15 },
-			font = "ImpactBig",
-			color = Color(255,255,255),
-			xalign = TEXT_ALIGN_CENTER,
-			yalign = TEXT_ALIGN_CENTER,
-		}, 2, 255 )
-		draw.TextShadow( {
-			text = "Waiting for more players to join the server",
-			pos = { ScrW() / 2, ScrH() / 15 + 45 },
-			font = "ImpactSmall",
-			color = Color(255,255,255),
-			xalign = TEXT_ALIGN_CENTER,
-			yalign = TEXT_ALIGN_CENTER,
-		}, 2, 255 )
-		return
-	
-	elseif gamestarted == false then
-		draw.TextShadow( {
-			text = "Game is starting",
-			pos = { ScrW() / 2, ScrH() / 15 },
-			font = "ImpactBig",
-			color = Color(255,128,70),
-			xalign = TEXT_ALIGN_CENTER,
-			yalign = TEXT_ALIGN_CENTER,
-		}, 2, 255 )
-		draw.TextShadow( {
-			text = "Wait for the round to start",
-			pos = { ScrW() / 2, ScrH() / 15 + 45 },
-			font = "ImpactSmall",
-			color = Color(255,255,255),
-			xalign = TEXT_ALIGN_CENTER,
-			yalign = TEXT_ALIGN_CENTER,
-		}, 2, 255 )
-		return
-	end
-	]]
+
 	if shoulddrawinfo == true then
 		local getrl = Getrl()
 		local align = 32

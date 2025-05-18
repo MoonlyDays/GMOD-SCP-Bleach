@@ -221,7 +221,7 @@ function SetupPlayers(pltab)
 	end
 
 	-- Scientists
-	local scispawns = table.Copy(SPAWN_SCIENT)
+	local scispawns = table.Copy(SPAWN_SCIENTIST)
 	for i = 1, pltab[4] do
 		if #scispawns > 0 then
 			local pl = table.Random(allply)

@@ -805,6 +805,42 @@ function mply:SetSCP0492()
 	self.UsingArmor = nil
 end
 
+function mply:SetSCP682()
+	self.handsmodel = nil
+	self:UnSpectate()
+	self:GodDisable()
+	self:Spawn()
+	self:SetPos(SPAWN_682) --
+	self:StripWeapons()
+	self:RemoveAllAmmo()
+	self:SetTeam(TEAM_SCP)
+	self:SetNClass(ROLE_SCP682) --
+	self:SetModel("models/danx91/scp/scp_682.mdl")
+	self:SetHealth(10000)
+	self:SetMaxHealth(10000)
+	self:SetArmor(0)
+	--Weapon overrides this.
+	self:SetWalkSpeed(60)
+	self:SetRunSpeed(60)
+	self:SetMaxSpeed(60)
+	self:SetJumpPower(0)
+	self:SetNoDraw(false)
+	self.Active = true
+	self:SetupHands()
+	self.canblink = false
+	self:AllowFlashlight( false )
+	self.WasTeam = TEAM_SCP
+	self:SetNoTarget( true )
+	self:Give("weapon_scp_682")
+	self:SelectWeapon("weapon_scp_682")
+	self.BaseStats = nil
+	self.UsingArmor = nil
+	self:SetNoCollideWithTeammates(false)
+	net.Start("RolesSelected")
+	net.Send(self)
+	self:SetCanWalk(true)
+end
+
 function mply:IsActivePlayer()
 	return self.Active
 end

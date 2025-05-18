@@ -51,6 +51,7 @@ ROLE_SCP096 = "SCP-096"
 ROLE_SCP939 = "SCP-939"
 ROLE_SCP0492 = "SCP-049-2"
 ROLE_SCP0082 = "SCP-008-2"
+ROLE_SCP682 = "SCP-682"
 ROLE_MTFGUARD = "MTF Guard"
 ROLE_MTFCOM = "MTF Commander"
 ROLE_MTFNTF = "MTF Nine Tailed Fox"
@@ -88,6 +89,10 @@ SCPS = {
 	{
 		name = "SCP 939",
 		func = function(pl) pl:SetSCP939() end
+	},
+	{
+		name = "SCP 682",
+		func = function(pl) pl:SetSCP682() end
 	}
 }
 
@@ -143,7 +148,7 @@ ALLCLASSES = {
 		name = "Scientist",
 		func = function(pl)
 			pl:SetScientist()
-			local scispawns = table.Copy(SPAWN_SCIENT)
+			local scispawns = table.Copy(SPAWN_SCIENTIST)
 			local spawn = table.Random(scispawns)
 			pl:SetPos(spawn)
 		end
@@ -259,8 +264,8 @@ function GetNTFEnterTime()
 end
 
 function InPD(ply)
-	if POCKETDIMENSION == nil then return false end
-	for k, v in pairs(POCKETDIMENSION) do
+	if PD_BBOX == nil then return false end
+	for k, v in pairs(PD_BBOX) do
 		local pos1 = v.pos1
 		local pos2 = v.pos2
 		OrderVectors(pos1, pos2)

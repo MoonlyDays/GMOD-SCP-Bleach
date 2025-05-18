@@ -24,7 +24,7 @@ function RoundRestart()
 	}
 
 	print("round: mapcleaned")
-	MAPBUTTONS = table.Copy(BUTTONS)
+	MAP_BUTTONS = table.Copy(BUTTONS)
 	for k, v in pairs(player.GetAll()) do
 		player_manager.SetPlayerClass(v, "class_default")
 		player_manager.RunClass(v, "SetupDataTables")
@@ -38,60 +38,17 @@ function RoundRestart()
 	end
 
 	print("round: playersconfigured")
-	--PrintMessage(HUD_PRINTTALK, "Prepare, round will start in ".. GetPrepTime() .." seconds")
 	preparing = true
 	postround = false
-	--[[
-	nextspecialround = nil
-	//CloseSCPDoors()
-	//lua_run nextspecialround = spies
-	local foundr = GetConVar("br_specialround_forcenext"):GetString()
-	if foundr != nil then
-		if foundr != "none" then
-			print("Found a round from command: " .. foundr)
-			nextspecialround = foundr
-			RunConsoleCommand( "br_specialround_forcenext", "none" )
-		else
-			print("Couldn't find any round from command, setting to normal (" .. foundr .. ")")
-			nextspecialround = nil
-		end
-	end
-	if nextspecialround != nil then
-		if ROUNDS[nextspecialround] != nil then
-			print("Found round: " .. ROUNDS[nextspecialround].name)
-			roundtype = ROUNDS[nextspecialround]
-		else
-			print("Couldn't find any round with name " .. nextspecialround .. ", setting to normal")
-			roundtype = normalround
-		end
-	else
-		if math.random(1,100) <= math.Clamp(GetConVar("br_specialround_percentage"):GetInt(), 1, 100) then
-			local roundstouse = {}
-			for k,v in pairs(ROUNDS) do
-				if v.minplayers <= #GetActivePlayers() then
-					table.ForceInsert(roundstouse, v)
-				end
-			end
-			roundtype = table.Random(roundstouse)
-		else
-			roundtype = normalround
-		end
-	end
-	if roundtype == nil then
-		roundtype = normalround
-	end
-	]]
-	--roundtype.playersetup()
+
 	SetupPlayers(GetRoleTable(#GetActivePlayers()))
 	net.Start("UpdateRoundType")
-	--net.WriteString(roundtype.name)
 	net.WriteString("Containment Breach")
 	net.Broadcast()
 	print("round: roundtypeworking good")
 	gamestarted = true
 	BroadcastLua('gamestarted = true')
 	print("round: gamestarted")
-	--BroadcastLua( "surface.PlaySound('breach/misc/bell1.ogg')" )
 	if GetConVar("br_spawnzombies"):GetBool() == true then
 		for k, v in pairs(SPAWN_ZOMBIES) do
 			local zombie = ents.Create("npc_fastzombie")
@@ -105,9 +62,6 @@ function RoundRestart()
 
 	SpawnAllItems()
 	timer.Create("NTFEnterTime", GetNTFEnterTime(), 0, function() SpawnNTFS() end)
-	--if roundtype.mtfandscpdelay == false then
-	--OpenSCPDoors()
-	--end
 	net.Start("PrepStart")
 	net.WriteInt(GetPrepTime(), 8)
 	net.Broadcast()
@@ -120,35 +74,14 @@ function RoundRestart()
 
 		preparing = false
 		postround = false
-		--if roundtype != nil then
-		--	if isfunction(roundtype.onroundstart) == true then
-		--		roundtype.onroundstart()
-		--	end
-		--end
-		--PrintMessage(HUD_PRINTTALK, "Game is live, good luck!")
-		--[[
-		if GetConVar("br_opengatea_enabled"):GetBool() == true then
-			PrintMessage(HUD_PRINTTALK, "Game is live, Gate A will be opened in ".. math.Round(GetGateOpenTime() / 60, 1) .." minutes")
-			timer.Create("GateOpen", GetGateOpenTime(), 1, function()
-				OpenGateA()
-				PrintMessage(HUD_PRINTTALK, "Gate A has been opened")
-			end)
-		else
-			PrintMessage(HUD_PRINTTALK, "Game is live, good luck!")
-		end
-		]]
-		--if roundtype.mtfandscpdelay == true then
 		OpenSCPDoors()
-		--end
 		net.Start("RoundStart")
 		net.WriteInt(GetRoundTime(), 12)
 		net.Broadcast()
-		print("round: prepgood")
+
 		timer.Create("RoundTime", GetRoundTime(), 1, function()
-			--PrintMessage(HUD_PRINTTALK, "Time is over, Class Ds and SCPs didn't escape the facility in time. MTF wins!")
 			postround = false
 			postround = true
-			-- send all round info
 			net.Start("SendRoundInfo")
 			net.WriteTable(roundstats)
 			net.Broadcast()
@@ -186,10 +119,10 @@ function CheckEscape()
 
 						v_ent:TakeDamage(v_ent:Health() + 10, attacker, inflictor)
 					elseif rand < 37 then
-						v_ent:SetPos(table.Random(PD_GOODEXIT))
+						v_ent:SetPos(table.Random(PD_GOOD_EXIT))
 						v_ent:EmitSound("breach/PocketDimension/Exit.ogg", 75, 100, 0.7)
 					else
-						v_ent:SetPos(table.Random(PD_BADEXIT))
+						v_ent:SetPos(table.Random(PD_BAD_EXIT))
 						if math.random(1, 3) == 1 then v_ent:SendLua('surface.PlaySound("breach/pocketdimension/Laugh.ogg")') end
 					end
 				end

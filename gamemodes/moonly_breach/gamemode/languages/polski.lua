@@ -227,7 +227,7 @@ polski.snu_humanoid = "Wykryto humanoidalną postać"
 -- RADIO
 polski.radiochannel = "Kanał radiowy "
 polski.radiodisabled = "Radio wyłączone"
-ALLLANGUAGES.polski = polski
+ALL_LANGUAGES.polski = polski
 --[[
 	if rl == ROLE_SCP173 then return 1 end
 	if rl == ROLE_SCP106 then return 2 end

@@ -118,6 +118,15 @@ english.starttexts = {
 		--21
 		"You are the SCP - 939",
 		{"Your objective is to escape the facility", "You are fast and strong", "LMB - bite the victim"}
+	},
+	{
+		--22
+		"You are the SCP - 682",
+		{
+			"Your objective is to escape the facility",
+			"Left click to bite others",
+			"Right click to charge"
+		}
 	}
 }
 
@@ -228,4 +237,4 @@ english.snu_humanoid = "Humanoid form detected"
 -- RADIO
 english.radiochannel = "Radio Channel "
 english.radiodisabled = "Radio Disabled"
-ALLLANGUAGES.english = english
+ALL_LANGUAGES.english = english
