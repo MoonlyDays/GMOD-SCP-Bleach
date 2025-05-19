@@ -1,5 +1,4 @@
 AddCSLuaFile()
-
 ENT.Type = "anim"
 ENT.Base = "breach_baseammo"
 ENT.AmmoID = 1

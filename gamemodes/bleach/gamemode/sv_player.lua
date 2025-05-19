@@ -120,7 +120,6 @@ function mply:SetSCP173()
 	self:UnSpectate()
 	self:GodDisable()
 	self:Spawn()
-	--self:SetPos(SPAWN_173)
 	self:StripWeapons()
 	self:RemoveAllAmmo()
 	self:SetTeam(TEAM_SCP)
@@ -140,16 +139,13 @@ function mply:SetSCP173()
 	self.BaseStats = nil
 	self.UsingArmor = nil
 	self:SetNoTarget(true)
-	--if IsValid(self.entity173) == true then
-	--	self.entity173:Remove()
-	--end
 	self:Give("weapon_scp_173")
 	self:SelectWeapon("weapon_scp_173")
 	self:SetWalkSpeed(500)
 	self:SetRunSpeed(500)
 	self:SetMaxSpeed(500)
 	self:SetMoveType(MOVETYPE_WALK)
-	--self:SetPos(SPAWN_173)
+	self:SetPos(SPAWN_173)
 end
 
 function mply:SetSCP106()
@@ -595,12 +591,12 @@ function mply:ChangeSpecMode()
 	end
 
 	--[[
-	if m == OBS_MODE_CHASE then
-		self:Spectate(OBS_MODE_IN_EYE)
-	else
-		self:Spectate(OBS_MODE_CHASE)
-	end
-	]]
+    if m == OBS_MODE_CHASE then
+        self:Spectate(OBS_MODE_IN_EYE)
+    else
+        self:Spectate(OBS_MODE_CHASE)
+    end
+    ]]
 	if m == OBS_MODE_IN_EYE then
 		self:Spectate(OBS_MODE_CHASE)
 		self:SpectatePlayerLeft()

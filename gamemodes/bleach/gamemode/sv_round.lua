@@ -1,6 +1,9 @@
+nextSpecialRound = nil
+roundCommotionSounds = nil
+
 function PlayCommotionSound()
-    if istable(round_commotionsounds) then
-        local rnd_sound = table.Random(round_commotionsounds)
+    if istable(roundCommotionSounds) then
+        local rnd_sound = table.Random(roundCommotionSounds)
         if isstring(rnd_sound) == false then
             print("Couldnt find a commotion sound, removing the timer.")
             timer.Remove("PlayCommotionSounds")
@@ -8,7 +11,7 @@ function PlayCommotionSound()
         end
 
         BroadcastLua('surface.PlaySound("' .. rnd_sound .. '")')
-        table.RemoveByValue(round_commotionsounds, rnd_sound)
+        table.RemoveByValue(roundCommotionSounds, rnd_sound)
         timer.Create("PlayCommotionSounds", math.random(8, 14), 1, PlayCommotionSound)
     end
 end
@@ -33,9 +36,8 @@ function HandleNTFSpawns()
     end
 end
 
-nextspecialround = nil
+
 function RoundRestart()
-    print("round: starting")
     timer.Destroy("PreparingTime")
     timer.Destroy("RoundTime")
     timer.Destroy("PostTime")
@@ -47,7 +49,7 @@ function RoundRestart()
         timer.Create("CheckEscape", 1, 0, CheckEscape)
     end
     game.CleanUpMap()
-    round_commotionsounds = table.Copy(COMMOTION_SOUNDS)
+    roundCommotionSounds = table.Copy(COMMOTION_SOUNDS)
     nextgateaopen = 0
     spawnedntfs = 0
     roundstats = {
@@ -78,25 +80,25 @@ function RoundRestart()
     print("round: playersconfigured")
     preparing = true
     postround = false
-    nextspecialround = nil
+    nextSpecialRound = nil
     local foundr = GetConVar("br_specialround_forcenext"):GetString()
     if foundr ~= nil then
         if foundr ~= "none" then
             print("Found a round from command: " .. foundr)
-            nextspecialround = foundr
+            nextSpecialRound = foundr
             RunConsoleCommand("br_specialround_forcenext", "none")
         else
             print("Couldn't find any round from command, setting to normal (" .. foundr .. ")")
-            nextspecialround = nil
+            nextSpecialRound = nil
         end
     end
 
-    if nextspecialround ~= nil then
-        if ROUNDS[nextspecialround] ~= nil then
-            print("Found round: " .. ROUNDS[nextspecialround].name)
-            roundtype = ROUNDS[nextspecialround]
+    if nextSpecialRound ~= nil then
+        if ROUNDS[nextSpecialRound] ~= nil then
+            print("Found round: " .. ROUNDS[nextSpecialRound].name)
+            roundtype = ROUNDS[nextSpecialRound]
         else
-            print("Couldn't find any round with name " .. nextspecialround .. ", setting to normal")
+            print("Couldn't find any round with name " .. nextSpecialRound .. ", setting to normal")
             roundtype = normalround
         end
     else
@@ -145,12 +147,6 @@ function RoundRestart()
         PlayCommotionSound()
     end)
 
-    if isfunction(GATEB_FIX) then
-        GATEB_FIX()
-    end
-    timer.Create("OpenGateB", math.random(GetConVar("br_time_gateb_open_min"):GetInt(), GetConVar("br_time_gateb_open_max"):GetInt()), 1, function()
-        GATEB_OPEN()
-    end)
     print("round: started successfully")
     timer.Create("PreparingTime", GetPrepTime(), 1, function()
         print("round: prepinit")
@@ -165,14 +161,12 @@ function RoundRestart()
                 roundtype.onroundstart()
             end
         end
-
         if roundtype.mtfandscpdelay == true then
             OpenSCPDoors()
         end
         net.Start("RoundStart")
         net.WriteInt(GetRoundTime(), 12)
         net.Broadcast()
-
         print("round: prepgood")
         timer.Create("RoundTime", GetRoundTime(), 1, function()
             postround = false

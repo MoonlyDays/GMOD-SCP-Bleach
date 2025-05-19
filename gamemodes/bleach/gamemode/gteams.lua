@@ -17,15 +17,21 @@ end
 function gteams.GetColor(input)
     if isnumber(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.index == input then return v.color end
+            if v.index == input then
+                return v.color
+            end
         end
     elseif isstring(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.name == input then return v.color end
+            if v.name == input then
+                return v.color
+            end
         end
     elseif IsColor(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.color == input then return v.color end
+            if v.color == input then
+                return v.color
+            end
         end
     end
 end
@@ -33,15 +39,21 @@ end
 function gteams.GetScore(input)
     if isnumber(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.index == input then return v.points end
+            if v.index == input then
+                return v.points
+            end
         end
     elseif isstring(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.name == input then return v.points end
+            if v.name == input then
+                return v.points
+            end
         end
     elseif IsColor(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.color == input then return v.points end
+            if v.color == input then
+                return v.points
+            end
         end
     end
 end
@@ -99,15 +111,21 @@ end
 function gteams.Valid(input)
     if isnumber(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.index == input then return true end
+            if v.index == input then
+                return true
+            end
         end
     elseif isstring(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.name == input then return true end
+            if v.name == input then
+                return true
+            end
         end
     elseif IsColor(input) then
         for k, v in pairs(gteams.Teams) do
-            if v.color == input then return true end
+            if v.color == input then
+                return true
+            end
         end
     end
     return false
@@ -115,9 +133,15 @@ end
 
 local mply = FindMetaTable("Player")
 function mply:GTeam()
-    if not IsValid(self) then return TEAM_SPEC end
-    if not self.GetNGTeam then player_manager.RunClass(self, "SetupDataTables") end
-    if not self.GetNGTeam then return TEAM_SPEC end
+    if not IsValid(self) then
+        return TEAM_SPEC
+    end
+    if not self.GetNGTeam then
+        player_manager.RunClass(self, "SetupDataTables")
+    end
+    if not self.GetNGTeam then
+        return TEAM_SPEC
+    end
     return self:GetNGTeam()
 end
 
@@ -126,7 +150,9 @@ function mply:GetGTeam()
 end
 
 function mply:SetGTeam(input)
-    if not self.SetNGTeam then player_manager.RunClass(self, "SetupDataTables") end
+    if not self.SetNGTeam then
+        player_manager.RunClass(self, "SetupDataTables")
+    end
     if isnumber(input) then
         for k, v in pairs(gteams.Teams) do
             if v.index == input then
@@ -173,7 +199,9 @@ function gteams.GetPlayers(input)
     local tab = {}
     if isnumber(input) then
         for k, v in pairs(player.GetAll()) do
-            if v:GTeam() == input then table.ForceInsert(tab, v) end
+            if v:GTeam() == input then
+                table.ForceInsert(tab, v)
+            end
         end
     else
         ErrorNoHalt("GTEAMS [ERROR] Tried to get list of players not using an index!")
@@ -186,7 +214,9 @@ function gteams.NumPlayers(input)
     local tab = {}
     if isnumber(input) then
         for k, v in pairs(player.GetAll()) do
-            if v:GTeam() == input and v:Team() == input and v:Alive() then table.ForceInsert(tab, v) end
+            if v:GTeam() == input and v:Team() == input and v:Alive() then
+                table.ForceInsert(tab, v)
+            end
         end
     else
         ErrorNoHalt("GTEAMS [ERROR] Tried to get number of players not using an index!")

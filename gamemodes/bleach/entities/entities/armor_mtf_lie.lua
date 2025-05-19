@@ -1,5 +1,4 @@
 AddCSLuaFile()
-
-ENT.Base		= "armor_base"
-ENT.PrintName	= "MTFL Vest"
-ENT.ArmorType	= "armor_mtf_lie"
+ENT.Base = "armor_base"
+ENT.PrintName = "MTFL Vest"
+ENT.ArmorType = "armor_mtf_lie"

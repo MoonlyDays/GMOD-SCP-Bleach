@@ -1,7 +1,7 @@
 AddCSLuaFile()
 if CLIENT then
-	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_106")
-	SWEP.BounceWeaponIcon = false
+    SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_106")
+    SWEP.BounceWeaponIcon = false
 end
 
 SWEP.Author = "Kanade"
@@ -23,7 +23,7 @@ SWEP.AdminSpawnable = false
 SWEP.AttackDelay = 0.25
 SWEP.ISSCP = true
 SWEP.droppable = false
-SWEP.teams = {TEAM_SCP}
+SWEP.teams = { TEAM_SCP }
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
@@ -34,14 +34,14 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 SWEP.NextAttackW = 0
 function SWEP:Deploy()
-	self.Owner:DrawViewModel(false)
+    self.Owner:DrawViewModel(false)
 end
 
 function SWEP:DrawWorldModel()
 end
 
 function SWEP:Initialize()
-	self:SetHoldType("normal")
+    self:SetHoldType("normal")
 end
 
 function SWEP:Think()
@@ -51,80 +51,94 @@ function SWEP:Reload()
 end
 
 function SWEP:PrimaryAttack()
-	--if ( !self:CanPrimaryAttack() ) then return end
-	if preparing or postround then return end
-	if not IsFirstTimePredicted() then return end
-	if self.NextAttackW > CurTime() then return end
-	self.NextAttackW = CurTime() + self.AttackDelay
-	if SERVER then
-		local ent = nil
-		local tr = util.TraceHull({
-			start = self.Owner:GetShootPos(),
-			endpos = self.Owner:GetShootPos() + (self.Owner:GetAimVector() * 90),
-			filter = self.Owner,
-			mins = Vector(-10, -10, -10),
-			maxs = Vector(10, 10, 10),
-			mask = MASK_SHOT_HULL
-		})
+    --if ( !self:CanPrimaryAttack() ) then return end
+    if preparing or postround then
+        return
+    end
+    if not IsFirstTimePredicted() then
+        return
+    end
+    if self.NextAttackW > CurTime() then
+        return
+    end
+    self.NextAttackW = CurTime() + self.AttackDelay
+    if SERVER then
+        local ent = nil
+        local tr = util.TraceHull({
+            start = self.Owner:GetShootPos(),
+            endpos = self.Owner:GetShootPos() + (self.Owner:GetAimVector() * 90),
+            filter = self.Owner,
+            mins = Vector(-10, -10, -10),
+            maxs = Vector(10, 10, 10),
+            mask = MASK_SHOT_HULL
+        })
 
-		ent = tr.Entity
-		if IsValid(ent) then
-			if ent:IsPlayer() then
-				if ent:GTeam() == TEAM_SCP then return end
-				if ent:GTeam() == TEAM_SPEC then return end
-				local pos = GetPocketPos()
-				if pos then
-					roundstats.teleported = roundstats.teleported + 1
-					self.Owner:SetHealth(self.Owner:Health() + 100)
-					--ent:TakeDamage( 30, self.Owner, self.Owner )
-					ent:SetPos(pos)
-					ent.last106 = self.Owner
-					--ent:EmitSound("PocketDimension/Enter.ogg")
-					--ent:SendLua('surface.PlaySound("Laugh.ogg")')
-					net.Start("CapturedBy106")
-					net.Send(ent)
-					self.Owner:AddExp(15, true)
-				end
-			else
-				if ent:GetClass() == "func_breakable" then ent:TakeDamage(100, self.Owner, self.Owner) end
-			end
-		end
-	end
+        ent = tr.Entity
+        if IsValid(ent) then
+            if ent:IsPlayer() then
+                if ent:GTeam() == TEAM_SCP then
+                    return
+                end
+                if ent:GTeam() == TEAM_SPEC then
+                    return
+                end
+                local pos = GetPocketPos()
+                if pos then
+                    roundstats.teleported = roundstats.teleported + 1
+                    self.Owner:SetHealth(self.Owner:Health() + 100)
+                    --ent:TakeDamage( 30, self.Owner, self.Owner )
+                    ent:SetPos(pos)
+                    ent.last106 = self.Owner
+                    --ent:EmitSound("PocketDimension/Enter.ogg")
+                    --ent:SendLua('surface.PlaySound("Laugh.ogg")')
+                    net.Start("CapturedBy106")
+                    net.Send(ent)
+                    self.Owner:AddExp(15, true)
+                end
+            else
+                if ent:GetClass() == "func_breakable" then
+                    ent:TakeDamage(100, self.Owner, self.Owner)
+                end
+            end
+        end
+    end
 end
 
 function SWEP:SecondaryAttack()
 end
 
 function SWEP:CanPrimaryAttack()
-	return true
+    return true
 end
 
 function SWEP:DrawHUD()
-	if disablehud == true then return end
-	local showtext = "Ready to attack"
-	local showcolor = Color(0, 255, 0)
-	if self.NextAttackW > CurTime() then
-		showtext = "Next attack in " .. math.Round(self.NextAttackW - CurTime())
-		showcolor = Color(255, 0, 0)
-	end
+    if disablehud == true then
+        return
+    end
+    local showtext = "Ready to attack"
+    local showcolor = Color(0, 255, 0)
+    if self.NextAttackW > CurTime() then
+        showtext = "Next attack in " .. math.Round(self.NextAttackW - CurTime())
+        showcolor = Color(255, 0, 0)
+    end
 
-	draw.Text({
-		text = showtext,
-		pos = {ScrW() / 2, ScrH() - 30},
-		font = "173font",
-		color = showcolor,
-		xalign = TEXT_ALIGN_CENTER,
-		yalign = TEXT_ALIGN_CENTER,
-	})
+    draw.Text({
+        text = showtext,
+        pos = { ScrW() / 2, ScrH() - 30 },
+        font = "173font",
+        color = showcolor,
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    })
 
-	local x = ScrW() / 2.0
-	local y = ScrH() / 2.0
-	local scale = 0.3
-	surface.SetDrawColor(0, 255, 0, 255)
-	local gap = 5
-	local length = gap + 20 * scale
-	surface.DrawLine(x - length, y, x - gap, y)
-	surface.DrawLine(x + length, y, x + gap, y)
-	surface.DrawLine(x, y - length, x, y - gap)
-	surface.DrawLine(x, y + length, x, y + gap)
+    local x = ScrW() / 2.0
+    local y = ScrH() / 2.0
+    local scale = 0.3
+    surface.SetDrawColor(0, 255, 0, 255)
+    local gap = 5
+    local length = gap + 20 * scale
+    surface.DrawLine(x - length, y, x - gap, y)
+    surface.DrawLine(x + length, y, x + gap, y)
+    surface.DrawLine(x, y - length, x, y - gap)
+    surface.DrawLine(x, y + length, x, y + gap)
 end

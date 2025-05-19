@@ -1,6 +1,5 @@
 local nextTGID = 0
 local filterEnts = {}
-
 function GM:HUDDrawTargetID()
 	if disablehud == true then return end
 	local client = LocalPlayer()
@@ -38,11 +37,7 @@ function GM:HUDDrawTargetID()
 	local ply = trace.Entity
 	local clr = color_white
 	local clr2 = color_white
-	
-	if ply:IsPlayer() then
-		if not ply.GetNClass then player_manager.RunClass(ply, "SetupDataTables") end
-	end
-
+	if ply:IsPlayer() then if not ply.GetNClass then player_manager.RunClass(ply, "SetupDataTables") end end
 	if ply == client then return end
 	if ply:IsPlayer() then
 		if ply:Alive() == false then return end

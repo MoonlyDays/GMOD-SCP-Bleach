@@ -1,17 +1,15 @@
 SWEP.Base = "keycard_base"
-
 if CLIENT then
-	SWEP.WepSelectIcon 	= surface.GetTextureID("breach/wep_keycard5")
+	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_keycard5")
 	SWEP.BounceWeaponIcon = false
 end
 
-SWEP.Instructions	= "If you hold it, you can open doors with level 5"
-SWEP.PrintName		= "Keycard Level 5"
-SWEP.clevel			= 5
-SWEP.keycard_skin	= 4
-
+SWEP.Instructions = "If you hold it, you can open doors with level 5"
+SWEP.PrintName = "Keycard Level 5"
+SWEP.clevel = 5
+SWEP.keycard_skin = 4
 function SWEP:GetBetterOne()
-	local r = math.random(1,100)
+	local r = math.random(1, 100)
 	if buttonstatus == 3 then
 		if r < 30 then
 			return "keycard_omni"
