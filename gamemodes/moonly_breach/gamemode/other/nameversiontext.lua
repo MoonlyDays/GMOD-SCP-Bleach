@@ -1,5 +1,0 @@
-print(" ")
-print("Classic Breach By Dragon4k")
-print("Version: 2.16.6 | 29.08.2024 19:15 PM")
-print("Have a nice game!")
-print(" ")

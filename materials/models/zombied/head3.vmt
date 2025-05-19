@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models\ZombieD/Head3"
-$bumpmap "models\ZombieD/Head3_n"
-
-}

@@ -1,0 +1,58 @@
+"bleach"
+{
+	"base"          "base"
+	"title"         "Bleach"
+	"maps"          "gm_site19"
+	"menusystem"	"1"
+	
+	"settings"
+	{
+		1
+		{
+			"name"		"br_time_preparing"
+			"text"		"Time - Preparing"
+			"type"		"Numeric"
+			"default"	"45"
+		}
+		
+		2
+		{
+			"name"		"br_time_round"
+			"text"		"Time - Round"
+			"type"		"Numeric"
+			"default"	"720"
+		}
+		
+		3
+		{
+			"name"		"br_time_postround"
+			"text"		"Time - Postround"
+			"type"		"Numeric"
+			"default"	"30"
+		}
+		
+		4
+		{
+			"name"		"br_expscale"
+			"text"		"EXP Scale"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+		
+		5
+		{
+			"name"		"br_specialround_percentage"
+			"text"		"Special Round Percentage"
+			"type"		"Numeric"
+			"default"	"12"
+		}
+
+		6
+		{
+			"name"		"br_scoreboardranks"
+			"text"		"Scoreboard Ranks"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+	}
+}

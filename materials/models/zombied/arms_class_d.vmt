@@ -1,8 +1,0 @@
-"VertexLitGeneric"
-{
-	"$baseTexture" 	"models\ZombieD\arms_class_d"
-	"$normalmapalphaenvmapmask" 1
-	"$envmapcontrast" 1
-	"$surfaceprop" "flesh"
-        "$nocull" 1
-}
