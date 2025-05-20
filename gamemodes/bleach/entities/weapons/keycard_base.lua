@@ -74,7 +74,7 @@ end
 
 function SWEP:DrawWorldModel()
     if CLIENT then
-        if LocalPlayer():GTeam() == TEAM_SPECTATOR then
+        if LocalPlayer():Team() == TEAM_SPECTATOR then
             return false
         end
     end

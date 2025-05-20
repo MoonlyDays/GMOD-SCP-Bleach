@@ -12,4 +12,4 @@ ROLE.Health = 1000
 ROLE.Model = SCP_1987_J_MODEL
 ROLE.CanBlink = false
 ROLE.CanPickupWeapons = false
-ROLE.Weapons = { "weapon_scp_1987_j" }
+ROLE.Weapons = { "weapon_scp_173" }

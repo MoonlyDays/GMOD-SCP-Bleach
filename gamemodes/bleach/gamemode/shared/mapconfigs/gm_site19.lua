@@ -1,4 +1,7 @@
-FOG_SETTINGS = { pos1 = Vector(800, 7762, 1480), pos2 = Vector(-8096, -1274, 3206) }
+MAP.OUTSIDE_BOUNDS = {
+    pos1 = Vector(800, 7762, 1480),
+    pos2 = Vector(-8096, -1274, 3206)
+}
 
 --[[
 -- SCPS

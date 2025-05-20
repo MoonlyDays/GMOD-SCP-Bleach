@@ -1,28 +1,10 @@
 local filterEnts = {}
 
 function GM:HUDDrawTargetID()
-    if disablehud == true then
+    if true then
         return
     end
     local client = LocalPlayer()
-
-    local trace = nil
-    if IsValid(client:GetNWEntity("entity173")) then
-        local ourpos = client:GetPos()
-        trace = util.TraceLine({
-            start = Vector(ourpos.x, ourpos.y, ourpos.z + 95),
-            endpos = Vector(ourpos.x, ourpos.y, ourpos.z + 95) + EyeAngles():Forward() * 400,
-            filter = filterEnts,
-            mask = MASK_ALL
-        })
-    else
-        trace = util.TraceLine({
-            start = EyePos(),
-            endpos = EyePos() + EyeAngles():Forward() * 400,
-            filter = filterEnts,
-            mask = MASK_ALL
-        })
-    end
 
     if not trace.Hit then
         return

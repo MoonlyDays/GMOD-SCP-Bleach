@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 ROLES = {}
 MAP = {}
 
@@ -8,17 +10,17 @@ function LoadMapConfig()
 end
 
 function LoadRoles()
-    local files, _ = file.Find(GM.FolderName .. "/gamemode/roles/*.lua", "LUA")
-    for _, v in pairs(files) do
-        local path = "../roles/" .. v
-        local name = string.sub(f, 1, -4)
-        AddCSLuaFile(path)
+    local files, _ = file.Find(GM.FolderName .. "/gamemode/shared/roles/*.lua", "LUA")
+    for _, f in pairs(files) do
+        local path = "roles/" .. f
+        local name = string.sub(f, 1, -5)
 
         ROLE = {}
         include(path)
-
+        AddCSLuaFile(path)
         ROLES[name] = ROLE;
         ROLE = nil
+        print("Loaded role:", name)
     end
 end
 

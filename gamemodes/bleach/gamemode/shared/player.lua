@@ -1,54 +1,20 @@
-local playerMeta = FindMetaTable("Player")
+AddCSLuaFile()
+DEFINE_BASECLASS("player_default")
 
-function playerMeta:SetupDataTables()
-    self.Player:NetworkVar("Int", 0, "Team")
-    self.Player:NetworkVar("Int", 1, "Role")
+local PLAYER = {}
+
+--
+-- Set up the network table accessors
+--
+function PLAYER:SetupDataTables()
+    self.Player:NetworkVar("String", "Role")
+    self.Player:NetworkVar("Float", "Stamina")
 end
 
-function mply:CLevelGlobal()
-    local biggest = 1
-    for k, wep in pairs(self:GetWeapons()) do
-        if IsValid(wep) then
-            if wep.clevel then
-                if wep.clevel > biggest then
-                    biggest = wep.clevel
-                end
-            end
-        end
-    end
-    return biggest
+function PLAYER:GetGlobalClearance()
 end
 
-function mply:CLevel()
-    local wep = self:GetActiveWeapon()
-    if IsValid(wep) then
-        if wep.clevel then
-            return wep.clevel
-        end
-    end
-    return 1
+function PLAYER:GetActiveClearance()
 end
 
-function mply:GetExp()
-    if not self.GetNEXP then
-        player_manager.RunClass(self, "SetupDataTables")
-    end
-    if self.GetNEXP and self.SetNEXP then
-        return self:GetNEXP()
-    else
-        ErrorNoHalt("Cannot get the exp, GetNEXP invalid")
-        return 0
-    end
-end
-
-function mply:GetLevel()
-    if not self.GetNLevel then
-        player_manager.RunClass(self, "SetupDataTables")
-    end
-    if self.GetNLevel and self.SetNLevel then
-        return self:GetNLevel()
-    else
-        ErrorNoHalt("Cannot get the exp, GetNLevel invalid")
-        return 0
-    end
-end
+player_manager.RegisterClass("player_breach", PLAYER, "player_default")

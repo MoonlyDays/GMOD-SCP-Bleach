@@ -1,6 +1,19 @@
 AddCSLuaFile()
 
 MIN_PLAYERS = 2
+MAX_STAMINA = 10
+
+STATS = {
+    CLASS_D_ESCAPED = 1,
+    STAFF_ESCAPED = 2,
+    SCP_ESCAPED = 3,
+    CLASS_D_CAPTURED = 4,
+    STAFF_ESCORTED = 5,
+    PLAYERS_DIED = 6,
+    SCP_106_CAPTURED = 7,
+    SCP_173_SNAPPED = 8,
+    SCP_049_CURED = 9
+}
 
 TEAMS = {
     SPECTATOR = 1,
@@ -13,7 +26,7 @@ TEAMS = {
     STAFF = 8
 }
 
-GAME_STATES = {
+ROUND_STATES = {
     WAITING_FOR_PLAYERS = 0,
     SETUP = 1,
     ACTIVE = 2,
@@ -21,6 +34,7 @@ GAME_STATES = {
 }
 
 SCP_173_MODEL = "models/breach173.mdl"
+SCP_1987_J_MODEL = "models/cktheamazingfrog/player/freddy/freddyvr.mdl"
 
 SIDE_DIRECTOR_MODEL = "models/player/breen.mdl"
 
