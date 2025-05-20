@@ -1,12 +1,17 @@
+function GM:PlayerSpawn(pl, transition)
+    BaseClass.PlayerSpawn(self, pl, transition)
+end
+
+
 -- Serverside file for all player related functions
 function CheckStart()
-    if MINPLAYERS == nil then
-        MINPLAYERS = 2
+    if MIN_PLAYERS == nil then
+        MIN_PLAYERS = 2
     end
-    if gamestarted == false and #GetActivePlayers() >= MINPLAYERS then
+    if gamestarted == false and #GetActivePlayers() >= MIN_PLAYERS then
         RoundRestart()
     end
-    if #GetActivePlayers() == MINPLAYERS then
+    if #GetActivePlayers() == MIN_PLAYERS then
         RoundRestart()
     end
     if gamestarted then
@@ -15,25 +20,19 @@ function CheckStart()
 end
 
 function GM:PlayerInitialSpawn(ply)
+
     ply:SetCanZoom(false)
     ply:SetNoDraw(true)
     ply.Active = false
     ply.freshspawn = true
     ply.isblinking = false
     ply.ActivePlayer = true
-    if timer.Exists("RoundTime") == true then
-        if timer.TimeLeft("RoundTime") ~= nil then
-            net.Start("UpdateTime")
-            net.WriteString(tostring(timer.TimeLeft("RoundTime")))
-            net.Send(ply)
-        end
-    end
 
-    player_manager.SetPlayerClass(ply, "class_breach")
-    player_manager.RunClass(ply, "SetupDataTables")
+    player_manager.SetPlayerClass(ply, "player_breach")
+
     ply:SetNEXP(tonumber(ply:GetPData("breach_exp", 0)))
     ply:SetNLevel(tonumber(ply:GetPData("breach_level", 0)))
-    ply:SetNGTeam(TEAM_SPEC)
+    ply:SetNGTeam(TEAM_SPECTATOR)
     CheckStart()
     if gamestarted then
         ply:SendLua('gamestarted = true')
@@ -104,7 +103,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 elseif victim:GTeam() == TEAM_CHAOS then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 5 points for killng a Chaos Insurgency member!")
                     attacker:AddFrags(5)
-                elseif victim:GTeam() == TEAM_CLASSD then
+                elseif victim:GTeam() == TEAM_CLASS_D then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng a Class D Personnel!")
                     attacker:AddFrags(2)
                 end
@@ -113,7 +112,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 if victim:GTeam() == TEAM_GUARD then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng a Guard!")
                     attacker:AddFrags(2)
-                elseif victim:GTeam() == TEAM_SCI then
+                elseif victim:GTeam() == TEAM_SCIENTIST then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng a Researcher!")
                     attacker:AddFrags(2)
                 elseif victim:GTeam() == TEAM_STAFF then
@@ -122,7 +121,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 elseif victim:GTeam() == TEAM_SCP then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 10 points for killng an SCP!")
                     attacker:AddFrags(10)
-                elseif victim:GTeam() == TEAM_CLASSD then
+                elseif victim:GTeam() == TEAM_CLASS_D then
                     attacker:PrintMessage(HUD_PRINTTALK, "Don't kill Class D Personnel, you can capture them to get bonus points!")
                     attacker:AddFrags(1)
                 end
@@ -130,12 +129,12 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 victim:PrintMessage(HUD_PRINTTALK, "You were killed by an SCP: " .. attacker:Nick())
                 attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng " .. victim:Nick())
                 attacker:AddFrags(2)
-            elseif attacker:GTeam() == TEAM_CLASSD then
+            elseif attacker:GTeam() == TEAM_CLASS_D then
                 victim:PrintMessage(HUD_PRINTTALK, "You were killed by a Class D: " .. attacker:Nick())
                 if victim:GTeam() == TEAM_GUARD then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 4 points for killng a Guard!")
                     attacker:AddFrags(4)
-                elseif victim:GTeam() == TEAM_SCI then
+                elseif victim:GTeam() == TEAM_SCIENTIST then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng a Researcher!")
                     attacker:AddFrags(2)
                 elseif victim:GTeam() == TEAM_STAFF then
@@ -148,7 +147,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killng a Chaos Insurgency member!")
                     attacker:AddFrags(2)
                 end
-            elseif attacker:GTeam() == TEAM_SCI then
+            elseif attacker:GTeam() == TEAM_SCIENTIST then
                 victim:PrintMessage(HUD_PRINTTALK, "You were killed by a Researcher: " .. attacker:Nick())
                 if victim:GTeam() == TEAM_SCP then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 10 points for killng an SCP!")
@@ -156,7 +155,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 elseif victim:GTeam() == TEAM_CHAOS then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 5 points for killng a Chaos Insurgency member!")
                     attacker:AddFrags(5)
-                elseif victim:GTeam() == TEAM_CLASSD then
+                elseif victim:GTeam() == TEAM_CLASS_D then
                     attacker:PrintMessage(HUD_PRINTTALK, "You've been awarded with 2 points for killing a Class D Personnel!")
                     attacker:AddFrags(2)
                 end
@@ -165,7 +164,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     end
 
     roundstats.deaths = roundstats.deaths + 1
-    victim:SetNGTeam(TEAM_SPEC)
+    victim:SetNGTeam(TEAM_SPECTATOR)
     if #victim:GetWeapons() > 0 then
         local pos = victim:GetPos()
         for k, v in pairs(victim:GetWeapons()) do
@@ -193,7 +192,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
 end
 
 function GM:PlayerDisconnected(ply)
-    if #player.GetAll() < MINPLAYERS then
+    if #player.GetAll() < MIN_PLAYERS then
         BroadcastLua('gamestarted = false')
         gamestarted = false
     end
@@ -237,8 +236,8 @@ function GM:PlayerCanHearPlayersVoice(listener, talker)
             return false
         end
     end
-    if talker:GTeam() == TEAM_SPEC then
-        if listener:GTeam() == TEAM_SPEC then
+    if talker:GTeam() == TEAM_SPECTATOR then
+        if listener:GTeam() == TEAM_SPECTATOR then
             return true
         else
             return false
@@ -273,8 +272,8 @@ function GM:PlayerCanSeePlayersChat(text, teamOnly, listener, talker)
         end
     end
 
-    if talker:GTeam() == TEAM_SPEC then
-        if listener:GTeam() == TEAM_SPEC then
+    if talker:GTeam() == TEAM_SPECTATOR then
+        if listener:GTeam() == TEAM_SPECTATOR then
             return true
         else
             return false
@@ -320,7 +319,7 @@ function GM:PlayerCanPickupWeapon(ply, wep)
         end
     end
 
-    if ply:GTeam() ~= TEAM_SPEC then
+    if ply:GTeam() ~= TEAM_SPECTATOR then
         if wep.teams then
             local canuse = false
             for k, v in pairs(wep.teams) do
@@ -348,11 +347,11 @@ function GM:PlayerCanPickupWeapon(ply, wep)
 end
 
 function GM:PlayerCanPickupItem(ply, item)
-    return not (ply:GTeam() == TEAM_SPEC)
+    return not (ply:GTeam() == TEAM_SPECTATOR)
 end
 
 function GM:AllowPlayerPickup(ply, ent)
-    return not (ply:GTeam() == TEAM_SPEC)
+    return not (ply:GTeam() == TEAM_SPECTATOR)
 end
 
 function CacheButtons()
@@ -415,7 +414,7 @@ function GM:PlayerUse(ply, ent)
     if not ply:Alive() then
         return false
     end
-    if ply:GTeam() == TEAM_SPEC then
+    if ply:GTeam() == TEAM_SPECTATOR then
         return false
     end
     if ply.lastuse == nil then
@@ -444,10 +443,10 @@ function BreachTick()
         MAP_THINK()
     end
     for k, v in pairs(player.GetAll()) do
-        if v.GTeam() == TEAM_SPEC then
+        if v.GTeam() == TEAM_SPECTATOR then
             local target = v:GetObserverTarget()
             if IsValid(target) and target:IsPlayer() then
-                if target:GTeam() == TEAM_SPEC then
+                if target:GTeam() == TEAM_SPECTATOR then
                     v:SpectatePlayerLeft()
                 end
             end
@@ -465,7 +464,7 @@ function BreachTick()
         if v.NextCough == nil then
             v.NextCough = 0
         end
-        if v:Alive() == true and v:GTeam() ~= TEAM_SPEC and v:GTeam() ~= TEAM_SCP then
+        if v:Alive() == true and v:GTeam() ~= TEAM_SPECTATOR and v:GTeam() ~= TEAM_SCP then
             if InPD(v) == true and v.nextDamageInPD < CurTime() then
                 v.nextDamageInPD = CurTime() + 2
                 v:SetHealth(v:Health() - 2)

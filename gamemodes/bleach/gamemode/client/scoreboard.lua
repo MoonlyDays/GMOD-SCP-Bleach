@@ -37,7 +37,7 @@ function ShowScoreBoard()
         color2 = color_white
     })
 
-    for k, v in pairs(ALLCLASSES) do
+    for k, v in pairs(ALL_CLASSES) do
         local color_to_use = v.color
         if v.sc_color ~= nil then
             color_to_use = v.sc_color
@@ -53,7 +53,7 @@ function ShowScoreBoard()
     for plist_k, plist in pairs(playerlist) do
         if plist.skip == nil or plist.skip == false then
             local whole_list = {}
-            for roles_i, role in ipairs(ALLCLASSES[plist.name].roles) do
+            for roles_i, role in ipairs(ALL_CLASSES[plist.name].roles) do
                 for allpl_k, pl in pairs(player.GetAll()) do
                     if pl.GetNClass ~= nil then
                         if pl:Alive() and pl:GetNClass() == role.name then
@@ -76,11 +76,11 @@ function ShowScoreBoard()
     local to_remove = {}
     for k, pl1 in pairs(playerlist) do
         for k2, pl in pairs(pl1.list) do
-            if pl:GTeam() ~= TEAM_SCP and pl:GTeam() ~= TEAM_SPEC then
+            if pl:GTeam() ~= TEAM_SCP and pl:GTeam() ~= TEAM_SPECTATOR then
                 local frole = FindRole(pl:GetNClass())
                 if istable(frole) then
                     if isstring(frole.disguised_sorting) then
-                        if ALLCLASSES[frole.disguised_sorting] ~= nil then
+                        if ALL_CLASSES[frole.disguised_sorting] ~= nil then
                             for k3, pl2 in pairs(playerlist) do
                                 if pl.sb_disg_found == false and pl2.name == frole.disguised_sorting then
                                     table.ForceInsert(pl2.list, pl)
@@ -106,7 +106,7 @@ function ShowScoreBoard()
     table.ForceInsert(playerlist, {
         name = "Spectators",
         skip = true,
-        list = gteams.GetPlayers(TEAM_SPEC),
+        list = gteams.GetPlayers(TEAM_SPECTATOR),
         color = color_white,
         color2 = color_black
     })
@@ -295,7 +295,7 @@ function ShowScoreBoard()
                         tcolor2 = color_black
                     end
                     txt = GetLangRole(v:GetNClass())
-                    for k2, role in pairs(ALLCLASSES["support"]["roles"]) do
+                    for k2, role in pairs(ALL_CLASSES["support"]["roles"]) do
                         if v:GetNClass() == role.name then
                             txt = "Mobile Task Force"
                         end
@@ -304,7 +304,7 @@ function ShowScoreBoard()
                     local frole = FindRole(v:GetNClass())
                     if istable(frole) then
                         if v:GTeam() == TEAM_CHAOS then
-                            if LocalPlayer():GTeam() == TEAM_CHAOS or LocalPlayer():GTeam() == TEAM_CLASSD then
+                            if LocalPlayer():GTeam() == TEAM_CHAOS or LocalPlayer():GTeam() == TEAM_CLASS_D then
                                 tcolor = Color(29, 81, 56)
                                 txt = frole.disguised_name .. " (Spy)"
                             else

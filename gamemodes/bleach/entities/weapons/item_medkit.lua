@@ -23,7 +23,7 @@ SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 SWEP.betterone = "item_ultramedkit"
 SWEP.droppable = true
-SWEP.teams = { TEAM_GUARD, TEAM_CLASSD, TEAM_SCI, TEAM_CHAOS, TEAM_STAFF }
+SWEP.teams = { TEAM_GUARD, TEAM_CLASS_D, TEAM_SCIENTIST, TEAM_CHAOS, TEAM_STAFF }
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Ammo = "none"
@@ -75,7 +75,7 @@ function SWEP:SecondaryAttack()
             if ent:GTeam() == TEAM_SCP then
                 return
             end
-            if ent:GTeam() == TEAM_SPEC then
+            if ent:GTeam() == TEAM_SPECTATOR then
                 return
             end
             if ent:GetPos():Distance(self.Owner:GetPos()) < 95 then

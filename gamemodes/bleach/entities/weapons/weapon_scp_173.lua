@@ -66,7 +66,7 @@ function SWEP:Think()
     end
     local watching = 0
     for k, v in pairs(player.GetAll()) do
-        if IsValid(v) and v:GTeam() ~= TEAM_SPEC and v:Alive() and v ~= self.Owner and v.canblink then
+        if IsValid(v) and v:GTeam() ~= TEAM_SPECTATOR and v:Alive() and v ~= self.Owner and v.canblink then
             local tr_eyes = util.TraceLine({
                 start = v:EyePos() + v:EyeAngles():Forward() * 15,
                 endpos = self.Owner:EyePos(),
@@ -130,7 +130,7 @@ function SWEP:PrimaryAttack()
                 if ent:GTeam() == TEAM_SCP then
                     return
                 end
-                if ent:GTeam() == TEAM_SPEC then
+                if ent:GTeam() == TEAM_SPECTATOR then
                     return
                 end
                 ent:Kill()
@@ -167,7 +167,7 @@ function SWEP:SecondaryAttack()
     local foundplayers = {}
     for k, v in pairs(findents) do
         if v:IsPlayer() then
-            if not (v:GTeam() == TEAM_SCP or v:GTeam() == TEAM_SPEC) then
+            if not (v:GTeam() == TEAM_SCP or v:GTeam() == TEAM_SPECTATOR) then
                 if v.usedeyedrops == false then
                     table.ForceInsert(foundplayers, v)
                 end

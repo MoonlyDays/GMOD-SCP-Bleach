@@ -21,7 +21,7 @@ SWEP.HoldType = "normal"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
 SWEP.droppable = true
-SWEP.teams = { TEAM_GUARD, TEAM_CLASSD, TEAM_SCI, TEAM_CHAOS, TEAM_STAFF }
+SWEP.teams = { TEAM_GUARD, TEAM_CLASS_D, TEAM_SCIENTIST, TEAM_CHAOS, TEAM_STAFF }
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Ammo = "none"
@@ -82,7 +82,7 @@ function SWEP:Think()
                 if v == lp then
                     continue
                 end
-                if v:GTeam() ~= TEAM_SPEC then
+                if v:GTeam() ~= TEAM_SPECTATOR then
                     if v:GTeam() == TEAM_GUARD then
                         table.ForceInsert(self.warnings, "MTF Guard detected")
                         continue
@@ -94,10 +94,10 @@ function SWEP:Think()
                             table.ForceInsert(self.warnings, "MTF Guard detected")
                             continue
                         end
-                    elseif v:GTeam() == TEAM_SCI then
+                    elseif v:GTeam() == TEAM_SCIENTIST then
                         table.ForceInsert(self.warnings, "Researcher detected")
                         continue
-                    elseif v:GTeam() == TEAM_CLASSD then
+                    elseif v:GTeam() == TEAM_CLASS_D then
                         table.ForceInsert(self.warnings, "Class D detected")
                         continue
                     elseif v:GTeam() == TEAM_SCP then

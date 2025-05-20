@@ -80,7 +80,7 @@ function SWEP:Think()
 
         for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 130)) do
             if v:IsPlayer() then
-                if v:GTeam() ~= TEAM_SPEC and v:Team() ~= TEAM_SPEC and v:GTeam() ~= TEAM_SCP and v:Team() ~= TEAM_SCP and v:Alive() then
+                if v:GTeam() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SPECTATOR and v:GTeam() ~= TEAM_SCP and v:Team() ~= TEAM_SCP and v:Alive() then
                     v:Ignite(6, 270)
                     if self.Owner.nextexp == nil then
                         self.Owner.nextexp = 0

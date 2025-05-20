@@ -1,4 +1,5 @@
 local mply = FindMetaTable("Player")
+
 function mply:FindClosest(tab, num)
 	local allradiuses = {}
 	for k, v in pairs(tab) do
@@ -101,16 +102,14 @@ function mply:SetSpectator()
 	self:Spectate(6)
 	self:StripWeapons()
 	self:RemoveAllAmmo()
-	self:SetTeam(TEAM_SPEC)
+	self:SetTeam(TEAM_SPECTATOR)
 	self:SetNoDraw(true)
 	if self.SetNClass then self:SetNClass(ROLES.ROLE_SPEC) end
 	self.Active = true
-	print("adding " .. self:Nick() .. " to spectators")
 	self.canblink = false
 	self:SetNoTarget(true)
 	self.BaseStats = nil
 	self.UsingArmor = nil
-	--self:Spectate(OBS_MODE_IN_EYE)
 	self:UnIgnitePlayer()
 end
 
@@ -461,7 +460,7 @@ function mply:SetSecurityI1()
 	local thebestone = nil
 	local usechaos = false
 	if math.random(1, 6) == 6 then usechaos = true end
-	for k, v in pairs(ALLCLASSES["security"]["roles"]) do
+	for k, v in pairs(ALL_CLASSES["security"]["roles"]) do
 		if v.importancelevel == 1 then
 			local skip = false
 			if usechaos == true then
@@ -492,7 +491,7 @@ function mply:SetSecurityI1()
 		end
 	end
 
-	if thebestone == nil then thebestone = ALLCLASSES["security"]["roles"][1] end
+	if thebestone == nil then thebestone = ALL_CLASSES["security"]["roles"][1] end
 	self:SetupNormal()
 	self:ApplyRoleStats(thebestone)
 end
@@ -511,7 +510,7 @@ end
 
 function mply:SetRoleBestFrom(role)
 	local thebestone = nil
-	for k, v in pairs(ALLCLASSES[role]["roles"]) do
+	for k, v in pairs(ALL_CLASSES[role]["roles"]) do
 		local can = true
 		if v.customcheck ~= nil then if v.customcheck(self) == false then can = false end end
 		local using = 0
@@ -531,7 +530,7 @@ function mply:SetRoleBestFrom(role)
 		end
 	end
 
-	if thebestone == nil then thebestone = ALLCLASSES[role]["roles"][1] end
+	if thebestone == nil then thebestone = ALL_CLASSES[role]["roles"][1] end
 	self:SetupNormal()
 	self:ApplyRoleStats(thebestone)
 end
@@ -541,7 +540,7 @@ function mply:IsActivePlayer()
 end
 
 hook.Add("KeyPress", "keypress_spectating", function(ply, key)
-	if ply:Team() ~= TEAM_SPEC then return end
+	if ply:Team() ~= TEAM_SPECTATOR then return end
 	if key == IN_ATTACK then
 		ply:SpectatePlayerLeft()
 	elseif key == IN_ATTACK2 then
@@ -581,7 +580,7 @@ end
 
 function mply:ChangeSpecMode()
 	if not self:Alive() then return end
-	if not (self:Team() == TEAM_SPEC) then return end
+	if not (self:Team() == TEAM_SPECTATOR) then return end
 	self:SetNoDraw(true)
 	local m = self:GetObserverMode()
 	local allply = #GetAlivePlayers()
@@ -716,7 +715,7 @@ end
 
 function mply:SetRoleName(name)
 	local rl = nil
-	for k, v in pairs(ALLCLASSES) do
+	for k, v in pairs(ALL_CLASSES) do
 		for _, role in pairs(v.roles) do
 			if role.name == name then rl = role end
 		end

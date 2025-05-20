@@ -1,80 +1,27 @@
--- Shared file
 GM.Name = "Bleach"
 GM.Author = "Moonly Days"
 GM.Email = ""
 GM.Website = ""
-function GM:Initialize()
-    self.BaseClass.Initialize(self)
+
+include("shared/_classes.lua")
+include("shared/constants.lua")
+include("client/helpers.lua")
+include("client/language.lua")
+include("client/loader.lua")
+include("client/player.lua")
+
+function GM:CreateTeams()
+    team.SetUp(0, "Not Set", Color(255, 255, 255))
+    team.SetUp(TEAMS.SPECTATOR, "Spectators", Color(141, 186, 160))
+    team.SetUp(TEAMS.SCP, "SCP Objects", Color(112, 15, 31))
+    team.SetUp(TEAMS.SECURITY, "Site Security", Color(0, 100, 255))
+    team.SetUp(TEAMS.MTF, "Mobile Task Forces", Color(20, 100, 255))
+    team.SetUp(TEAMS.CLASS_D, "Class D Personnel", Color(255, 130, 0))
+    team.SetUp(TEAMS.SCIENTIST, "Research Staff", Color(66, 188, 244))
+    team.SetUp(TEAMS.STAFF, "Site Staff", Color(141, 58, 196))
+    team.SetUp(TEAMS.CHAOS, "Chaos Insurgency", Color(0, 100, 255))
 end
 
-TEAM_SPEC = 1
-TEAM_SCP = 2
-TEAM_GUARD = 3
-TEAM_CLASSD = 4
-TEAM_SCI = 5
-TEAM_CHAOS = 6
-TEAM_STAFF = 7
-MINPLAYERS = 2
-team.SetUp(1, "Default", Color(255, 255, 0))
-function GetLangRole(rl)
-    if clang == nil then
-        return rl
-    end
-    local rolef = nil
-    for k, v in pairs(ROLES) do
-        if rl == v then
-            rolef = k
-        end
-    end
-
-    if rolef ~= nil then
-        return clang.ROLES[rolef]
-    else
-        return rl
-    end
-end
-
-ROLES = {}
--- SCPS
-ROLES.ROLE_SCP173 = "SCP-173"
-ROLES.ROLE_SCP106 = "SCP-106"
-ROLES.ROLE_SCP049 = "SCP-049"
-ROLES.ROLE_SCP457 = "SCP-457"
-ROLES.ROLE_SCP966 = "SCP-966"
-ROLES.ROLE_SCP0492 = "SCP-049-2"
-ROLES.ROLE_SCP0082 = "SCP-008-2"
--- Research Staff
-ROLES.ROLE_RES = "Researcher"
-ROLES.ROLE_RES_SPY = "CI Spy"
-ROLES.ROLE_HRES = "Head Researcher"
--- Misc Staff
-ROLES.ROLE_JANITOR = "Janitor"
-ROLES.ROLE_ENG = "Engineer"
-ROLES.ROLE_MEDIC = "Medic"
--- Class D Personnel
-ROLES.ROLE_CLASSD = "Class D Personnel"
-ROLES.ROLE_VETERAN = "Class D Veteran"
--- Security
-ROLES.ROLE_SEC_GUARD = "Security Guard"
-ROLES.ROLE_SEC_OFFICER = "Security Officer"
-ROLES.ROLE_SEC_MEDIC = "Security Medic"
-ROLES.ROLE_SEC_CHIEF = "Security Chief"
-ROLES.ROLE_SD = "Site Director"
--- Support
-ROLES.ROLE_CHAOS = "CI Soldier"
-ROLES.ROLE_MTF_OFFICER = "MTF Officer"
-ROLES.ROLE_MTF_MEDIC = "MTF Medic"
-ROLES.ROLE_MTF_SCU = "MTF SCU"
-ROLES.ROLE_MTF_SNIPER = "MTF Sniper"
-ROLES.ROLE_CHAOSCOM = "CI Commander"
-ROLES.ROLE_MTF_LIE = "MTF Lieutenant"
-ROLES.ROLE_MTF_COM = "MTF Commander"
--- CI Spies
-ROLES.ROLE_CI_RES = "CI Spy Researcher"
-ROLES.ROLE_CI_GUARD = "CI Spy Guard"
-ROLES.ROLE_CI_SOLD = "CI Spy Soldier"
--- Other
-ROLES.ROLE_SPEC = "Spectator"
 if not ConVarExists("br_time_preparing") then
     CreateConVar("br_time_preparing", "45", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_NOTIFY }, "Set preparing time")
 end
@@ -141,7 +88,7 @@ function GetNTFEnterTime()
 end
 
 function FindRole(role)
-    for k, v in pairs(ALLCLASSES) do
+    for k, v in pairs(ALL_CLASSES) do
         for k2, v2 in pairs(v.roles) do
             if v2.name == role then
                 return v2
@@ -152,10 +99,10 @@ function FindRole(role)
 end
 
 function InPD(ply)
-    if POCKETDIMENSION == nil then
+    if PD_BBOX == nil then
         return false
     end
-    for k, v in pairs(POCKETDIMENSION) do
+    for k, v in pairs(PD_BBOX) do
         local pos1 = v.pos1
         local pos2 = v.pos2
         OrderVectors(pos1, pos2)
@@ -230,11 +177,11 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
         local att_team = at:GTeam()
         local vic_team = ply:GTeam()
         if postround == false then
-            if (att_team == TEAM_GUARD or att_team == TEAM_SCI or att_team == TEAM_STAFF) and (vic_team == TEAM_GUARD or vic_team == TEAM_SCI or vic_team == TEAM_STAFF) then
+            if (att_team == TEAM_GUARD or att_team == TEAM_SCIENTIST or att_team == TEAM_STAFF) and (vic_team == TEAM_GUARD or vic_team == TEAM_SCIENTIST or vic_team == TEAM_STAFF) then
                 return true
-            elseif (att_team == TEAM_CLASSD or att_team == TEAM_CHAOS) and (vic_team == TEAM_CLASSD or vic_team == TEAM_CHAOS) then
+            elseif (att_team == TEAM_CLASS_D or att_team == TEAM_CHAOS) and (vic_team == TEAM_CLASS_D or vic_team == TEAM_CHAOS) then
                 return true
-            elseif att_team == TEAM_SCP and vic_team == TEAM_CLASSD then
+            elseif att_team == TEAM_SCP and vic_team == TEAM_CLASS_D then
                 return true
             end
 

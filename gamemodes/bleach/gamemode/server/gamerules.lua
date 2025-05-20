@@ -1,0 +1,1 @@
+currentGameState = GAME_STATES.WAITING_FOR_PLAYERS;

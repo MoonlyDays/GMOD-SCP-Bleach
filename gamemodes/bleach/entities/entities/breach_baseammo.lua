@@ -20,7 +20,7 @@ function ENT:Initialize()
 end
 
 function ENT:Use(activator, caller)
-	if activator:GTeam() ~= TEAM_SPEC and activator:GTeam() ~= TEAM_SCP then
+	if activator:GTeam() ~= TEAM_SPECTATOR and activator:GTeam() ~= TEAM_SCP then
 		local gotawep = false
 		for k, v in pairs(activator:GetWeapons()) do
 			if v.Primary ~= nil then if v.Primary.Ammo == self.AmmoType then gotawep = true end end

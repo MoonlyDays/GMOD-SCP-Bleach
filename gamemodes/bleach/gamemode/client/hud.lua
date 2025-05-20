@@ -3,15 +3,18 @@ local hide = {
     CHudBattery = true,
     CHudAmmo = true,
     CHudSecondaryAmmo = true,
-    --CHudWeaponSelection = true,
     CHudDeathNotice = true
 }
 
---CHudWeapon = true
 function GM:DrawDeathNotice(x, y)
 end
 
-hook.Add("HUDShouldDraw", "HideHUD", function(name) if hide[name] then return false end end)
+hook.Add("HUDShouldDraw", "HideHUD", function(name)
+    if hide[name] then
+        return false
+    end
+end)
+
 endmessages = {
     {
         main = clang.lang_end1,
@@ -59,7 +62,7 @@ function DrawInfo(pos, txt, clr)
     pos = pos:ToScreen()
     draw.TextShadow({
         text = txt,
-        pos = {pos.x, pos.y},
+        pos = { pos.x, pos.y },
         font = "HealthAmmo",
         color = clr,
         xalign = TEXT_ALIGN_CENTER,
@@ -74,16 +77,30 @@ end
 
 hook.Add("Tick", "966check", function()
     local hide = true
-    if LocalPlayer().GTeam == nil then return end
-    if LocalPlayer():GTeam() == TEAM_SCP then hide = false end
+    if LocalPlayer().GTeam == nil then
+        return
+    end
+    if LocalPlayer():GTeam() == TEAM_SCP then
+        hide = false
+    end
     for k, v in pairs(LocalPlayer():GetWeapons()) do
-        if istable(v.NVG) then if v.NVGenabled == true then hide = false end end
+        if istable(v.NVG) then
+            if v.NVGenabled == true then
+                hide = false
+            end
+        end
     end
 
     for k, v in pairs(player.GetAll()) do
-        if not v.GetNClass then player_manager.RunClass(v, "SetupDataTables") end
-        if v.GetNClass == nil then return end
-        if v:GetNClass() == ROLES.ROLE_SCP966 then v:SetNoDraw(hide) end
+        if not v.GetNClass then
+            player_manager.RunClass(v, "SetupDataTables")
+        end
+        if v.GetNClass == nil then
+            return
+        end
+        if v:GetNClass() == ROLES.ROLE_SCP966 then
+            v:SetNoDraw(hide)
+        end
     end
 end)
 
@@ -99,10 +116,16 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         end
     end
 
-    if disablehud == true then return end
+    if disablehud == true then
+        return
+    end
     for k, v in pairs(player.GetAll()) do
-        if not v.GetNClass then player_manager.RunClass(v, "SetupDataTables") end
-        if v.GetNClass == nil then return end
+        if not v.GetNClass then
+            player_manager.RunClass(v, "SetupDataTables")
+        end
+        if v.GetNClass == nil then
+            return
+        end
         if v:GetNClass() == ROLES.ROLE_SCP457 then
             local dlight = DynamicLight(v:EntIndex())
             if dlight then
@@ -118,10 +141,12 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         end
     end
 
-    if shoulddrawinfo == true and LocalPlayer():Alive() and LocalPlayer():GTeam() ~= TEAM_SPEC then
+    if shoulddrawinfo == true and LocalPlayer():Alive() and LocalPlayer():GTeam() ~= TEAM_SPECTATOR then
         local getrl = LocalPlayer():GetNClass()
         for k, v in pairs(ROLES) do
-            if v == getrl then getrl = k end
+            if v == getrl then
+                getrl = k
+            end
         end
 
         for k, v in pairs(clang.starttexts) do
@@ -133,11 +158,13 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
 
         local align = 32
         local tcolor = gteams.GetColor(LocalPlayer():GTeam())
-        if LocalPlayer():GTeam() == TEAM_CHAOS then tcolor = Color(29, 81, 56) end
+        if LocalPlayer():GTeam() == TEAM_CHAOS then
+            tcolor = Color(29, 81, 56)
+        end
         if getrl[1] ~= nil then
             draw.TextShadow({
                 text = getrl[1],
-                pos = {ScrW() / 2, ScrH() / 15},
+                pos = { ScrW() / 2, ScrH() / 15 },
                 font = "ImpactBig",
                 color = tcolor,
                 xalign = TEXT_ALIGN_CENTER,
@@ -148,7 +175,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         for i, txt in ipairs(getrl[2]) do
             draw.TextShadow({
                 text = txt,
-                pos = {ScrW() / 2, ScrH() / 15 + 10 + (align * i)},
+                pos = { ScrW() / 2, ScrH() / 15 + 10 + (align * i) },
                 font = "ImpactSmall",
                 color = Color(255, 255, 255),
                 xalign = TEXT_ALIGN_CENTER,
@@ -159,7 +186,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         if roundtype ~= nil then
             draw.TextShadow({
                 text = string.Replace(clang.roundtype, "{type}", roundtype),
-                pos = {ScrW() / 2, ScrH() - 25},
+                pos = { ScrW() / 2, ScrH() - 25 },
                 font = "ImpactSmall",
                 color = Color(255, 130, 0),
                 xalign = TEXT_ALIGN_CENTER,
@@ -175,7 +202,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
             shoulddrawinfo = false
             draw.TextShadow({
                 text = clang.lang_round_end_main,
-                pos = {15, 15},
+                pos = { 15, 15 },
                 font = "ImpactBig",
                 color = Color(0, 255, 0),
                 xalign = TEXT_ALIGN_LEFT,
@@ -184,7 +211,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
 
             draw.TextShadow({
                 text = ndtext,
-                pos = {15, 60},
+                pos = { 15, 60 },
                 font = "ImpactSmall",
                 color = Color(255, 255, 255),
                 xalign = TEXT_ALIGN_LEFT,
@@ -194,7 +221,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
             for i, txt in ipairs(endinformation) do
                 draw.TextShadow({
                     text = txt,
-                    pos = {15, 95 + (35 * i)},
+                    pos = { 15, 95 + (35 * i) },
                     font = "ImpactSmall",
                     color = color_white,
                     xalign = TEXT_ALIGN_LEFT,
@@ -206,12 +233,14 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         end
     else
         if isnumber(shoulddrawescape) then
-            if CurTime() > lastescapegot then shoulddrawescape = nil end
+            if CurTime() > lastescapegot then
+                shoulddrawescape = nil
+            end
             if clang.escapemessages[shoulddrawescape] then
                 local tab = clang.escapemessages[shoulddrawescape]
                 draw.TextShadow({
                     text = tab.main,
-                    pos = {ScrW() / 2, ScrH() / 15},
+                    pos = { ScrW() / 2, ScrH() / 15 },
                     font = "ImpactBig",
                     color = tab.clr,
                     xalign = TEXT_ALIGN_CENTER,
@@ -220,7 +249,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
 
                 draw.TextShadow({
                     text = string.Replace(tab.txt, "{t}", string.ToMinutesSecondsMilliseconds(esctime)),
-                    pos = {ScrW() / 2, ScrH() / 15 + 45},
+                    pos = { ScrW() / 2, ScrH() / 15 + 45 },
                     font = "ImpactSmall",
                     color = Color(255, 255, 255),
                     xalign = TEXT_ALIGN_CENTER,
@@ -229,7 +258,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
 
                 draw.TextShadow({
                     text = tab.txt2,
-                    pos = {ScrW() / 2, ScrH() / 15 + 75},
+                    pos = { ScrW() / 2, ScrH() / 15 + 75 },
                     font = "ImpactSmall",
                     color = Color(255, 255, 255),
                     xalign = TEXT_ALIGN_CENTER,
@@ -240,8 +269,10 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     end
 
     local ply = LocalPlayer()
-    if ply:Alive() == false then return end
-    if ply:GTeam() == TEAM_SPEC then
+    if ply:Alive() == false then
+        return
+    end
+    if ply:GTeam() == TEAM_SPECTATOR then
         local ent = ply:GetObserverTarget()
         if IsValid(ent) then
             if ent:IsPlayer() then
@@ -252,7 +283,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
                 draw.RoundedBox(0, sx, sy, sw, sh, Color(50, 50, 50, 255))
                 draw.TextShadow({
                     text = string.sub(ent:Nick(), 1, 17),
-                    pos = {sx + sw / 2, 15},
+                    pos = { sx + sw / 2, 15 },
                     font = "HealthAmmo",
                     color = Color(255, 255, 255),
                     xalign = TEXT_ALIGN_CENTER,
@@ -273,11 +304,13 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     x = 10
     y = ScrH() - height - 10
     local hl = math.Clamp(LocalPlayer():Health(), 1, LocalPlayer():GetMaxHealth()) / LocalPlayer():GetMaxHealth()
-    if hl < 0.06 then hl = 0.06 end
+    if hl < 0.06 then
+        hl = 0.06
+    end
     local name = "None"
     if not ply.GetNClass and ply.GetClassID then
         player_manager.RunClass(ply, "SetupDataTables")
-    elseif LocalPlayer():GTeam() ~= TEAM_SPEC then
+    elseif LocalPlayer():GTeam() ~= TEAM_SPECTATOR then
         name = GetLangRole(ply:GetNClass())
     else
         local obs = ply:GetObserverTarget()
@@ -294,12 +327,14 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     end
 
     local color = gteams.GetColor(ply:GTeam()) or Color(255, 255, 255)
-    if ply:GTeam() == TEAM_CHAOS then color = Color(29, 81, 56) end
+    if ply:GTeam() == TEAM_CHAOS then
+        color = Color(29, 81, 56)
+    end
     draw.RoundedBox(0, x, y, width, height, Color(0, 0, 10, 200))
     draw.RoundedBox(0, x, y, role_width - 70, 30, color)
     draw.TextShadow({
         text = name,
-        pos = {role_width / 2 - 30, y + 12.5},
+        pos = { role_width / 2 - 30, y + 12.5 },
         font = "ClassName",
         color = Color(255, 255, 255),
         xalign = TEXT_ALIGN_CENTER,
@@ -309,7 +344,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     local tclr = Color(255, 255, 255)
     draw.TextShadow({
         text = tostring(string.ToMinutesSeconds(cltime)),
-        pos = {width - 68, y + 4},
+        pos = { width - 68, y + 4 },
         font = "TimeLeft",
         color = tclr,
         xalign = TEXT_ALIGN_TOP,
@@ -321,7 +356,7 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     draw.RoundedBox(0, 25, y + 40, (width - 30) * hl, 27, Color(255, 0, 0, 255))
     draw.TextShadow({
         text = ply:Health(),
-        pos = {width - 20, y + 40},
+        pos = { width - 20, y + 40 },
         font = "HealthAmmo",
         color = Color(255, 255, 255),
         xalign = TEXT_ALIGN_RIGHT,
@@ -333,7 +368,9 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
     if ply:GetActiveWeapon() ~= nil and #ply:GetWeapons() > 0 then
         wep = ply:GetActiveWeapon()
         if wep then
-            if wep.Clip1 == nil then return end
+            if wep.Clip1 == nil then
+                return
+            end
             if wep:Clip1() > -1 then
                 ammo1 = wep:Clip1()
                 ammo2 = ply:GetAmmoCount(wep:GetPrimaryAmmoType())
@@ -342,13 +379,15 @@ hook.Add("HUDPaint", "Breach_DrawHUD", function()
         end
     end
 
-    if not ammotext then return end
+    if not ammotext then
+        return
+    end
     local am = math.Clamp(wep:Clip1(), 0, wep:GetMaxClip1()) / wep:GetMaxClip1()
     draw.RoundedBox(0, 25, y + 75, width - 30, 27, Color(20, 20, 5, 222))
     draw.RoundedBox(0, 25, y + 75, (width - 30) * am, 27, Color(205, 155, 0, 255))
     draw.TextShadow({
         text = ammotext,
-        pos = {width - 20, y + 75},
+        pos = { width - 20, y + 75 },
         font = "HealthAmmo",
         color = Color(255, 255, 255),
         xalign = TEXT_ALIGN_RIGHT,

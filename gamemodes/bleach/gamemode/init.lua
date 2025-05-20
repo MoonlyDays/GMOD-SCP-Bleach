@@ -1,99 +1,15 @@
--- Initialization file
-AddCSLuaFile("fonts.lua")
-AddCSLuaFile("class_breach.lua")
-AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("helpers.lua")
-AddCSLuaFile("gteams.lua")
-AddCSLuaFile("cl_scoreboard.lua")
-AddCSLuaFile("cl_mtfmenu.lua")
-AddCSLuaFile("sh_player.lua")
-mapfile = "mapconfigs/" .. game.GetMap() .. ".lua"
-AddCSLuaFile(mapfile)
-ALL_LANGUAGES = {}
-clang = nil
-local files, dirs = file.Find(GM.FolderName .. "/gamemode/languages/*.lua", "LUA")
-for k, v in pairs(files) do
-    local path = "languages/" .. v
-    if string.Right(v, 3) == "lua" then
-        AddCSLuaFile(path)
-        include(path)
-        print("Language found: " .. path)
-    end
-end
-
-AddCSLuaFile("rounds.lua")
-AddCSLuaFile("cl_sounds.lua")
-AddCSLuaFile("cl_targetid.lua")
-AddCSLuaFile("classes.lua")
-AddCSLuaFile("cl_classmenu.lua")
-AddCSLuaFile("cl_headbob.lua")
-AddCSLuaFile("cl_init.lua")
-include("server.lua")
-include("rounds.lua")
-include("class_breach.lua")
 include("shared.lua")
-include("helpers.lua")
-include("classes.lua")
-include(mapfile)
-include("sh_player.lua")
-include("sv_player.lua")
-include("player.lua")
-include("sv_round.lua")
-include("gteams.lua")
-include("commands_override.lua")
-resource.AddFile("sound/radio/chatter1.ogg")
-resource.AddFile("sound/radio/chatter2.ogg")
-resource.AddFile("sound/radio/chatter3.ogg")
-resource.AddFile("sound/radio/chatter4.ogg")
-resource.AddFile("sound/radio/franklin1.ogg")
-resource.AddFile("sound/radio/franklin2.ogg")
-resource.AddFile("sound/radio/franklin3.ogg")
-resource.AddFile("sound/radio/franklin4.ogg")
-resource.AddFile("sound/radio/radioalarm.ogg")
-resource.AddFile("sound/radio/radioalarm2.ogg")
-resource.AddFile("sound/radio/scpradio0.ogg")
-resource.AddFile("sound/radio/scpradio1.ogg")
-resource.AddFile("sound/radio/scpradio2.ogg")
-resource.AddFile("sound/radio/scpradio3.ogg")
-resource.AddFile("sound/radio/scpradio4.ogg")
-resource.AddFile("sound/radio/scpradio5.ogg")
-resource.AddFile("sound/radio/scpradio6.ogg")
-resource.AddFile("sound/radio/scpradio7.ogg")
-resource.AddFile("sound/radio/scpradio8.ogg")
-resource.AddFile("sound/radio/ohgod.ogg")
-SCPS = {
-    {
-        name = "SCP 173",
-        func = function(pl)
-            pl:SetSCP173()
-        end
-    },
-    {
-        name = "SCP 049",
-        func = function(pl)
-            pl:SetSCP049()
-        end
-    },
-    {
-        name = "SCP 106",
-        func = function(pl)
-            pl:SetSCP106()
-        end
-    },
-    {
-        name = "SCP 457",
-        func = function(pl)
-            pl:SetSCP457()
-        end
-    },
-    {
-        name = "SCP 966",
-        func = function(pl)
-            pl:SetSCP966()
-        end
-    }
-}
+
+AddCSLuaFile("client/class_menu.lua")
+AddCSLuaFile("client/fonts.lua")
+AddCSLuaFile("client/head_bob.lua")
+AddCSLuaFile("client/hud.lua")
+AddCSLuaFile("client/language.lua")
+AddCSLuaFile("client/mtf_menu.lua")
+AddCSLuaFile("client/scoreboard.lua")
+AddCSLuaFile("client/sounds.lua")
+AddCSLuaFile("client/target_id.lua")
+
 
 -- Variables
 gamestarted = false
@@ -103,40 +19,7 @@ nextgateaopen = 0
 roundcount = 0
 
 function GM:PlayerSpray(sprayer)
-    return InPD(sprayer) or sprayer:GetGTeam() == TEAM_SPEC
-end
-
-function GetActivePlayers()
-    local tab = {}
-    for k, v in pairs(player.GetAll()) do
-        if v.ActivePlayer == nil then
-            v.ActivePlayer = true
-        end
-        if v.ActivePlayer == true then
-            table.ForceInsert(tab, v)
-        end
-    end
-    return tab
-end
-
-function GetNotActivePlayers()
-    local tab = {}
-    for k, v in pairs(player.GetAll()) do
-        if v.ActivePlayer == nil then
-            v.ActivePlayer = true
-        end
-        if v.ActivePlayer == false then
-            table.ForceInsert(tab, v)
-        end
-    end
-    return tab
-end
-
-function GM:ShutDown()
-    for k, v in pairs(player.GetAll()) do
-        v:SaveExp()
-        v:SaveLevel()
-    end
+    return InPD(sprayer) or sprayer:GetGTeam() == TEAM_SPECTATOR
 end
 
 function WakeEntity(ent)
@@ -262,9 +145,9 @@ function GetPocketPos()
 end
 
 function SpawnAllItems()
-    if #SPAWN_FIREPROOFARMOR > 3 then
-        local num_of_fpa = math.Round(#SPAWN_FIREPROOFARMOR * 0.5)
-        local fpa = table.Copy(SPAWN_FIREPROOFARMOR)
+    if #SPAWN_FIREPROOF_ARMOR > 3 then
+        local num_of_fpa = math.Round(#SPAWN_FIREPROOF_ARMOR * 0.5)
+        local fpa = table.Copy(SPAWN_FIREPROOF_ARMOR)
         for i = 1, num_of_fpa do
             table.RemoveByValue(fpa, table.Random(fpa))
         end
@@ -431,8 +314,8 @@ function SpawnAllItems()
         end
     end
 
-    local resps_items = table.Copy(SPAWN_MISCITEMS)
-    local resps_melee = table.Copy(SPAWN_MELEEWEPS)
+    local resps_items = table.Copy(SPAWN_MISC_ITEMS)
+    local resps_melee = table.Copy(SPAWN_MELEE_WEPS)
     local resps_medkits = table.Copy(SPAWN_MEDKITS)
     local item = ents.Create("item_medkit")
     if IsValid(item) then
@@ -522,13 +405,13 @@ function SpawnNTFS()
     end
     local usablesupport = {}
     local activeplayers = {}
-    for k, v in pairs(gteams.GetPlayers(TEAM_SPEC)) do
+    for k, v in pairs(gteams.GetPlayers(TEAM_SPECTATOR)) do
         if v.ActivePlayer == true then
             table.ForceInsert(activeplayers, v)
         end
     end
 
-    for k, v in pairs(ALLCLASSES["support"]["roles"]) do
+    for k, v in pairs(ALL_CLASSES["support"]["roles"]) do
         table.ForceInsert(usablesupport, {
             role = v,
             list = {}
@@ -683,7 +566,7 @@ end
 function GetAlivePlayers()
     local plys = {}
     for _, v in pairs(player.GetAll()) do
-        if v:GTeam() ~= TEAM_SPEC and v:Team() ~= TEAM_SPEC then
+        if v:GTeam() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SPECTATOR then
             if v:Alive() then
                 table.ForceInsert(plys, v)
             end
@@ -732,7 +615,7 @@ function GetPlayer(nick)
 end
 
 function CreateRagdollPL(victim, attacker, dmgtype)
-    if victim:GetGTeam() == TEAM_SPEC then
+    if victim:GetGTeam() == TEAM_SPECTATOR then
         return
     end
     if not IsValid(victim) then

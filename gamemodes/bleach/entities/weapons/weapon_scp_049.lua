@@ -80,7 +80,7 @@ function SWEP:PrimaryAttack()
                 if ent:GTeam() == TEAM_SCP then
                     return
                 end
-                if ent:GTeam() == TEAM_SPEC then
+                if ent:GTeam() == TEAM_SPECTATOR then
                     return
                 end
                 ent:SetSCP0492()

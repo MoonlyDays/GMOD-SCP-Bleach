@@ -36,7 +36,6 @@ function HandleNTFSpawns()
     end
 end
 
-
 function RoundRestart()
     timer.Destroy("PreparingTime")
     timer.Destroy("RoundTime")
@@ -45,9 +44,10 @@ function RoundRestart()
     timer.Destroy("PlayerInfo")
     timer.Destroy("NTFEnterTime")
     timer.Destroy("PlayCommotionSounds")
-    if timer.Exists("CheckEscape") == false then
+    if not timer.Exists("CheckEscape") then
         timer.Create("CheckEscape", 1, 0, CheckEscape)
     end
+
     game.CleanUpMap()
     roundCommotionSounds = table.Copy(COMMOTION_SOUNDS)
     nextgateaopen = 0
@@ -121,7 +121,7 @@ function RoundRestart()
     end
     roundtype.playersetup()
     for _, v in pairs(player.GetAll()) do
-        if (v:GetMoveType() ~= MOVETYPE_WALK and v:GetNClass() ~= ROLES.ROLE_SCP173) and (v:GTeam() ~= TEAM_SPEC or v:GetNoDraw() == false) then
+        if (v:GetMoveType() ~= MOVETYPE_WALK and v:GetNClass() ~= ROLES.ROLE_SCP173) and (v:GTeam() ~= TEAM_SPECTATOR or v:GetNoDraw() == false) then
             print("SPEC FIXED: " .. v:Nick() .. "!")
             v:SetMoveType(MOVETYPE_WALK)
             v:SetNoDraw(false)
@@ -193,7 +193,7 @@ function CheckEscape()
     for k_exit, v_exit in pairs(PD_EXITS) do
         for k_ent, v_ent in pairs(ents.FindInSphere(v_exit + Vector(0, 0, 25), 200)) do
             if v_ent:IsPlayer() == true then
-                if v_ent:GTeam() ~= TEAM_SPEC and v_ent:Alive() == true then
+                if v_ent:GTeam() ~= TEAM_SPECTATOR and v_ent:Alive() == true then
                     local rand = math.random(1, 100)
                     if rand < 6 then
                         local attacker = v_106
@@ -235,8 +235,8 @@ function CheckEscape()
             if v.isescaping == true then
                 return
             end
-            if v:GTeam() == TEAM_CLASSD or v:GTeam() == TEAM_SCI or v:GTeam() == TEAM_STAFF or v:GTeam() == TEAM_SCP then
-                if v:GTeam() == TEAM_SCI or v:GTeam() == TEAM_STAFF then
+            if v:GTeam() == TEAM_CLASS_D or v:GTeam() == TEAM_SCIENTIST or v:GTeam() == TEAM_STAFF or v:GTeam() == TEAM_SCP then
+                if v:GTeam() == TEAM_SCIENTIST or v:GTeam() == TEAM_STAFF then
                     roundstats.rescaped = roundstats.rescaped + 1
                     local rtime = timer.TimeLeft("RoundTime")
                     local exptoget = 300
@@ -263,7 +263,7 @@ function CheckEscape()
                         v.isescaping = false
                     end)
                     --v:PrintMessage(HUD_PRINTTALK, "You escaped! Try to get escorted by MTF next time to get bonus points.")
-                elseif v:GTeam() == TEAM_CLASSD then
+                elseif v:GTeam() == TEAM_CLASS_D then
                     roundstats.descaped = roundstats.descaped + 1
                     local rtime = timer.TimeLeft("RoundTime")
                     local exptoget = 500
@@ -341,7 +341,7 @@ function CheckEscortMTF(pl)
         if v:IsPlayer() then
             if pl == v then
                 foundpl = v
-            elseif (v:GTeam() == TEAM_SCI or v:GTeam() == TEAM_STAFF) and v:Alive() then
+            elseif (v:GTeam() == TEAM_SCIENTIST or v:GTeam() == TEAM_STAFF) and v:Alive() then
                 table.ForceInsert(foundrs, v)
             end
         end
@@ -408,7 +408,7 @@ function CheckEscortChaos(pl)
         if v:IsPlayer() then
             if pl == v then
                 foundpl = v
-            elseif v:GTeam() == TEAM_CLASSD and v:Alive() then
+            elseif v:GTeam() == TEAM_CLASS_D and v:Alive() then
                 table.ForceInsert(foundds, v)
             end
         end
@@ -464,9 +464,9 @@ function WinCheck()
         return
     end
     local endround = false
-    local ds = gteams.NumPlayers(TEAM_CLASSD)
+    local ds = gteams.NumPlayers(TEAM_CLASS_D)
     local mtfs = gteams.NumPlayers(TEAM_GUARD)
-    local res = gteams.NumPlayers(TEAM_SCI)
+    local res = gteams.NumPlayers(TEAM_SCIENTIST)
     local staff = gteams.NumPlayers(TEAM_STAFF)
     local scps = gteams.NumPlayers(TEAM_SCP)
     local chaos = gteams.NumPlayers(TEAM_CHAOS)

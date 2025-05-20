@@ -3,20 +3,7 @@ if not MTFMenuFrame then
 end
 nextmenudelete = 0
 showmenu = false
---[[ deprecated, see file "cl_init.lua", function GM:PlayerBindPress
-function GM:KeyPress( ply, key )
-	if ( key == IN_ZOOM ) then
-		print("KEYPRESS")
-		OpenMenu()
-	end
-end
 
-function GM:KeyRelease( ply, key )
-	if ( key == IN_ZOOM ) then
-		CloseMTFMenu()
-	end
-end
-]]
 function CloseMTFMenu()
     if ispanel(MTFMenuFrame) then
         if MTFMenuFrame.Close then

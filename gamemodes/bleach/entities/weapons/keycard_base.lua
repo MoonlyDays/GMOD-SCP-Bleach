@@ -41,7 +41,7 @@ end
 
 SWEP.droppable = true
 SWEP.clevel = 4
-SWEP.teams = { TEAM_GUARD, TEAM_CLASSD, TEAM_SCI, TEAM_CHAOS, TEAM_STAFF }
+SWEP.teams = { TEAM_GUARD, TEAM_CLASS_D, TEAM_SCIENTIST, TEAM_CHAOS, TEAM_STAFF }
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Ammo = "none"
@@ -74,7 +74,7 @@ end
 
 function SWEP:DrawWorldModel()
     if CLIENT then
-        if LocalPlayer():GTeam() == TEAM_SPEC then
+        if LocalPlayer():GTeam() == TEAM_SPECTATOR then
             return false
         end
     end

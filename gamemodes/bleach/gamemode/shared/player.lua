@@ -1,4 +1,10 @@
-local mply = FindMetaTable("Player")
+local playerMeta = FindMetaTable("Player")
+
+function playerMeta:SetupDataTables()
+    self.Player:NetworkVar("Int", 0, "Team")
+    self.Player:NetworkVar("Int", 1, "Role")
+end
+
 function mply:CLevelGlobal()
     local biggest = 1
     for k, wep in pairs(self:GetWeapons()) do

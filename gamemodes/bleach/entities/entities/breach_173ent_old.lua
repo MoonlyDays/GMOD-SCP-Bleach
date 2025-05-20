@@ -45,7 +45,7 @@ end
 function ENT:AttackPlayer()
 	self.Attacks = self.Attacks + 1
 	for i, v in ipairs(self.CurrentTargets) do
-		if v[1]:IsPlayer() and (v[1]:Alive() == false or v[1]:GTeam() == TEAM_SPEC or v[1]:GTeam() == TEAM_SCP or self:IsPlayerVisible(v[1], self:GetPos()) == false) then
+		if v[1]:IsPlayer() and (v[1]:Alive() == false or v[1]:GTeam() == TEAM_SPECTATOR or v[1]:GTeam() == TEAM_SCP or self:IsPlayerVisible(v[1], self:GetPos()) == false) then
 			table.RemoveByValue(self.CurrentTargets, v)
 		else
 			self.CurrentTargets[i] = {v[1], v[1]:GetPos():Distance(self:GetPos())}
@@ -122,7 +122,7 @@ function ENT:CanMove(pos)
 
 	for k, v in pairs(ents.FindInSphere(pos, 1100)) do
 		--print("VisibleVec: " .. tostring(v:VisibleVec( pos )))
-		if v:IsPlayer() and v:Alive() and v:GTeam() ~= TEAM_SPEC and v:GTeam() ~= TEAM_SCP and self:IsPlayerVisible(v, cpos) and (v.isblinking == false and v.nextBlinkCheck < CurTime()) then --and v:VisibleVec( pos )
+		if v:IsPlayer() and v:Alive() and v:GTeam() ~= TEAM_SPECTATOR and v:GTeam() ~= TEAM_SCP and self:IsPlayerVisible(v, cpos) and (v.isblinking == false and v.nextBlinkCheck < CurTime()) then --and v:VisibleVec( pos )
 			print(v:Nick() .. " is looking - " .. CurTime())
 			return false
 		end
@@ -188,7 +188,7 @@ function ENT:AttackNearbyPlayers()
 	self.Attacks = 0
 	self.Tries = 0
 	for k, v in pairs(ents.FindInSphere(self:GetPos(), 400)) do
-		if v:IsPlayer() and v:Alive() and v:GTeam() ~= TEAM_SPEC and v:GTeam() ~= TEAM_SCP and self:IsPlayerVisible(v, self:WorldSpaceCenter()) then
+		if v:IsPlayer() and v:Alive() and v:GTeam() ~= TEAM_SPECTATOR and v:GTeam() ~= TEAM_SCP and self:IsPlayerVisible(v, self:WorldSpaceCenter()) then
 			table.ForceInsert(self.CurrentTargets, {v, 0})
 			self.IsAttacking = true
 			self:SetNWBool("IsAttacking", true)

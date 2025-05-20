@@ -1,124 +1,158 @@
-russian = {}
-russian.roundtype = "Round type: {type}"
-russian.preparing = "Prepare, round will start in {num} seconds"
-russian.round = "The round has started, good luck!"
-russian.lang_pldied = "{num} player(s) died"
-russian.lang_descaped = "{num} Class D(s) escaped"
-russian.lang_sescaped = "{num} SCP(s) escaped"
-russian.lang_rescaped = "{num} Staff members escaped"
-russian.lang_dcaptured = "Chaos Insurgency captured {num} Class D(s)"
-russian.lang_rescorted = "MTF escorted {num} Staff member(s)"
-russian.lang_teleported = "SCP - 106 caputred {num} victim(s) to the Pocket Dimension "
-russian.lang_snapped = "{num} neck(s) were snapped by SCP173"
-russian.lang_zombies = 'SCP - 049 "cured the disease" {num} time(s) '
-russian.class_unknown = "Unknown"
-russian.starttexts = {
-    ROLE_SCP173 = { "You are the SCP-173", { "Your objective is to escape the facility", "You cannot move when someone is looking at you", "Remember, humans are blinking", "You have a special ability on RMB: blind everyone around you" } },
-    ROLE_SCP106 = { "You are the SCP-106", { "Your objective is to escape the facility", "When you touch someone, they will teleport", "to your pocket dimension" } },
-    ROLE_SCP966 = { "You are the SCP-966", { "Your objective is to escape then facility", "You are invisible, humans can only see you using a nvg" } },
-    ROLE_SCP457 = { "You are the SCP-457", { "Your objective is to escape then facility", "You are always burning", "If you are close enough to a human, you will burn them" } },
-    ROLE_SCP049 = { "You are the SCP-049", { "Your objective is to escape the facility", "If you touch someone, they will become SCP-049-2" } },
-    ROLE_SCP0492 = { "You are the SCP-049-2", { "Your objective is to escape the facility", "Cooperate with SCP-049 to kill more people" } },
-    ROLE_SCP0082 = { "You are the SCP-008-2", { "Your objective is to infect every MTF Guard", "If you attack someone, they will become 008-2 aswell" } },
-    -- RESEARCH STAFF
-    ROLE_RES = { "You are a Researcher", { "Your objective is to escape from the facility", "You need to find a MTF Guard that will help you", "Be on the look out of Class Ds as they might try to kill you" } },
-    ROLE_RES_SPY = { "You are a Chaos Insurgency Spy", { "Your objective is to kill all MTF Guards and capture the Class D", "They are unaware of your disguise", "Don't destroy your disguise", "If you find any class d's, try to escort them" } },
-    ROLE_HRES = { "You are the Head Researcher", { "Your objective is to escape from the facility", "You need to find a MTF Guard that will help you", "Be on the look out of Class Ds as they might try to kill you" } },
-    -- MISC STAFF
-    ROLE_JANITOR = { "You are a Janitor", { "Your objective is to escape from the facility", "You need to find a MTF Guard that will help you", "Be on the look out of Class Ds as they might try to kill you" } },
-    ROLE_ENG = { "You are an Engineer", { "Your objective is to escape from the facility", "You need to find a MTF Guard that will help you", "Be on the look out of Class Ds as they might try to kill you" } },
-    ROLE_MEDIC = { "You are a Medic", { "Your objective is to escape from the facility", "You need to find a MTF Guard that will help you", "Be on the look out of Class Ds as they might try to kill you", "If someone gets injured, heal them" } },
-    -- CLASS D PERSONNEL
-    ROLE_CLASSD = { "You are a Class D", { "Your objective is to escape from the facility", "You need to cooperate with other Class Ds", "Search for keycards and be aware of MTF and SCPs" } },
-    ROLE_VETERAN = { "You are a Veteran Class D", { "Your objective is to escape from the facility", "You need to cooperate with other Class Ds", "Search for keycards and be aware of MTF and SCPs" } },
-    -- SITE SECURITY
-    ROLE_SEC_GUARD = { "You are a Security Guard", { "Your objective is to find and rescue all", "staff that is still in the facility", "You have to kill any Class Ds or SCPs that you find", "If there is a security chief somewhere, listen to his orders" } },
-    ROLE_SEC_OFFICER = { "You are a Security Officer", { "Your objective is to find and rescue all", "staff that is still in the facility", "You have to kill any Class Ds or SCPs that you find", "If there is a security chief somewhere, listen to his orders" } },
-    ROLE_SEC_MEDIC = { "You are a Security Medic", { "Your objective is support your teammates", "If someone gets injured, heal them", "If there is a security chief somewhere, listen to his orders" } },
-    ROLE_SEC_CHIEF = { "You are a Security Chief", { "Your objective is to find and rescue all", "staff that is still in the facility", "You have to kill any Class Ds or SCPs that you find", "You can give orders to security officers" } },
-    ROLE_SD = { "You are a Site Director", { "Your objective is to give objectives", "You need to give objectives to the site security", "You need to keep the site secure, don't let any SCP or Class D escape" } },
-    -- SUPPORT
-    ROLE_CHAOS = { "You are a Chaos Insurgency Soldier", { "Your objective is to capture as much Class Ds as it is possible", "Escort them to the helipad outisde of the facility", "You have to kill anyone who will stop you" } },
-    ROLE_MTF_OFFICER = { "You are a MTF Officer", { "Your objective is to find and rescue all", "of the researchers that are still in the facility", "You have to kill any Class D or SCP that you will find", "Listen to MTF Commander's orders and stick to your team" } },
-    ROLE_MTF_MEDIC = { "You are a MTF Medic", { "Your objective is support your teammates", "If someone gets injured, heal them", "Listen to MTF Commander's orders and stick to your team" } },
-    ROLE_MTF_SCU = { "You are a MTF Special Containment Unit", { "Your objective is to find and rescue all", "of the researchers that are still in the facility", "Listen to MTF Commander's orders and stick to your team" } },
-    ROLE_CHAOSCOM = { "You are a Chaos Insurgency Commander", { "Your objective is to give objectives to your team", "Kill anyone who will stop you" } },
-    ROLE_MTF_SNIPER = { "You are a MTF Sniper", { "Your objective is to find and rescue all", "of the researchers that are still in the facility", "You have to kill any Class D or SCP that you will find", "Listen to MTF Commander's orders and stick to your team" } },
-    ROLE_MTF_LIE = { "You are a MTF Lieutenant", { "Your objective is to find and rescue all", "of the researchers that are still in the facility", "You have to kill any Class Ds or SCPs that you will find", "Give orders to Guards to simplify the task", "Listen to MTF Commander's orders and stick to your team" } },
-    ROLE_MTF_COM = { "You are a MTF Commander", { "Your objective is to find and rescue all", "of the researchers that are still in the facility", "You have to kill any Class Ds or SCPs that you will find", "Give orders to Guards to simplify the task" } },
-    -- CI
-    ROLE_CI_RES = { "You are a CI Spy", { "You are a part of Chaos Insurgency disguised as a Researcher", "Your objective is to capture and escort Class D Personnel", "Kill anyone who will stop you" } },
-    ROLE_CI_GUARD = { "You are a CI Spy", { "You are a part of Chaos Insurgency disguised as a Guard", "Your objective is to capture and escort Class D Personnel", "Kill anyone who will stop you" } },
-    ROLE_CI_SOLD = { "You are a CI Spy", { "You are a part of Chaos Insurgency disguised as a Guard", "Your objective is to capture and escort Class D Personnel", "Kill anyone who will stop you" } },
-    -- OTHERS
-    ROLE_SPEC = { "You are a Spectator", { 'HMMMMMMMMMMMMMM' } },
+LANGUAGE.round_type = "Тип раунда: {type}"
+LANGUAGE.round_preparing = "Приготовтесь, вы начнёте через {num} секунд"
+LANGUAGE.round_started = "Раунд начался, удачи!"
+LANGUAGE.stats = {
+    d_died = "{num} классов D погибло",
+    d_escaped = "{num} классов D сбежало",
+    scp_escaped = "{num} SCP сбежало",
+    staff_escaped = "{num} работников комплекса сбежало",
+    chaos_d_captured = "Повстанцы Хаоса захватили {num} классов D",
+    mtf_staff_escorted = "MTF вывели {num} работников комплекса",
+    scp_106_captured = "SCP-106 захватил {num} жертв в карманное измерение",
+    scp_173_snapped = "{num} шей были сломаны руками SCP-173",
+    scp_049_cured = 'SCP-049 "излечил" {num} прокаженных'
+}
+LANGUAGE.roles = {
+    -- [[ CLASS D ]]--
+    class_d = {
+        title = "Класс D Персонал",
+        objective = {
+            "Ваша задача сбежать из комплекса",
+            "Вы не можете двигаться, когда на вас кто-то смотрит",
+            "Помните, что люди моргают",
+            "У вас есть специальная способность на ПКМ: Ослепление всех поблизости"
+        }
+    },
+    -- [[ SCP ]]--
+    scp_173 = {
+        title = "SCP-173",
+        objective = {
+            "Ваша задача сбежать из комплекса",
+            "Вы не можете двигаться, когда на вас кто-то смотрит",
+            "Помните, что люди моргают",
+            "У вас есть специальная способность на ПКМ: Ослепление всех поблизости"
+        }
+    },
+    scp_106 = {
+        title = "SCP-106",
+        objective = {
+            "Ваша задача сбежать из комплекса",
+            "Когда вы в кому-то прикасаетесь, они телепортируются",
+            "в ваше карманное измерение"
+        }
+    }
 }
 
-russian.lang_round_end_main = "The round has ended"
-russian.endmessages = { "Time limit has been reached", "Facility is under control of one faction", "Everybody died or escaped", }
-russian.escapemessages = {
+LANGUAGE.starttexts = {
+    ROLE_SCP173 = { "Вы SCP-173", { "Ваша задача сбежать из комплекса", "Вы не можете двигаться, когда на вас кто-то смотрит", "Помните, что люди моргают", "У вас есть специальная способность на ПКМ: Ослепление всех поблизости" } },
+    ROLE_SCP106 = { "Вы SCP-106", { "Ваша задача сбежать из комплекса", "Когда вы в кому-то прикасаетесь, они телепортируются", "в ваше карманное измерение" } },
+    ROLE_SCP106 = { "Вы SCP-682", { "Ваша задача сбежать из комплекса", "Вы, кто бы мог подумать, неуязвимы" } },
+    ROLE_SCP106 = { "Вы SCP-096", { "Ваша задача сбежать из комплекса", "Вы можете атаковать людей после того, как они на вас посмотрят" } },
+    ROLE_SCP106 = { "Вы SCP-1987", { "Ваша задача сбежать из комплекса", "WIP" } },
+    ROLE_SCP966 = { "Вы SCP-966", { "Ваша задача сбежать из комплекса", "Вы невидимый, люди могут вас увидеть только нося ПНВ" } },
+    ROLE_SCP457 = { "Вы SCP-457", { "Ваша задача сбежать из комплекса", "Вы всегда горите", "Если вы достаточно близко подойдёте к человеку, то он загорится" } },
+    ROLE_SCP049 = { "Вы SCP-049", { "Ваша задача сбежать из комплекса", "Если вы в кому-то прикоснётесь, то они превратятся в SCP-049-2" } },
+    ROLE_SCP0492 = { "Вы SCP-049-2", { "Ваша задача сбежать из комплекса", "Кооперируйте с SCP-049 Чтобы убить больше людей" } },
+    ROLE_SCP0082 = { "Вы SCP-008-2", { "Ваша задача заразить каждого участника MTF", "Если вы кого-то атакуете, то они тоже станут 008-2" } },
+    -- RESEARCH STAFF
+    ROLE_RES = { "Вы Учёный", { "Ваша задача сбежать иВетеран з комплекса", "вам нужно найти работников MTF, которые помогут вам", "Смотрите в оба за D классами, они могут попытаться вас убить" } },
+"Им неизвестно о вашем прикрытии", "Не разрушайте своё прикрытие", "Если вы найдёте D классы, попробуйте вывести их" } },
+    ROLE_HRES = { "Вы Главный учёный", { "Ваша задача сбежать из комплекса", "вам нужно найти работников MTF, которые помогут вам", "Смотрите в оба за D классами, они могут попытаться вас убить" } },
+    -- MISC STAFF
+    ROLE_JANITOR = { "Вы Уборщик", { "Ваша задача сбежать из комплекса", "Вам нужно найти работников MTF, которые помогут вам", "Смотрите в оба за D классами, они могут попытаться вас убить" } },
+    ROLE_ENG = { "Выn Инженер", { "Ваша задача сбежать из комплекса", "Вам нужно найти работников MTF, которые помогут вам", "Смотрите в оба за D классами, они могут попытаться вас убить" } },
+    ROLE_MEDIC = { "Вы Медик", { "Ваша задача сбежать из комплекса", "Вам нужно найти работников MTF, которые помогут вам", "Смотрите в оба за D классами, они могут попытаться вас убить", "Если кто-то ранен, помогите им" } },
+    -- CLASS D PERSONNEL
+    ROLE_CLASSD = { "Вы Класс D", { "Ваша задача сбежать из комплекса", "Вам нужно кооперировать с остальными классами D", "Ищите ключ-карты и опосайтесь сотрудников MTF и SCP" } },
+    ROLE_VETERAN = { "Вы Ветеран класса D", { "Ваша задача сбежать из комплекса", "Вам нужно кооперировать с остальными классами D", "Ищите ключ-карты и опосайтесь сотрудников MTF и SCP" } },
+    -- SITE SECURITY
+    ROLE_SEC_GUARD = { "Вы Охранник", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Если где-то есть Шериф охраны, слушайте его приказы" } },
+    ROLE_SEC_OFFICER = { "Вы Офицер", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Если где-то есть Шериф охраны, слушайте его приказы" } },
+    ROLE_SEC_MEDIC = { "Вы Медик охраны", { "Ваша задача support your teammates", "Если кто-то ранен, помогите им", "Если где-то есть Шериф охраны, слушайте его приказы" } },
+    ROLE_SEC_CHIEF = { "Вы Шериф охраны", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Вы можете раздавать приказы сотрудникам охраны" } },
+    ROLE_SD = { "Вы Директор комплекса", { "Ваша задача раздавать приказы", "Вам нужно раздавать приказы охране комплекса", "Вам нужно сохранить комплекс и не позволить SCP и классу D сбежать" } },
+    -- SUPPORT
+    ROLE_CHAOS = { "Вы Солдат Повстанцев Хаоса", { "Ваша задача захватить как можно больше D классов", "Выведите их к вертолётной площадке снаружи комплекса", "Вы должны убить всех, кто попытается вас остановить" } },
+    ROLE_MTF_OFFICER = { "Вы Офицер MTF", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Слушайте комманды командира MTF и не отставайте от вашей команды" } },
+    ROLE_MTF_MEDIC = { "Вы Медик MTF", { "Ваша задача поддерживать участников вашей команды", "Если кто-то ранен, помогите им", "Слушайте комманды командира MTF и не отставайте от вашей команды" } },
+    ROLE_MTF_SCU = { "Вы Изолятор MTF", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Слушайте комманды командира MTF и не отставайте от вашей команды" } },
+    ROLE_CHAOSCOM = { "Вы Командир Повстанцев Хаоса", { "Ваша задача раздавать приказы вашей команде", "Убейте всех кто попытается вас остановить" } },
+    ROLE_MTF_SNIPER = { "Вы Снайпер MTF", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Слушайте комманды командира MTF и не отставайте от вашей команды" } },
+    ROLE_MTF_LIE = { "Вы Лейтенант MTF", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Раздавать приказы огранникам для упрощения задачи", "Слушайте комманды командира MTF и не отставайте от вашей команды" } },
+    ROLE_MTF_COM = { "Вы Командир MTF", { "Ваша задача найти и спасти всех", "работников комплекса, что всё ещё внутри", "Вы должны убить все D классы и SCP, что встретите", "Раздавать приказы огранникам для упрощения задачи" } },
+    -- CI
+    ROLE_CI_RES = { "Вы Шпион ПХ", { "Вы участник Повстанцев Хаоса, замаскированный под Учёного", "Ваша задача захватить и вывести весь персонал класса D", "Убейте всех кто попытается вас остановить" } },
+    ROLE_CI_GUARD = { "Вы Шпион ПХ", { "Вы участник Повстанцев Хаоса, замаскированный под Охранника", "Ваша задача захватить и вывести весь персонал класса D", "Убейте всех кто попытается вас остановить" } },
+    ROLE_CI_SOLD = { "Вы Шпион ПХ", { "Вы участник Повстанцев Хаоса, замаскированный под Охранника", "Ваша задача захватить и вывести весь персонал класса D", "Убейте всех кто попытается вас остановить" } },
+    -- OTHERS
+    ROLE_SPEC = { "Вы Спектатор", { 'ХММММММММММММММММ' } },
+}
+
+LANGUAGE.lang_round_end_main = "Раунд закончился"
+LANGUAGE.endmessages = { "Время вышло", "Комплекс под контролем одной фракции", "Все погибли или сбежали." }
+LANGUAGE.escapemessages = {
     {
-        main = "You escaped",
-        txt = "You escaped the facility in {t} minutes, good job!",
-        txt2 = "Try to get escorted by MTF next time to get bonus points.",
+        main = "Вы сбежали",
+        txt = "Вы сбежали из комплекса за {t} минут, хорошая работа!",
+        txt2 = "В следующий раз попробуйте позволить MTF вас выпустить, чтобы получить дополнительные очки.",
         clr = Color(237, 28, 63),
     },
     {
-        main = "You escaped",
-        txt = "You escaped the facility in {t} minutes, good job!",
-        txt2 = "Try to get escorted by Chaos Insurgency Soldiers next time to get bonus points.",
+        main = "Вы сбежали",
+        txt = "Вы сбежали из комплекса за {t} минут, хорошая работа!",
+        txt2 = "В следующий раз попробуйте позволить Повстанцам Хаоса вас выпустить, чтобы получить дополнительные очки.",
         clr = Color(237, 28, 63),
     },
     {
-        main = "You were escorted",
-        txt = "You were escorted in {t} minutes, good job!",
+        main = "Вас вывели",
+        txt = "Вас вывели за {t} минут, хорошая работа!",
         txt2 = "",
         clr = Color(237, 28, 63),
     },
     {
-        main = "You escaped",
-        txt = "You escaped in {t} minutes, good job!",
+        main = "Вы сбежали",
+        txt = "Вы сбежали за {t} минут, хорошая работа!",
         txt2 = "",
         clr = Color(237, 28, 63),
     }
 }
 
-russian.ROLES = {}
-russian.ROLES.ROLE_SCP173 = "SCP-173"
-russian.ROLES.ROLE_SCP106 = "SCP-106"
-russian.ROLES.ROLE_SCP049 = "SCP-049"
-russian.ROLES.ROLE_SCP457 = "SCP-457"
-russian.ROLES.ROLE_SCP966 = "SCP-966"
-russian.ROLES.ROLE_SCP0492 = "SCP-049-2"
-russian.ROLES.ROLE_SCP0082 = "SCP-008-2"
-russian.ROLES.ROLE_RES = "Researcher"
-russian.ROLES.ROLE_RES_SPY = "CI Spy"
-russian.ROLES.ROLE_HRES = "Head Researcher"
+LANGUAGE.ROLES = {}
+LANGUAGE.ROLES.ROLE_SCP173 = "SCP-173"
+LANGUAGE.ROLES.ROLE_SCP106 = "SCP-106"
+LANGUAGE.ROLES.ROLE_SCP049 = "SCP-049"
+LANGUAGE.ROLES.ROLE_SCP457 = "SCP-457"
+LANGUAGE.ROLES.ROLE_SCP966 = "SCP-966"
+LANGUAGE.ROLES.ROLE_SCP0492 = "SCP-049-2"
+LANGUAGE.ROLES.ROLE_SCP0082 = "SCP-008-2"
+LANGUAGE.ROLES.ROLE_RES = "Учёный"
+LANGUAGE.ROLES.ROLE_RES_SPY = "Шпион ПХ"
+LANGUAGE.ROLES.ROLE_HRES = "Главный учёный"
 -- Misc Staff
-russian.ROLES.ROLE_JANITOR = "Janitor"
-russian.ROLES.ROLE_ENG = "Engineer"
-russian.ROLES.ROLE_MEDIC = "Medic"
+LANGUAGE.ROLES.ROLE_JANITOR = "Уборщик"
+LANGUAGE.ROLES.ROLE_ENG = "Инженер"
+LANGUAGE.ROLES.ROLE_MEDIC = "Медик"
 -- Class D Personnel
-russian.ROLES.ROLE_CLASSD = "Class D Personnel"
-russian.ROLES.ROLE_VETERAN = "Class D Veteran"
+LANGUAGE.ROLES.ROLE_CLASSD = "Персонал Класса D"
+LANGUAGE.ROLES.ROLE_VETERAN = "Ветеран Класса D"
 -- Security
-russian.ROLES.ROLE_SEC_GUARD = "Security Guard"
-russian.ROLES.ROLE_SEC_OFFICER = "Security Officer"
-russian.ROLES.ROLE_SEC_MEDIC = "Security Medic"
-russian.ROLES.ROLE_SEC_CHIEF = "Security Chief"
-russian.ROLES.ROLE_SD = "Site Director"
+LANGUAGE.ROLES.ROLE_SEC_GUARD = "Охранник"
+LANGUAGE.ROLES.ROLE_SEC_OFFICER = "Офицер"
+LANGUAGE.ROLES.ROLE_SEC_MEDIC = "Медик охраны"
+LANGUAGE.ROLES.ROLE_SEC_CHIEF = "Шериф охраны"
+LANGUAGE.ROLES.ROLE_SD = "Директор комплекса"
 -- Support
-russian.ROLES.ROLE_CHAOS = "CI Soldier"
-russian.ROLES.ROLE_MTF_OFFICER = "MTF Officer"
-russian.ROLES.ROLE_MTF_MEDIC = "MTF Medic"
-russian.ROLES.ROLE_MTF_SCU = "MTF SCU"
-russian.ROLES.ROLE_MTF_SNIPER = "MTF Sniper"
-russian.ROLES.ROLE_CHAOSCOM = "CI Commander"
-russian.ROLES.ROLE_MTF_LIE = "MTF Lieutenant"
-russian.ROLES.ROLE_MTF_COM = "MTF Commander"
+LANGUAGE.ROLES.ROLE_CHAOS = "Солдат ПХ"
+LANGUAGE.ROLES.ROLE_MTF_OFFICER = "Офицер MTF"
+LANGUAGE.ROLES.ROLE_MTF_MEDIC = "Медик MTF"
+LANGUAGE.ROLES.ROLE_MTF_SCU = "Изолятор MTF"
+LANGUAGE.ROLES.ROLE_MTF_SNIPER = "Снайпер MTF"
+LANGUAGE.ROLES.ROLE_CHAOSCOM = "Командир ПХ"
+LANGUAGE.ROLES.ROLE_MTF_LIE = "Лейтенант MTF"
+LANGUAGE.ROLES.ROLE_MTF_COM = "Командир MTF"
 -- CI Spies
-russian.ROLES.ROLE_CI_RES = "CI Spy Researcher"
-russian.ROLES.ROLE_CI_GUARD = "CI Spy Guard"
-russian.ROLES.ROLE_CI_SOLD = "CI Spy Soldier"
-russian.ROLES.ROLE_SPEC = "Spectator"
-ALL_LANGUAGES.russian = russian
+LANGUAGE.ROLES.ROLE_CI_RES = "Шпион ПХ Учёный"
+LANGUAGE.ROLES.ROLE_CI_GUARD = "Шпион ПХ Охранник"
+LANGUAGE.ROLES.ROLE_CI_SOLD = "Шпион ПХ Солдат"
+LANGUAGE.ROLES.ROLE_SPEC = "Спектатор"
+ALL_LANGUAGES.LANGUAGE = LANGUAGE

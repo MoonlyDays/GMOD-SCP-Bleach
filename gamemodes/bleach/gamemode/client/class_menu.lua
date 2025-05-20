@@ -1,17 +1,21 @@
 CLASS_MENU = nil
-selectedclass = nil
-selectedclr = nil
+selectedClass = nil
+selectedColor = nil
+
 function OpenClassMenu()
+    -- Already open.
     if IsValid(CLASS_MENU) then
         return
     end
+
     local ply = LocalPlayer()
-    local ourlevel = LocalPlayer():GetLevel()
-    selectedclass = ALLCLASSES["support"]["roles"][1]
-    selectedclr = ALLCLASSES["support"]["color"]
-    if selectedclr == nil then
-        selectedclr = Color(255, 255, 255)
+    local ourLevel = LocalPlayer():GetLevel()
+    selectedClass = ALL_CLASSES["support"]["roles"][1]
+    selectedColor = ALL_CLASSES["support"]["color"]
+    if selectedColor == nil then
+        selectedColor = Color(255, 255, 255)
     end
+
     local width = ScrW() / 1.5
     local height = ScrH() / 1.5
     CLASS_MENU = vgui.Create("DFrame")
@@ -23,69 +27,72 @@ function OpenClassMenu()
     CLASS_MENU:SetDraggable(false)
     CLASS_MENU:ShowCloseButton(true)
     CLASS_MENU:MakePopup()
-    CLASS_MENU.Paint = function(self, w, h)
+    CLASS_MENU.Paint = function(_, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
         draw.RoundedBox(2, 1, 1, w - 2, h - 2, Color(90, 90, 95))
     end
 
-    local maininfo = vgui.Create("DLabel", CLASS_MENU)
-    maininfo:SetText("Class Manager")
-    maininfo:SetTextColor(Color(255, 255, 255, 255))
-    maininfo:Dock(TOP)
-    maininfo:SetFont("MTF_Main")
-    maininfo:SetContentAlignment(5)
-    maininfo:SetSize(0, 28)
-    maininfo.Paint = function(self, w, h)
+    local panelMainInfo = vgui.Create("DLabel", CLASS_MENU)
+    panelMainInfo:SetText("Class Manager")
+    panelMainInfo:SetTextColor(Color(255, 255, 255, 255))
+    panelMainInfo:Dock(TOP)
+    panelMainInfo:SetFont("MTF_Main")
+    panelMainInfo:SetContentAlignment(5)
+    panelMainInfo:SetSize(0, 28)
+    panelMainInfo.Paint = function(_, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
         draw.RoundedBox(2, 1, 1, w - 2, h - 2, Color(90, 90, 95))
     end
 
-    local panel_right = vgui.Create("DPanel", CLASS_MENU)
-    panel_right:Dock(FILL)
-    panel_right:DockMargin(width / 2 - 5, 0, 0, 0)
-    panel_right.Paint = function(self, w, h)
+    local panelRight = vgui.Create("DPanel", CLASS_MENU)
+    panelRight:Dock(FILL)
+    panelRight:DockMargin(width / 2 - 5, 0, 0, 0)
+    panelRight.Paint = function(self, w, h)
     end
-    local sclass_toppanel = vgui.Create("DPanel", panel_right)
-    sclass_toppanel:Dock(TOP)
-    sclass_toppanel:SetSize(0, height / 2.5)
-    sclass_toppanel.Paint = function(self, w, h)
+
+    local panelSelectedClassHeader = vgui.Create("DPanel", panelRight)
+    panelSelectedClassHeader:Dock(TOP)
+    panelSelectedClassHeader:SetSize(0, height / 2.5)
+    panelSelectedClassHeader.Paint = function(self, w, h)
     end
-    local smodel
-    if selectedclass.showmodel == nil then
-        smodel = table.Random(selectedclass.models)
+
+    local selectedModel
+    if selectedClass.showmodel == nil then
+        selectedModel = table.Random(selectedClass.models)
     else
-        smodel = selectedclass.showmodel
+        selectedModel = selectedClass.showmodel
     end
 
-    local class_modelpanel = vgui.Create("DPanel", sclass_toppanel)
-    class_modelpanel:Dock(LEFT)
-    class_modelpanel:SetSize(width / 6)
-    class_modelpanel.Paint = function(self, w, h)
+    local panelSelectedClassModel = vgui.Create("DPanel", panelSelectedClassHeader)
+    panelSelectedClassModel:Dock(LEFT)
+    panelSelectedClassModel:SetSize(width / 6)
+    panelSelectedClassModel.Paint = function(self, w, h)
         draw.RoundedBox(0, 0, 0, w, h, Color(50, 50, 50))
     end
-    sclass_model = vgui.Create("DModelPanel", class_modelpanel)
-    sclass_model:Dock(FILL)
-    sclass_model:SetFOV(50)
-    sclass_model:SetModel(smodel)
-    function sclass_model:LayoutEntity(entity)
+
+    selectedClassModel = vgui.Create("DModelPanel", panelSelectedClassModel)
+    selectedClassModel:Dock(FILL)
+    selectedClassModel:SetFOV(50)
+    selectedClassModel:SetModel(selectedModel)
+    function selectedClassModel:LayoutEntity(entity)
         entity:SetAngles(Angle(0, 18, 0))
     end
 
-    local ent = sclass_model:GetEntity()
-    if selectedclass.pmcolor ~= nil then
+    local ent = selectedClassModel:GetEntity()
+    if selectedClass.pmcolor ~= nil then
         function ent:GetPlayerColor()
-            return Vector(selectedclass.pmcolor.r / 255, selectedclass.pmcolor.g / 255, selectedclass.pmcolor.b / 255)
+            return Vector(selectedClass.pmcolor.r / 255, selectedClass.pmcolor.g / 255, selectedClass.pmcolor.b / 255)
         end
     end
 
-    local sclass_name = vgui.Create("DPanel", sclass_toppanel)
+    local sclass_name = vgui.Create("DPanel", panelSelectedClassHeader)
     sclass_name:Dock(TOP)
     sclass_name:SetSize(0, 50)
     sclass_name.Paint = function(self, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
-        draw.RoundedBox(2, 1, 1, w - 2, h - 2, selectedclr)
+        draw.RoundedBox(2, 1, 1, w - 2, h - 2, selectedColor)
         draw.Text({
-            text = GetLangRole(selectedclass.name),
+            text = GetLangRole(selectedClass.name),
             font = "MTF_Secondary",
             xalign = TEXT_ALIGN_CENTER,
             yalign = TEXT_ALIGN_CENTER,
@@ -93,7 +100,7 @@ function OpenClassMenu()
         })
     end
 
-    local sclass_name = vgui.Create("DPanel", sclass_toppanel)
+    local sclass_name = vgui.Create("DPanel", panelSelectedClassHeader)
     sclass_name:Dock(FILL)
     sclass_name:SetSize(0, 50)
     sclass_name.Paint = function(self, w, h)
@@ -102,7 +109,7 @@ function OpenClassMenu()
         local atso = w / 13
         local starpos = w / 16
         draw.Text({
-            text = "Health: " .. selectedclass.health,
+            text = "Health: " .. selectedClass.health,
             font = "MTF_Third",
             xalign = TEXT_ALIGN_LEFT,
             yalign = TEXT_ALIGN_CENTER,
@@ -110,7 +117,7 @@ function OpenClassMenu()
         })
 
         draw.Text({
-            text = "Walk speed: " .. math.Round(240 * selectedclass.walkspeed),
+            text = "Walk speed: " .. math.Round(240 * selectedClass.walkspeed),
             font = "MTF_Third",
             xalign = TEXT_ALIGN_LEFT,
             yalign = TEXT_ALIGN_CENTER,
@@ -118,7 +125,7 @@ function OpenClassMenu()
         })
 
         draw.Text({
-            text = "Run speed: " .. math.Round(240 * selectedclass.runspeed),
+            text = "Run speed: " .. math.Round(240 * selectedClass.runspeed),
             font = "MTF_Third",
             xalign = TEXT_ALIGN_LEFT,
             yalign = TEXT_ALIGN_CENTER,
@@ -126,16 +133,16 @@ function OpenClassMenu()
         })
 
         draw.Text({
-            text = "Jump Power: " .. math.Round(200 * selectedclass.jumppower),
+            text = "Jump Power: " .. math.Round(200 * selectedClass.jumppower),
             font = "MTF_Third",
             xalign = TEXT_ALIGN_LEFT,
             yalign = TEXT_ALIGN_CENTER,
             pos = { 12, starpos + (atso * 3) }
         })
 
-        if isstring(selectedclass.disguised_name) then
+        if isstring(selectedClass.disguised_name) then
             draw.Text({
-                text = "Disguised as: " .. selectedclass.disguised_name,
+                text = "Disguised as: " .. selectedClass.disguised_name,
                 font = "MTF_Third",
                 color = Color(183, 23, 65, 255),
                 xalign = TEXT_ALIGN_LEFT,
@@ -144,9 +151,9 @@ function OpenClassMenu()
             })
         end
 
-        local lvl = selectedclass.level
+        local lvl = selectedClass.level
         local clr = Color(255, 0, 0)
-        if ourlevel >= lvl then
+        if ourLevel >= lvl then
             clr = Color(0, 255, 0)
         end
         if lvl == 6 then
@@ -165,14 +172,14 @@ function OpenClassMenu()
         })
     end
 
-    local sclass_downpanel = vgui.Create("DPanel", panel_right)
+    local sclass_downpanel = vgui.Create("DPanel", panelRight)
     sclass_downpanel:Dock(FILL)
     sclass_downpanel:SetSize(0, height / 2.5)
     sclass_downpanel.Paint = function(self, w, h)
         local atso = w / 18
         local starpos = w / 12
         local numw = 0
-        for k, v in pairs(selectedclass.showweapons) do
+        for k, v in pairs(selectedClass.showweapons) do
             draw.Text({
                 text = "- " .. v,
                 font = "MTF_Third",
@@ -195,7 +202,7 @@ function OpenClassMenu()
     maininfo:SetSize(0, 28)
     maininfo.Paint = function(self, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
-        draw.RoundedBox(2, 1, 1, w - 2, h - 2, selectedclr)
+        draw.RoundedBox(2, 1, 1, w - 2, h - 2, selectedColor)
     end
 
     -- LEFT PANELS
@@ -206,10 +213,10 @@ function OpenClassMenu()
     end
     local scroller = vgui.Create("DScrollPanel", panel_left)
     scroller:Dock(FILL)
-    if ALLCLASSES == nil then
+    if ALL_CLASSES == nil then
         return
     end
-    for key, v in pairs(ALLCLASSES) do
+    for key, v in pairs(ALL_CLASSES) do
         local name_security = vgui.Create("DLabel", scroller)
         name_security:SetText(v.name)
         name_security:SetFont("MTF_Main")
@@ -235,9 +242,9 @@ function OpenClassMenu()
             class_panel:SetText("")
             class_panel:SetMouseInputEnabled(true)
             class_panel.DoClick = function()
-                selectedclass = cls
-                selectedclr = v.color
-                sclass_model:SetModel(model)
+                selectedClass = cls
+                selectedColor = v.color
+                selectedClassModel:SetModel(model)
             end
 
             --class_panel:SetText( cls.name )
@@ -259,7 +266,7 @@ function OpenClassMenu()
             --local enabled = true
             --if enabled == true then enabled = "Yes" else enabled = "No" end
             class_panel.Paint = function(self, w, h)
-                if selectedclass == cls then
+                if selectedClass == cls then
                     draw.RoundedBox(0, 0, 0, w, h, Color(v.color.r - 20, v.color.g - 20, v.color.b - 20))
                 else
                     draw.RoundedBox(0, 0, 0, w, h, Color(v.color.r - 50, v.color.g - 50, v.color.b - 50))
