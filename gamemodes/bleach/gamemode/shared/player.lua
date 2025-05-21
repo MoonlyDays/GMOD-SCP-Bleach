@@ -1,20 +1,17 @@
-AddCSLuaFile()
-DEFINE_BASECLASS("player_default")
+local BREACH_PLAYER = {}
+local PLAYER = FindMetaTable("Player")
 
-local PLAYER = {}
-
---
--- Set up the network table accessors
---
-function PLAYER:SetupDataTables()
+function BREACH_PLAYER:SetupDataTables()
     self.Player:NetworkVar("String", "Role")
-    self.Player:NetworkVar("Float", "Stamina")
 end
 
-function PLAYER:GetGlobalClearance()
+function PLAYER:Role()
+    local roleName = self:GetRole()
+    if roleName == "" then
+        return nil
+    end
+
+    return ROLES[roleName]
 end
 
-function PLAYER:GetActiveClearance()
-end
-
-player_manager.RegisterClass("player_breach", PLAYER, "player_default")
+player_manager.RegisterClass("player_breach", BREACH_PLAYER, "player_default")

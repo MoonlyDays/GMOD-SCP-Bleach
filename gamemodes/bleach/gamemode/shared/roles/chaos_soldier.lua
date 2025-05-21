@@ -9,6 +9,7 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_OUTSIDE
 ROLE.Team = TEAMS.CHAOS
 ROLE.Model = CHAOS_MODELS
+ROLE.DisguisedAs = "mtf_guard"
 ROLE.Ammo = { { "Buckshot", 32 }, { "Pistol", 105 } }
 ROLE.Weapons = {
     "br_holster",
@@ -19,4 +20,3 @@ ROLE.Weapons = {
     "weapon_stunstick",
     "weapon_chaos_ak47"
 }
-ROLE.DisguisedAs = "mtf_guard"

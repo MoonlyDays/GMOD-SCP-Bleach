@@ -7,52 +7,116 @@ HUD = {
         CHudDeathNotice = true
     },
 
+    timerEndsAt = 0,
     objectiveTextVisible = false,
     roundSummaryVisible = false,
+    stamina = MAX_STAMINA,
 
     roundSummary = {},
 
-    blackoutScreenUntil = nil,
-    blackoutScreenFadeSpeed = nil,
+    blackoutScreenFadeSpeed = 0,
     blackoutScreenCurrent = 0,
     blackoutScreenTarget = 0
 }
 
-function HUD:BlackoutScreen(howMuch, blackoutTime, fadeSpeed)
-    self.blackoutScreenAmount = howMuch
-    self.blackoutScreenFadeSpeed = fadeSpeed
-    self.blackoutScreenUntil = CurTime() + blackoutTime
+function HUD:BlackoutScreen(howMuch, blackoutTime, fadeInSpeed, fadeOutSpeed)
+    self.blackoutScreenTarget = howMuch
+    self.blackoutScreenFadeSpeed = fadeInSpeed
+
+    if fadeInSpeed <= 0 then
+        self.blackoutScreenCurrent = howMuch
+    end
+
+    if blackoutTime > 0 then
+        timer.Create("BlackoutTime", blackoutTime, 1, function()
+            self:BlackoutScreen(0, 0, fadeOutSpeed)
+        end)
+    end
 end
 
 function HUD:Draw()
     local ply = LocalPlayer()
 
     self:DrawBlackout()
-    self:DrawPlayerStatus(ply)
+    self:DrawPlayerStatus(ply, 450, 190)
+    self:DrawObjective(ply)
+end
+
+function GM:DrawDeathNotice()
+end
+
+function HUD:DrawObjective(ply)
+
+    if not self.objectiveTextVisible then
+        return
+    end
+
+    local role = ply:Role()
+    if not role then
+        return
+    end
+
+    draw.TextShadow({
+        text = "Вы " .. role.Title,
+        pos = { ScrW() / 2, 100 },
+        font = "ImpactBig",
+        color = team.GetColor(ply:Team()),
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    }, 2, 255)
+
+    local y = 110
+    local align = 32
+    for i, txt in pairs(role.Objective) do
+        draw.TextShadow({
+            text = txt,
+            pos = { ScrW() / 2, y + (align * i) },
+            font = "ImpactSmall",
+            color = Color(255, 255, 255),
+            xalign = TEXT_ALIGN_CENTER,
+            yalign = TEXT_ALIGN_CENTER,
+        }, 2, 255)
+    end
 end
 
 function HUD:DrawBlackout()
-    draw.RoundedBox(0, 0, 0, ScrW(), ScrH(), Color(0, 0, 0, 255 * self.blackoutScreenAmount))
+    if self.blackoutScreenCurrent ~= self.blackoutScreenTarget then
+        self.blackoutScreenCurrent = Approach(
+                self.blackoutScreenCurrent,
+                self.blackoutScreenTarget,
+                FrameTime() * self.blackoutScreenFadeSpeed
+        )
+    end
+
+    draw.RoundedBox(0, 0, 0, ScrW(), ScrH(), Color(0, 0, 0, 255 * self.blackoutScreenCurrent))
 end
 
-function HUD:DrawPlayerStatus(ply)
+function HUD:DrawPlayerStatus(ply, width, height)
     local teamIndex = ply:Team();
-    local roleName = ply:GetRole();
-    local role = ROLES[roleName];
+    local role = ply:Role();
     local roleTitle = role and role.Title or team.GetName(teamIndex)
 
     local x = 10
     local y = ScrH() - 10 - height
 
-    -- Team Name
-    draw.RoundedBox(5, x, y, width, height, Color(0, 0, 10, 200))
-    draw.ProgressBar(0, x, y,
-            width - 120, 40,
-            0, roleTitle, "ClassName",
-            team.GetColor(teamIndex), Color(0, 0, 0)
-    )
+    local colorBg = Color(0, 0, 10, 200)
+    local roleWidth = width - 120
+    local roleHeight = 40
 
-    local timeRemaining = math.Max(timerEndsAt - CurTime(), 0);
+    -- Team Name
+    draw.RoundedBox(0, x, y, width, height, colorBg)
+    draw.RoundedBox(0, x, y, width, roleHeight, colorBg)
+    draw.RoundedBox(0, x, y, roleWidth, roleHeight, team.GetColor(teamIndex))
+    draw.TextShadow({
+        text = roleTitle,
+        pos = { x + roleWidth / 2, y + roleHeight / 2 },
+        font = "ClassName",
+        color = Color(255, 255, 255),
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    }, 2, 255)
+
+    local timeRemaining = math.Max(self.timerEndsAt - CurTime(), 0);
 
     draw.TextShadow({
         text = tostring(string.ToMinutesSeconds(timeRemaining)),
@@ -63,23 +127,27 @@ function HUD:DrawPlayerStatus(ply)
         yalign = TEXT_ALIGN_CENTER,
     }, 2, 255)
 
-    if ply:Alive() then
-        draw.ProgressBar(5, x + 10, y + 60,
+    if ply:Alive() and ply:Team() ~= TEAMS.SPECTATOR then
+        draw.ProgressBar(3, x + 10, y + 60,
                 width - 20, 30,
-                0, ply:Health() .. " %", "HealthAmmo",
-                Color(255, 0, 0), Color(0, 0, 0)
+                Fraction(ply:Health(), ply:GetMaxHealth()), ply:Health() .. " HP", "HealthAmmo",
+                Color(255, 0, 0), colorBg
         )
 
-        draw.ProgressBar(5, x + 10, y + 100,
+        draw.ProgressBar(3, x + 10, y + 100,
                 width - 20, 30,
-                0, "Выносливость", "HealthAmmo",
-                Color(100, 100, 170), Color(0, 0, 0)
+                Fraction(self.stamina, MAX_STAMINA), Percent(self.stamina, MAX_STAMINA), "HealthAmmo",
+                Color(100, 100, 170), colorBg
         )
-        draw.ProgressBar(5, x + 10, y + 140,
-                width - 20, 30,
-                0, "10 (+10)", "HealthAmmo",
-                Color(190, 140, 0), Color(0, 0, 0)
-        )
+
+        local wep = ply:GetActiveWeapon()
+        if IsValid(wep) and wep:GetMaxClip1() > 0 then
+            draw.ProgressBar(3, x + 10, y + 140,
+                    width - 20, 30,
+                    Fraction(wep:Clip1(), wep:GetMaxClip1()), wep:Clip1() .. " (+" .. ply:GetAmmoCount(wep:GetPrimaryAmmoType()) .. ")", "HealthAmmo",
+                    Color(190, 140, 0), colorBg
+            )
+        end
     end
 end
 

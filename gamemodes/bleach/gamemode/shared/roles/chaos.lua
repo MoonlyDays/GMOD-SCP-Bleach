@@ -9,9 +9,9 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_SCIENTIST
 ROLE.Team = TEAMS.CHAOS
 ROLE.Model = RESEARCHER_MODELS
+ROLE.DisguisedAs = "scientist"
 ROLE.Ammo = { { "AR2", 180 }, { "Pistol", 105 } }
 ROLE.Weapons = {
     "br_holster",
     "keycard_level3"
 }
-ROLE.DisguisedAs = "scientist"

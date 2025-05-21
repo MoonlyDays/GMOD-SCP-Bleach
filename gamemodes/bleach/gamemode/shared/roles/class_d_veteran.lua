@@ -14,4 +14,7 @@ ROLE.WalkSpeed = 1.1
 ROLE.RunSpeed = 1.05
 ROLE.JumpPower = 1.05
 ROLE.Requires = { class_d = 2 }
-ROLE.Weapons = { "br_holster", "keycard_level1" }
+ROLE.Weapons = {
+    "br_holster",
+    "keycard_level1"
+}

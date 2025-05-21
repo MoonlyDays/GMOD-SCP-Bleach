@@ -1,9 +1,12 @@
-BREACH = {}
+BREACH = {
+    stats = {},
+    roleCount = {}
+}
 
 function BREACH:Restart()
-
-
+    self:CleanUp()
     self:OnRoundSetup()
+
     local prepareTime = br_time_preparing:GetInt();
     self:SetTimer(prepareTime)
     timer.Create("SetupTime", prepareTime, 1, function()
@@ -34,12 +37,12 @@ function BREACH:OnRoundSetup()
 end
 
 function BREACH:OnRoundActive()
-    net.Start("OnRoundActive")
+    net.Start("RoundActive")
     net.Broadcast()
 end
 
 function BREACH:OnRoundEnded()
-    net.Start("OnRoundEnded")
+    net.Start("RoundEnded")
     net.WriteTable(self.stats, true)
     net.Broadcast()
 end
@@ -54,13 +57,75 @@ function BREACH:CleanUp()
 
     self:ResetStats()
     self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
+    self.roleCount = {}
 end
 
 function BREACH:SetupPlayers()
-    for _, ply in pairs(player.GetAll()) do
-        ply:SetRole("scp_1987_j")
-        ply:Spawn()
+    local players = player.GetAll()
+    local playerCount = #players;
+    local roleList = {}
+    local population = {}
+
+    for _ = 1, playerCount, 1 do
+        if roleList[1] == nil then
+            roleList = table.Copy(BREACH_ROLE_LIST)
+        end
+
+        local nextTeam = roleList[1]
+        local ply = table.Random(players)
+        table.RemoveByValue(players, ply)
+        table.remove(roleList, 1)
+
+        local roleName = self:FindBestAvailableRole(nextTeam, population)
+        local role = ROLES[roleName]
+        population[roleName] = (population[roleName] or 0) + 1
+        ply:SpawnAs(roleName)
+
+        if role.Requires then
+            for requiredRole, requiredCount in pairs(role.Requires) do
+                population[requiredRole] = (population[requiredRole] or 0) - requiredCount
+            end
+        end
     end
+end
+
+function BREACH:FindBestAvailableRole(team, population)
+    local roles = table.Copy(TEAM_ROLES[team])
+
+    for _ = #roles, 1, -1 do
+        local roleName = table.Random(roles)
+        table.RemoveByValue(roles, roleName)
+        if self:IsRoleAvailable(roleName, population) then
+            return roleName
+        end
+    end
+
+    return nil
+end
+
+function BREACH:IsRoleAvailable(roleName, population)
+    local role = ROLES[roleName]
+
+    if role.StartAssigned ~= nil and not role.StartAssigned then
+        return false
+    end
+
+    if role.Requires then
+        for requiredRole, requiredCount in pairs(role.Requires) do
+            local currentCount = population[requiredRole] or 0
+            if currentCount < requiredCount then
+                return false
+            end
+        end
+    end
+
+    if role.CheckAvailable then
+        if not role.CheckAvailable() then
+            return false
+        end
+    end
+
+    return true
 end
 
 function BREACH:PlayCommotionSound()

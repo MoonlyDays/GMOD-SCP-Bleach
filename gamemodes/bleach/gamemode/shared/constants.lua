@@ -2,6 +2,11 @@ AddCSLuaFile()
 
 MIN_PLAYERS = 2
 MAX_STAMINA = 10
+STAMINA_CONSUME_SPEED = 1
+STAMINA_RESTORE_SPEED = 0.5
+STAMINA_COOLDOWN = 5
+BASE_WALK_SPEED = 180
+BASE_RUN_SPEED = 280
 
 STATS = {
     CLASS_D_ESCAPED = 1,
@@ -16,14 +21,55 @@ STATS = {
 }
 
 TEAMS = {
-    SPECTATOR = 1,
-    CLASS_D = 2,
-    SCP = 3,
-    SCIENTIST = 4,
-    SECURITY = 5,
-    MTF = 6,
-    CHAOS = 7,
-    STAFF = 8
+    SPECTATOR = 0,
+    CLASS_D = 1,
+    SCP = 2,
+    SCIENTIST = 3,
+    SECURITY = 4,
+    MTF = 5,
+    CHAOS = 6,
+    STAFF = 7
+}
+
+TEAM_ROLE_LIST = {
+    TEAMS.CLASS_D
+}
+
+BREACH_ROLE_LIST = {
+    -- 1 - 16	{4, 2, 2, 3, 3, 2}
+    TEAMS.CLASS_D,
+    TEAMS.SCP,
+    TEAMS.SECURITY,
+    TEAMS.STAFF,
+    TEAMS.CLASS_D,
+    TEAMS.SCIENTIST,
+    TEAMS.CHAOS,
+    TEAMS.SECURITY,
+    TEAMS.SCP,
+    TEAMS.CLASS_D,
+    TEAMS.SCIENTIST,
+    TEAMS.SECURITY,
+    TEAMS.CLASS_D,
+    TEAMS.STAFF,
+    TEAMS.CHAOS,
+    TEAMS.SCIENTIST,
+    -- 2 - 32	{8, 5, 4, 5, 6, 4}
+    TEAMS.CLASS_D,
+    TEAMS.SECURITY,
+    TEAMS.SCP,
+    TEAMS.CHAOS,
+    TEAMS.CLASS_D,
+    TEAMS.STAFF,
+    TEAMS.SECURITY,
+    TEAMS.SCP,
+    TEAMS.CLASS_D,
+    TEAMS.SCIENTIST,
+    TEAMS.STAFF,
+    TEAMS.CHAOS,
+    TEAMS.SECURITY,
+    TEAMS.SCP,
+    TEAMS.SCIENTIST,
+    TEAMS.CLASS_D,
 }
 
 ROUND_STATES = {
@@ -34,6 +80,9 @@ ROUND_STATES = {
 }
 
 SCP_173_MODEL = "models/breach173.mdl"
+SCP_049_MODEL = "models/vinrax/player/scp049_player.mdl"
+SCP_049_2_MODEL = "models/player/zombie_classic.mdl"
+SCP_106_MODEL = "models/vinrax/player/scp106_player.mdl"
 SCP_1987_J_MODEL = "models/cktheamazingfrog/player/freddy/freddyvr.mdl"
 
 SIDE_DIRECTOR_MODEL = "models/player/breen.mdl"

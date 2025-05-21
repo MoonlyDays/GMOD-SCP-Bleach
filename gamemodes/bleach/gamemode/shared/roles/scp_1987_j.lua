@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-ROLE.Title = "SCP-1987-J «Фредди Фазбер»"
+ROLE.Title = "SCP-1987-J «Фазбер»"
 ROLE.Objective = {
     "О холеро, чито фреди фазбер. Ваша задача сбежать из комплекса.",
     "Используйте ПКМ, чтобы перемещаться по камерам комплекса",
@@ -8,6 +8,7 @@ ROLE.Objective = {
 }
 ROLE.Spawn = MAP.SPAWN_OUTSIDE
 ROLE.Team = TEAMS.SCP
+ROLE.StartAssigned = false
 ROLE.Health = 1000
 ROLE.Model = SCP_1987_J_MODEL
 ROLE.CanBlink = false

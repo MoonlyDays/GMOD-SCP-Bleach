@@ -1,6 +1,6 @@
 function draw.ProgressBar(radius, x, y, width, height, percentage, text, font, colorBg, colorFg)
-    draw.RoundedBox(radius, x, y, width, height, colorBg)
-    draw.RoundedBox(radius, x, y, width * percentage, height, colorFg)
+    draw.RoundedBox(radius, x, y, width, height, colorFg)
+    draw.RoundedBox(radius, x, y, width * percentage, height, colorBg)
     draw.TextShadow({
         text = text,
         pos = { width / 2 + 15, y + height / 2 - 1 },

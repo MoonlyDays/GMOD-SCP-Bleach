@@ -4,14 +4,14 @@ local HBAR = 0
 local HBPX = 0
 local HBPY = 0
 local HBPZ = 0
-local headBobEnabled = false
+local headBobEnabled = true
 
 function CalcHeadBob(ply, pos, ang, fov)
     if not headBobEnabled then
         return
     end
 
-    if ply:GetTeam() == TEAM_SPECTATOR then
+    if ply:Team() == TEAMS.SPECTATOR then
         return
     end
 

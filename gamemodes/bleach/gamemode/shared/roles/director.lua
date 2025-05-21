@@ -8,6 +8,7 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_GUARD
 ROLE.Team = TEAMS.SECURITY
 ROLE.Model = SIDE_DIRECTOR_MODEL
+ROLE.Requires = { guard_chief = 1 }
 ROLE.Ammo = { { "Pistol", 105 } }
 ROLE.Weapons = {
     "br_holster",
@@ -17,5 +18,3 @@ ROLE.Weapons = {
     "weapon_stunstick",
     "weapon_mtf_deagle"
 }
-
-ROLE.Requires = { guard_chief = 1 }

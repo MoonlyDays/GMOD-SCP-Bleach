@@ -4,11 +4,11 @@ net.Receive("BroadcastSound", function()
 end)
 
 net.Receive("TimerChanged", function()
-    timerEndsAt = CurTime() + net.ReadInt(16);
+    HUD.timerEndsAt = CurTime() + net.ReadInt(16);
 end)
 
 net.Receive("RoundStart", function()
-    HUD:BlackoutScreen(1, 5, 2)
+    HUD:BlackoutScreen(1, 2, 0, 0.3)
     HUD.objectiveTextVisible = true
     HUD.roundSummaryVisible = false
 end)
@@ -20,4 +20,8 @@ end)
 net.Receive("RoundEnded", function()
     HUD.roundSummary = net.ReadTable(true)
     HUD.roundSummaryVisible = true
+end)
+
+net.Receive("UpdateStamina", function()
+    HUD.stamina = net.ReadFloat()
 end)

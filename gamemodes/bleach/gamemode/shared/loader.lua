@@ -1,6 +1,7 @@
 AddCSLuaFile()
 
 ROLES = {}
+TEAM_ROLES = {}
 MAP = {}
 
 function LoadMapConfig()
@@ -19,6 +20,10 @@ function LoadRoles()
         ROLE = {}
         include(path)
         AddCSLuaFile(path)
+
+        TEAM_ROLES[ROLE.Team] = TEAM_ROLES[ROLE.Team] or {}
+        table.insert(TEAM_ROLES[ROLE.Team], name)
+
         ROLES[name] = ROLE;
         ROLE = nil
     end

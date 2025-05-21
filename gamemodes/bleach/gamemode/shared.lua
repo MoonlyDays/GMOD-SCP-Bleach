@@ -19,13 +19,12 @@ function IncludeFolder(name, shouldInclude, shouldTransmit)
 end
 
 function GM:CreateTeams()
-    team.SetUp(0, "Unknown Team", Color(255, 255, 255), false)
     team.SetUp(TEAMS.SPECTATOR, "Наблюдатель", Color(141, 186, 160))
     team.SetUp(TEAMS.SCP, "SCP Объект", Color(112, 15, 31))
-    team.SetUp(TEAMS.SECURITY, "Безопасность Комплекса", Color(0, 100, 255))
-    team.SetUp(TEAMS.MTF, "MTF", Color(20, 100, 255))
+    team.SetUp(TEAMS.SECURITY, "Охранник", Color(0, 100, 255))
+    team.SetUp(TEAMS.MTF, "MTF", Color(0, 100, 255))
     team.SetUp(TEAMS.CLASS_D, "Класс Д Персонал", Color(255, 130, 0))
-    team.SetUp(TEAMS.SCIENTIST, "Научная Команда", Color(66, 188, 244))
-    team.SetUp(TEAMS.STAFF, "Работники Комплекса", Color(141, 58, 196))
+    team.SetUp(TEAMS.SCIENTIST, "Ученый", Color(66, 188, 244))
+    team.SetUp(TEAMS.STAFF, "Сотрудник", Color(141, 58, 196))
     team.SetUp(TEAMS.CHAOS, "Повстанцы Хаоса", Color(0, 100, 255))
 end

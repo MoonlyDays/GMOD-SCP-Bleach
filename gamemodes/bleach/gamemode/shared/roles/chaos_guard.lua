@@ -10,6 +10,7 @@ ROLE.Spawn = MAP.SPAWN_GUARD
 ROLE.Team = TEAMS.CHAOS
 ROLE.Model = RESEARCHER_MODELS
 ROLE.Vest = "armor_sec_officer"
+ROLE.DisguisedAs = "guard"
 ROLE.Ammo = { { "SMG1", 200 } }
 ROLE.Weapons = {
     "br_holster",
@@ -19,4 +20,3 @@ ROLE.Weapons = {
     "weapon_stunstick",
     "weapon_mtf_p90"
 }
-ROLE.DisguisedAs = "guard"
