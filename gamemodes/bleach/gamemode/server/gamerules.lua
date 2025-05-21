@@ -1,8 +1,7 @@
 BREACH = {}
 
 function BREACH:Restart()
-    self:CleanUp()
-    game.CleanUpMap()
+
 
     self:OnRoundSetup()
     local prepareTime = br_time_preparing:GetInt();
@@ -25,6 +24,45 @@ function BREACH:Restart()
     end)
 end
 
+function BREACH:OnRoundSetup()
+    self:BroadcastSound("Alarm2.ogg")
+    self:PlayCommotionSound()
+    self:SetupPlayers()
+
+    net.Start("RoundStart")
+    net.Broadcast()
+end
+
+function BREACH:OnRoundActive()
+    net.Start("OnRoundActive")
+    net.Broadcast()
+end
+
+function BREACH:OnRoundEnded()
+    net.Start("OnRoundEnded")
+    net.WriteTable(self.stats, true)
+    net.Broadcast()
+end
+
+function BREACH:CleanUp()
+    game.CleanUpMap()
+
+    timer.Remove("PlayCommotionSounds");
+    timer.Remove("SetupTime");
+    timer.Remove("RoundTime");
+    timer.Remove("PostTime");
+
+    self:ResetStats()
+    self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
+end
+
+function BREACH:SetupPlayers()
+    for _, ply in pairs(player.GetAll()) do
+        ply:SetRole("scp_1987_j")
+        ply:Spawn()
+    end
+end
+
 function BREACH:PlayCommotionSound()
     local rndSound = table.Random(self.commotionSounds)
     if not isstring(rndSound) then
@@ -39,27 +77,22 @@ function BREACH:PlayCommotionSound()
     end)
 end
 
-function BREACH:CleanUp()
-    timer.Remove("PlayCommotionSounds");
-    timer.Remove("SetupTime");
-    timer.Remove("RoundTime");
-    timer.Remove("PostTime");
-
-    self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
-
-    self:ResetStats();
-end
-
-function BREACH:ResetStats()
-    self.stats = {}
-end
-
 function BREACH:Stat(type)
     return self.stats[type] or 0;
 end
 
 function BREACH:AddStat(type, howMuch)
     self.stats[type] = self.Stat(type) + howMuch;
+end
+
+function BREACH:SetStat(type, value)
+    self.stats[type] = value
+end
+
+function BREACH:ResetStats()
+    for _, stat in pairs(STATS) do
+        self:SetStat(stat, 0)
+    end
 end
 
 function BREACH:BroadcastSound(sound)
@@ -86,21 +119,3 @@ function BREACH:SetTimer(time)
     net.Broadcast()
 end
 
-function BREACH:SetupPlayers()
-    for _, ply in pairs(player.GetAll()) do
-        ply:SetRole("scp_1987_j")
-        ply:Spawn()
-    end
-end
-
-function BREACH:OnRoundSetup()
-    self:BroadcastSound("Alarm2.ogg")
-    self:PlayCommotionSound()
-    self:SetupPlayers()
-end
-
-function BREACH:OnRoundActive()
-end
-
-function BREACH:OnRoundEnded()
-end

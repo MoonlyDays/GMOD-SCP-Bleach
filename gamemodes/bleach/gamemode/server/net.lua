@@ -1,5 +1,5 @@
-util.AddNetworkString("OnRoundStart")
-util.AddNetworkString("OnRoundActive")
-util.AddNetworkString("OnRoundEnded")
+util.AddNetworkString("RoundStart")
+util.AddNetworkString("RoundActive")
+util.AddNetworkString("RoundEnded")
 util.AddNetworkString("TimerChanged")
 util.AddNetworkString("BroadcastSound")
