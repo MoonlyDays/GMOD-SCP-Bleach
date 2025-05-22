@@ -49,5 +49,7 @@ function ENT:Draw()
         return
     end
 
+    cam.Start2D()
     draw.WorldText(self:GetPos() + Vector(0, 0, 15), self.PrintName, Color(255, 255, 255))
+    cam.End2D()
 end

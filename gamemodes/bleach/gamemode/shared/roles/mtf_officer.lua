@@ -19,5 +19,6 @@ ROLE.Weapons = {
     "item_gasmask",
     "item_nvg",
     "weapon_stunstick",
-    "weapon_chaos_famas"
+    "weapon_chaos_famas",
+    "scpid_mtf"
 }

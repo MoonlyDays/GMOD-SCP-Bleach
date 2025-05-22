@@ -1,6 +1,7 @@
 BREACH = {
     state = ROUND_STATES.WAITING_FOR_PLAYERS,
     stats = {},
+    timerEndsAt = 0,
     roleCount = {}
 }
 
@@ -58,6 +59,8 @@ end
 function BREACH:OnRoundSetup()
     self:CleanUp()
     self:SetupPlayers()
+    self:SetupItems()
+
     self:BroadcastSound("Alarm2.ogg")
     self:PlayCommotionSound()
 
@@ -103,6 +106,35 @@ end
 function BREACH:WinCheck()
     if #player.GetAll() < MIN_PLAYERS then
         return
+    end
+end
+
+function BREACH:SetupItems()
+    for name, item in pairs(ITEMS) do
+        print("=======", name, "=======")
+        local spawns = table.Copy(item.Spawn)
+        local spawnCount = table.Count(spawns)
+
+        if item.SpawnFraction then
+            spawnCount = math.floor(spawnCount * item.SpawnFraction)
+        end
+
+        print("SpawnCount", spawnCount, #spawns)
+        for _ = 1, spawnCount, 1 do
+            if item.ChanceFraction then
+                if math.random(0, 100) <= (item.ChanceFraction * 100) then
+                    continue
+                end
+            end
+
+            local entName = Pick(item.Entity)
+            local spawn = ExhaustPick(spawns)
+            local ent = ents.Create(entName)
+            ent:SetPos(Pick(spawn))
+            ent:Spawn()
+
+            print("SPAWNED ", name, "at", ent:GetPos())
+        end
     end
 end
 

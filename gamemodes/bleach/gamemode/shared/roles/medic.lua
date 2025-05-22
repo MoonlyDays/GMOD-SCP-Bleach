@@ -15,5 +15,6 @@ ROLE.Weapons = {
     "br_holster",
     "keycard_level2",
     "item_ultramedkit",
-    "item_eyedrops"
+    "item_eyedrops",
+    "scpid_jan"
 }

@@ -21,5 +21,6 @@ ROLE.Weapons = {
     "item_gasmask",
     "item_ultramedkit",
     "weapon_stunstick",
-    "weapon_mtf_ump45"
+    "weapon_mtf_ump45",
+    "scpid_guard"
 }

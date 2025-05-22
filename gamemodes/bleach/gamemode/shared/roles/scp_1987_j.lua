@@ -8,7 +8,6 @@ ROLE.Objective = {
 }
 ROLE.Spawn = MAP.SPAWN_OUTSIDE
 ROLE.Team = TEAMS.SCP
-ROLE.StartAssigned = false
 ROLE.Health = 1000
 ROLE.Model = SCP_1987_J_MODEL
 ROLE.CanBlink = false

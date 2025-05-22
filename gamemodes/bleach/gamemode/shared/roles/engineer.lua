@@ -13,5 +13,6 @@ ROLE.ModelColor = Color(50, 50, 50)
 ROLE.Weapons = {
     "br_holster",
     "keycard_level2",
-    "item_gasmask"
+    "item_gasmask",
+    "scpid_jan"
 }

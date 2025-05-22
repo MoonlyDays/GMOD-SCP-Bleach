@@ -20,5 +20,6 @@ ROLE.Weapons = {
     "item_nvg",
     "weapon_stunstick",
     "weapon_mtf_usp",
-    "weapon_chaos_sg550"
+    "weapon_chaos_sg550",
+    "scpid_mtf"
 }

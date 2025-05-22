@@ -28,19 +28,20 @@ function GM:PlayerUse(ply)
 end
 
 function GM:PlayerSetHandsModel(ply, ent)
-    local simpleModel = player_manager.TranslateToPlayerModelName(ply:GetModel())
-    local info = player_manager.TranslatePlayerHands(simpleModel)
-    if not info then
-        return
+    print("AAAAAAAAAAAAAA");
+    local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+    print(simplemodel)
+    local info = player_manager.TranslatePlayerHands(simplemodel)
+    if info then
+        ent:SetModel(info.model)
+        ent:SetSkin(info.skin)
+        ent:SetBodyGroups(info.body)
     end
-
-    ent:SetModel(info.model)
-    ent:SetSkin(info.skin)
-    ent:SetBodyGroups(info.body)
 end
 
 function GM:PlayerTick(ply)
     ply:UpdateStamina()
+    ply:UpdateBlink()
 end
 
 function PLAYER:SetupCurrentRole()
@@ -85,7 +86,12 @@ function PLAYER:SetupCurrentRole()
         end
     end
 
+    if role.Armor then
+        self:EquipArmor(role.Armor)
+    end
+
     self:SwitchToDefaultWeapon()
+    self:SetupHands()
 end
 
 function PLAYER:SpawnAs(role)
@@ -115,6 +121,28 @@ function PLAYER:CleanUp()
     self.StaminaRestoresAfter = 0
     self.UsingArmor = nil
     self.AmmoPickupTimes = {}
+    self.NextBlinkTime = 0
+    self.UnblinkAt = nil
+    self.IsBlinking = false
+end
+
+function PLAYER:UpdateBlink()
+    if CurTime() > self.NextBlinkTime then
+        self.NextBlinkTime = CurTime() + br_time_blink_delay:GetInt()
+        self:Blink(br_time_blink:GetFloat())
+    end
+
+    if self.UnblinkAt and CurTime() > self.UnblinkAt then
+        self.IsBlinking = false
+    end
+end
+
+function PLAYER:Blink(time)
+    self.UnblinkAt = CurTime() + time;
+    self.IsBlinking = true
+    net.Start("Blink")
+    net.WriteFloat(time)
+    net.Send(self)
 end
 
 function PLAYER:UpdateStamina()
@@ -144,7 +172,7 @@ end
 
 function PLAYER:SendInitialUpdate()
     net.Start("TimerChanged")
-    net.WriteInt(BREACH.timerEndsAt - CurTime())
+    net.WriteInt(BREACH.timerEndsAt - CurTime(), 16)
     net.Send(self)
 
     net.Start("RoundStateChanged")
@@ -163,8 +191,50 @@ function PLAYER:EquipArmor(armor)
 
     self:EmitSound(Sound("npc/combine_soldier/zipline_clothing" .. math.random(1, 2) .. ".wav"))
     self.UsingArmor = armor
+
+    local stats = 0.9
+    if armor == "armor_chaos" then
+        self:SetModel("models/friskiukas/bf4/us_01.mdl")
+        stats = 0.85
+    elseif armor == "armor_fireproof" then
+        self:SetModel("models/fart/ragdolls/css/counter_sas_player.mdl")
+        stats = 0.95
+    elseif armor == "armor_mtf_com" then
+        self:SetModel("models/player/riot.mdl")
+        stats = 0.85
+    elseif armor == "armor_mtf_lie" then
+        self:SetModel("models/mw2/skin_03/mw2_soldier_04.mdl")
+        stats = 0.85
+    elseif armor == "armor_mtf_medic" then
+        self:SetModel("models/payday2/units/medic_player.mdl")
+        stats = 0.85
+    elseif armor == "armor_mtf_officer" then
+        self:SetModel("models/fart/ragdolls/css/counter_sas_player.mdl")
+        stats = 0.85
+    elseif armor == "armor_sec_chief" then
+        self:SetModel("models/mtf/mtf remasteredhd.mdl")
+        stats = 0.9
+    elseif armor == "armor_sec_guard" then
+        self:SetModel("models/player/kerry/class_securety.mdl")
+        stats = 0.9
+    elseif armor == "armor_sec_officer" then
+        self:SetModel("models/fart/ragdolls/css/counter_gign_player.mdl")
+        stats = 0.9
+    end
 end
 
 function PLAYER:DropArmor()
+    if not self.UsingArmor then
+        return
+    end
 
+    self:SetModel(Pick(self:Role().Model))
+    local item = ents.Create(self.UsingArmor)
+    if IsValid(item) then
+        item:Spawn()
+        item:SetPos(self:GetPos())
+        self:EmitSound(Sound("npc/combine_soldier/zipline_clothing" .. math.random(1, 2) .. ".wav"))
+    end
+
+    self.UsingArmor = nil
 end

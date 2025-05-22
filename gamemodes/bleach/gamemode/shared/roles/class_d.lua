@@ -9,4 +9,4 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_CLASS_D
 ROLE.Team = TEAMS.CLASS_D
 ROLE.Model = CLASS_D_MODELS
-ROLE.Weapons = { "br_holster" }
+ROLE.Weapons = { "br_holster", "scpid_d" }

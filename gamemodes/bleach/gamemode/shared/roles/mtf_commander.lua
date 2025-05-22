@@ -20,5 +20,6 @@ ROLE.Weapons = {
     "item_nvg",
     "weapon_stunstick",
     "weapon_mtf_deagle",
-    "weapon_chaos_ak47"
+    "weapon_chaos_ak47",
+    "scpid_mtf"
 }

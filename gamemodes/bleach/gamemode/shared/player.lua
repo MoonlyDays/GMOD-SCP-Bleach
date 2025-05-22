@@ -15,7 +15,20 @@ function PLAYER:Role()
 end
 
 function PLAYER:IsPlaying()
-    return self:Alive() and not self:IsSpectating()
+    return IsValid(self) and self:Alive() and not self:IsSpectating()
+end
+
+function PLAYER:CanBlink()
+    if not self:IsPlaying() then
+        return false
+    end
+
+    local role = self:Role()
+    if role then
+        return role.CanBlink or true
+    end
+
+    return false
 end
 
 function PLAYER:IsSpectating()

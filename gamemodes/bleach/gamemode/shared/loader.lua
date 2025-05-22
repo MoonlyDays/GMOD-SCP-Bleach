@@ -1,5 +1,6 @@
 AddCSLuaFile()
 
+ITEMS = {}
 ROLES = {}
 TEAM_ROLES = {}
 MAP = {}

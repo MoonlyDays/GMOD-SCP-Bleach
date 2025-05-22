@@ -7,6 +7,12 @@ net.Receive("TimerChanged", function()
     HUD.timerEndsAt = CurTime() + net.ReadInt(16);
 end)
 
+net.Receive("Blink", function()
+    local time = net.ReadFloat()
+    HUD.blinkTimer = br_time_blink_delay:GetInt()
+    HUD:BlackoutScreen(0, 1, time, 25, 25)
+end)
+
 net.Receive("RoundStateChanged", function()
     local state = net.ReadInt(4)
 
@@ -15,7 +21,7 @@ net.Receive("RoundStateChanged", function()
     end
 
     if state == ROUND_STATES.SETUP then
-        HUD:BlackoutScreen(1, 2, 0, 0.3)
+        HUD:BlackoutScreen(1, 1, 2, 0, 0.3)
         HUD.objectiveTextVisible = true
         HUD.roundSummaryVisible = false
     end

@@ -18,7 +18,8 @@ ROLE.Weapons = {
     "item_gasmask",
     "item_nvg",
     "weapon_stunstick",
-    "weapon_mtf_mp5"
+    "weapon_mtf_mp5",
+    "scpid_guard"
 }
 ROLE.Requires = { guard_officer = 1 }
 ROLE.Ammo = { { "SMG1", 200 } }

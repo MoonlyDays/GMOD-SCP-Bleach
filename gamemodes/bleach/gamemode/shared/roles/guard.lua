@@ -18,5 +18,6 @@ ROLE.Weapons = {
     "item_radio",
     "item_gasmask",
     "weapon_stunstick",
-    "weapon_mtf_tmp"
+    "weapon_mtf_tmp",
+    "scpid_guard"
 }

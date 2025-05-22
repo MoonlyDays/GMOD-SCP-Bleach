@@ -15,22 +15,30 @@ HUD = {
 
     roundSummary = {},
 
+    blinkTimer = 0,
+    currentBlackoutPriority = 0,
     blackoutScreenFadeSpeed = 0,
     blackoutScreenCurrent = 0,
     blackoutScreenTarget = 0
 }
 
-function HUD:BlackoutScreen(howMuch, blackoutTime, fadeInSpeed, fadeOutSpeed)
+function HUD:BlackoutScreen(priority, howMuch, blackoutTime, fadeInSpeed, fadeOutSpeed)
+    if priority < self.currentBlackoutPriority then
+        return
+    end
+
     self.blackoutScreenTarget = howMuch
     self.blackoutScreenFadeSpeed = fadeInSpeed
+    self.currentBlackoutPriority = 0
 
     if fadeInSpeed <= 0 then
         self.blackoutScreenCurrent = howMuch
     end
 
     if blackoutTime > 0 then
+        self.currentBlackoutPriority = priority
         timer.Create("BlackoutTime", blackoutTime, 1, function()
-            self:BlackoutScreen(0, 0, fadeOutSpeed)
+            self:BlackoutScreen(self.currentBlackoutPriority, 0, 0, fadeOutSpeed)
         end)
     end
 end
@@ -38,6 +46,7 @@ end
 function HUD:Draw()
     local ply = LocalPlayer()
 
+    self:PostProcess()
     self:DrawBlackout()
     self:DrawPlayerStatus(ply, 450, 190)
     self:DrawObjective(ply)
@@ -80,6 +89,13 @@ function HUD:DrawObjective(ply)
     end
 end
 
+function HUD:PostProcess()
+    local vignette = Material("breach/vignette.png") -- adjust path if needed
+    surface.SetDrawColor(255, 255, 255, 255)
+    surface.SetMaterial(vignette)
+    surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+end
+
 function HUD:DrawBlackout()
     if self.blackoutScreenCurrent ~= self.blackoutScreenTarget then
         self.blackoutScreenCurrent = Approach(
@@ -105,6 +121,17 @@ function HUD:DrawPlayerStatus(ply, width, height)
     local roleHeight = 40
 
     -- Team Name
+
+    if ply:IsPlaying() and ply:CanBlink() then
+
+        if self.blinkTimer > 0 then
+            self.blinkTimer = self.blinkTimer - FrameTime()
+        end
+
+        draw.RoundedBox(0, x, y - 5, width, 10, colorBg)
+        draw.RoundedBox(0, x, y - 5, Fraction(self.blinkTimer, br_time_blink_delay:GetInt()) * width, 5, Color(255, 255, 255))
+    end
+
     draw.RoundedBox(0, x, y, width, height, colorBg)
     draw.RoundedBox(0, x, y, width, roleHeight, colorBg)
     draw.RoundedBox(0, x, y, roleWidth, roleHeight, team.GetColor(teamIndex))

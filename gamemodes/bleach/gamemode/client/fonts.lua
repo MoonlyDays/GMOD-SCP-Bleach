@@ -1,6 +1,6 @@
 -- Gamemode fonts
 surface.CreateFont("ClassName", {
-    font = "Trebuchet24",
+    font = "TargetID",
     size = 28,
     weight = 1000
 })
