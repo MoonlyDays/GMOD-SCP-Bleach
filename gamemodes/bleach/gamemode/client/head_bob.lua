@@ -1,9 +1,5 @@
 local HBAP = 0
-local HBAY = 0
 local HBAR = 0
-local HBPX = 0
-local HBPY = 0
-local HBPZ = 0
 local headBobEnabled = true
 
 function CalcHeadBob(ply, pos, ang, fov)

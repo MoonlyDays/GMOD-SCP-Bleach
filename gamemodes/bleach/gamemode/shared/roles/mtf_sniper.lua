@@ -10,7 +10,7 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_OUTSIDE
 ROLE.Team = TEAMS.MTF
 ROLE.Model = RESEARCHER_MODELS
-ROLE.Vest = "armor_mtf_officer"
+ROLE.Armor = "armor_mtf_officer"
 ROLE.Ammo = { { "AR2", 180 }, { "Pistol", 105 } }
 ROLE.Weapons = {
     "br_holster",

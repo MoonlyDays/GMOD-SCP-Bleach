@@ -10,7 +10,7 @@ ROLE.Objective = {
 ROLE.Spawn = MAP.SPAWN_GUARD
 ROLE.Team = TEAMS.SECURITY
 ROLE.Model = RESEARCHER_MODELS
-ROLE.Vest = "armor_sec_chief"
+ROLE.Armor = "armor_sec_chief"
 ROLE.Weapons = {
     "br_holster",
     "keycard_level4",

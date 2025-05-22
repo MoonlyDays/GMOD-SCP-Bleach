@@ -1,50 +1,90 @@
 BREACH = {
+    state = ROUND_STATES.WAITING_FOR_PLAYERS,
     stats = {},
     roleCount = {}
 }
 
+function BREACH:AttemptStartRound()
+    if self:CanStartRound() then
+        self:Restart()
+        return true
+    end
+
+    return false
+end
+
+function BREACH:CheckWinConditions()
+
+end
+
+function BREACH:CanStartRound()
+    if #player.GetAll() < MIN_PLAYERS then
+        return false
+    end
+
+    return true
+end
+
 function BREACH:Restart()
-    self:CleanUp()
-    self:OnRoundSetup()
+    self:ChangeState(ROUND_STATES.SETUP)
+end
 
-    local prepareTime = br_time_preparing:GetInt();
-    self:SetTimer(prepareTime)
-    timer.Create("SetupTime", prepareTime, 1, function()
+function BREACH:ChangeRoundState(state)
+    if self.state == state then
+        return
+    end
 
+    if state == ROUND_STATES.WAITING_FOR_PLAYERS then
+        self:OnWaitingForPlayers()
+    end
+
+    if state == ROUND_STATES.SETUP then
+        self:OnRoundSetup()
+    end
+
+    if state == ROUND_STATES.ACTIVE then
         self:OnRoundActive()
-        local roundTime = br_time_round:GetInt();
-        self:SetTimer(roundTime);
-        timer.Create("RoundTime", roundTime, 1, function()
+    end
 
-            self:OnRoundEnded()
-            local postTime = br_time_postround:GetInt();
-            self:SetTimer(postTime)
-            self:OnRoundActive()
-            timer.Create("PostTime", postTime, 1, function()
-                self:Restart();
-            end)
-        end)
-    end)
+    if state == ROUND_STATES.CHAT_TIME then
+        self:OnRoundEnded()
+    end
+end
+
+function BREACH:OnWaitingForPlayers()
+    self:CleanUp()
 end
 
 function BREACH:OnRoundSetup()
+    self:CleanUp()
+    self:SetupPlayers()
     self:BroadcastSound("Alarm2.ogg")
     self:PlayCommotionSound()
-    self:SetupPlayers()
 
-    net.Start("RoundStart")
-    net.Broadcast()
+    local time = br_time_preparing:GetInt();
+    self:SetTimer(time)
+    timer.Create("SetupTime", time, 1, function()
+        self:ChangeState(ROUND_STATES.ACTIVE)
+    end)
 end
 
 function BREACH:OnRoundActive()
-    net.Start("RoundActive")
-    net.Broadcast()
+    local time = br_time_round:GetInt();
+    self:SetTimer(time);
+    timer.Create("RoundTime", time, 1, function()
+        self:ChangeState(ROUND_STATES.CHAT_TIME)
+    end)
 end
 
 function BREACH:OnRoundEnded()
-    net.Start("RoundEnded")
-    net.WriteTable(self.stats, true)
-    net.Broadcast()
+    local time = br_time_postround:GetInt();
+    self:SetTimer(time)
+    self:OnRoundActive()
+    timer.Create("PostTime", time, 1, function()
+        if not self:AttemptStartRound() then
+            self:ChangeState(ROUND_STATES.WAITING_FOR_PLAYERS)
+        end
+    end)
 end
 
 function BREACH:CleanUp()
@@ -56,8 +96,14 @@ function BREACH:CleanUp()
     timer.Remove("PostTime");
 
     self:ResetStats()
-    self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
     self.roleCount = {}
+    self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
+end
+
+function BREACH:WinCheck()
+    if #player.GetAll() < MIN_PLAYERS then
+        return
+    end
 end
 
 function BREACH:SetupPlayers()
@@ -167,8 +213,20 @@ function BREACH:BroadcastSound(sound)
 end
 
 function BREACH:ChangeState(state)
-    if self.currentState == state then
-        return
+    if state == ROUND_STATES.WAITING_FOR_PLAYERS then
+        self:OnWaitingForPlayers()
+    end
+
+    if state == ROUND_STATES.SETUP then
+        self:OnRoundSetup()
+    end
+
+    if state == ROUND_STATES.ACTIVE then
+        self:OnRoundActive()
+    end
+
+    if state == ROUND_STATES.CHAT_TIME then
+        self:OnRoundEnded()
     end
 
     self.currentState = state;

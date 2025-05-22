@@ -1,7 +1,11 @@
 local PLAYER = FindMetaTable("Player")
 
 function GM:PlayerInitialSpawn(ply)
-    ply.Stamina = 0
+    ply:SendInitialUpdate()
+
+    if BREACH.state == ROUND_STATES.WAITING_FOR_PLAYERS then
+        BREACH:AttemptStartRound()
+    end
 end
 
 function GM:PlayerSpawn(ply)
@@ -106,8 +110,11 @@ function PLAYER:CleanUp()
     self:SetCanZoom(false)
     self:SetNoDraw(false)
     self:SprintEnable()
+    self:SetModelScale(1)
     self.Stamina = MAX_STAMINA
     self.StaminaRestoresAfter = 0
+    self.UsingArmor = nil
+    self.AmmoPickupTimes = {}
 end
 
 function PLAYER:UpdateStamina()
@@ -130,15 +137,34 @@ function PLAYER:UpdateStamina()
         end
     end
 
-    net.Start("UpdateStamina")
+    net.Start("StaminaChanged")
     net.WriteFloat(self.Stamina, 8)
     net.Send(self)
 end
 
-function PLAYER:EquipVest(vest)
+function PLAYER:SendInitialUpdate()
+    net.Start("TimerChanged")
+    net.WriteInt(BREACH.timerEndsAt - CurTime())
+    net.Send(self)
 
+    net.Start("RoundStateChanged")
+    net.WriteInt(BREACH.state, 4)
+    net.Send(self)
 end
 
-function PLAYER:DropVest()
+function PLAYER:CanUseItems()
+    return self:IsPlaying() and self:Team() ~= TEAMS.SCP
+end
+
+function PLAYER:EquipArmor(armor)
+    if self.UsingArmor == armor then
+        return
+    end
+
+    self:EmitSound(Sound("npc/combine_soldier/zipline_clothing" .. math.random(1, 2) .. ".wav"))
+    self.UsingArmor = armor
+end
+
+function PLAYER:DropArmor()
 
 end

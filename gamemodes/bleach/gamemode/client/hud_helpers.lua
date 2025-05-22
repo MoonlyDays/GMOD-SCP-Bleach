@@ -41,7 +41,7 @@ function draw.Circle(x, y, radius, seg, fraction)
     surface.DrawPoly(cir)
 end
 
-function DrawInfo(pos, txt, clr)
+function draw.WorldText(pos, txt, clr)
     pos = pos:ToScreen()
     draw.TextShadow({
         text = txt,

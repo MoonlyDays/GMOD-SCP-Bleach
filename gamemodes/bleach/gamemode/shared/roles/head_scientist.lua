@@ -11,4 +11,7 @@ ROLE.Team = TEAMS.SCIENTIST
 ROLE.Model = RESEARCHER_MODELS
 ROLE.ModelColor = Color(50, 50, 50)
 ROLE.Requires = { scientist = 2 }
-ROLE.Weapons = { "br_holster", "keycard_level3" }
+ROLE.Weapons = {
+    "br_holster",
+    "keycard_level3"
+}

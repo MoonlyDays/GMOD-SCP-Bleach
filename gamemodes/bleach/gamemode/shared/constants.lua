@@ -82,6 +82,7 @@ ROUND_STATES = {
 SCP_173_MODEL = "models/breach173.mdl"
 SCP_049_MODEL = "models/vinrax/player/scp049_player.mdl"
 SCP_049_2_MODEL = "models/player/zombie_classic.mdl"
+SCP_457_MODEL = ""
 SCP_106_MODEL = "models/vinrax/player/scp106_player.mdl"
 SCP_1987_J_MODEL = "models/cktheamazingfrog/player/freddy/freddyvr.mdl"
 

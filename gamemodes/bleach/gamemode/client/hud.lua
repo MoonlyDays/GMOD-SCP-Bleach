@@ -7,6 +7,7 @@ HUD = {
         CHudDeathNotice = true
     },
 
+    roundState = ROUND_STATES.WAITING_FOR_PLAYERS,
     timerEndsAt = 0,
     objectiveTextVisible = false,
     roundSummaryVisible = false,
