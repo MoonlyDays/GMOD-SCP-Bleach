@@ -50,6 +50,7 @@ function HUD:Draw()
     self:DrawBlackout()
     self:DrawPlayerStatus(ply, 450, 190)
     self:DrawObjective(ply)
+    self:DrawRoundSummary(ply)
 end
 
 function GM:DrawDeathNotice()
@@ -94,6 +95,49 @@ function HUD:PostProcess()
     surface.SetDrawColor(255, 255, 255, 255)
     surface.SetMaterial(vignette)
     surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+end
+
+function HUD:DrawRoundSummary(ply)
+    draw.TextShadow({
+        text = "Игра Окончена!",
+        pos = { ScrW() / 2, 100 },
+        font = "ImpactBig",
+        color = Color(255, 0, 0),
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    }, 2, 255)
+
+    draw.TextShadow({
+        text = "Все игроки были убиты!",
+        pos = { ScrW() / 2, 150 },
+        font = "ImpactSmall",
+        color = Color(255, 150, 150),
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    }, 2, 255)
+
+    local stats = {
+        "Погибло {num} игроков",
+        "Сбежало {num} классов D",
+        "Сбежало {num} SCP",
+        "Эвакуировано {num} сотрудников комплекса",
+        "Эвакуировано {num} сотрудников комплекса",
+        "Эвакуировано {num} сотрудников комплекса",
+        "Эвакуировано {num} сотрудников комплекса",
+        "Эвакуировано {num} сотрудников комплекса",
+        "Эвакуировано {num} сотрудников комплекса",
+    }
+
+    for i, stat in pairs(stats) do
+        draw.TextShadow({
+            text = stat,
+            pos = { ScrW() / 2, 180 + i * 40 },
+            font = "ImpactSmall",
+            color = Color(255, 255, 255),
+            xalign = TEXT_ALIGN_CENTER,
+            yalign = TEXT_ALIGN_CENTER,
+        }, 2, 255)
+    end
 end
 
 function HUD:DrawBlackout()

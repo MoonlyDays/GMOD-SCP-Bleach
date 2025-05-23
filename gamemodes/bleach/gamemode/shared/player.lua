@@ -5,6 +5,25 @@ function BREACH_PLAYER:SetupDataTables()
     self.Player:NetworkVar("String", "Role")
 end
 
+function PLAYER:ActiveClearanceLevel()
+    local wep = self:GetActiveWeapon()
+    if wep and wep.ClearanceLevel then
+        return wep.ClearanceLevel
+    end
+
+    return 0
+end
+
+function PLAYER:GlobalClearanceLevel()
+    local highest = 0
+    for _, wep in pairs(self:GetWeapons()) do
+        if wep.ClearanceLevel and highest < wep.ClearanceLevel then
+            highest = wep.ClearanceLevel
+        end
+    end
+    return highest
+end
+
 function PLAYER:Role()
     local roleName = self:GetRole()
     if roleName == "" then

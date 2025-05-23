@@ -6,8 +6,9 @@ end
 
 SWEP.Instructions = "If you hold it, you can open doors with level 2"
 SWEP.PrintName = "Keycard Level 2"
-SWEP.clevel = 2
+SWEP.ClearanceLevel = 2
 SWEP.keycard_skin = 1
+
 function SWEP:GetBetterOne()
     local r = math.random(1, 100)
     if buttonstatus == 3 then

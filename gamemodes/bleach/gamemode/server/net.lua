@@ -20,6 +20,7 @@ net.Receive("DropWeapon", function(_, ply)
             end
         end
 
+        wep.DroppedAmmo = wep:Clip1()
         ply:DropWeapon(wep)
         ply:ConCommand("lastinv")
     end

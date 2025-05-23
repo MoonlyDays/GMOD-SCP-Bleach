@@ -19,19 +19,86 @@ function GM:PlayerDeath(ply)
     ply:SetTeam(TEAMS.SPECTATOR)
 end
 
-function GM:PlayerUse(ply)
-    if ply:Team() == TEAMS.SPECTATOR then
+function GM:PlayerCanPickupWeapon(ply, wep)
+    if not ply:IsPlaying() then
         return false
+    end
+
+    if wep.ClearanceLevel then
+        for _, v in pairs(ply:GetWeapons()) do
+            if v.ClearanceLevel then
+                return false
+            end
+        end
+    end
+
+    if ply:Team() == TEAMS.SCP then
+        return wep.ISSCP == true
+    end
+
+    if not ply:IsPlaying() then
+        return false
+    end
+
+    for _, v in pairs(ply:GetWeapons()) do
+        if v:GetClass() == wep:GetClass() then
+            return false
+        end
+    end
+
+    if wep.DroppedAmmo then
+        wep:SetClip1(wep.DroppedAmmo)
+    end
+
+    return true
+end
+
+function GM:PlayerCanPickupItem(ply, item)
+    return ply:IsPlaying()
+end
+
+function GM:AllowPlayerPickup(ply, ent)
+    return ply:IsPlaying()
+end
+
+function GM:PlayerUse(ply, ent)
+    if not ply:IsPlaying() then
+        return false
+    end
+
+    if ply.LastUsedAt > CurTime() then
+        return false
+    end
+
+    ply.LastUsedAt = CurTime() + 1
+    print(ent, ent:GetPos())
+
+    if ent.ButtonConfig then
+        if ent.ButtonConfig.clearanceLevel and ply:ActiveClearanceLevel() < ent.ButtonConfig.clearanceLevel then
+            ply:EmitSound("KeycardUse2.ogg")
+            ply:PrintMessage(HUD_PRINTCENTER, "You need to have " .. ent.ButtonConfig.clearanceLevel .. " clearance level to open this door.")
+            return false
+        end
+
+        if ent.ButtonConfig.used then
+            if ent.ButtonConfig.used(ply, ent) == false then
+                ply:EmitSound("KeycardUse2.ogg")
+                ply:PrintMessage(HUD_PRINTCENTER, "Access denied")
+                return false
+            end
+        end
+
+        ply:EmitSound("KeycardUse1.ogg")
+        ply:PrintMessage(HUD_PRINTCENTER, "Access granted to " .. ent.ButtonConfig.name)
+        return true
     end
 
     return true
 end
 
 function GM:PlayerSetHandsModel(ply, ent)
-    print("AAAAAAAAAAAAAA");
-    local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
-    print(simplemodel)
-    local info = player_manager.TranslatePlayerHands(simplemodel)
+    local simpleModel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+    local info = player_manager.TranslatePlayerHands(simpleModel)
     if info then
         ent:SetModel(info.model)
         ent:SetSkin(info.skin)
@@ -77,7 +144,6 @@ function PLAYER:SetupCurrentRole()
         for _, weapon in pairs(role.Weapons) do
             self:Give(weapon)
         end
-
     end
 
     if role.Ammo then
@@ -124,6 +190,7 @@ function PLAYER:CleanUp()
     self.NextBlinkTime = 0
     self.UnblinkAt = nil
     self.IsBlinking = false
+    self.LastUsedAt = 0
 end
 
 function PLAYER:UpdateBlink()

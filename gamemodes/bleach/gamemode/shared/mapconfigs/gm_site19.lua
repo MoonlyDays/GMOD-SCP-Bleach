@@ -461,7 +461,6 @@ MAP.BUTTONS = {
     },
     {
         name = "SCP-049",
-        pos = Vector(),
         setupLocked = true
     },
     {
@@ -480,6 +479,10 @@ MAP.BUTTONS = {
         name = "SCP-513",
         pos = Vector(3896.000000, 3745.000000, 53.000000),
         clearanceLevel = 2
+    },
+    {
+        name = "SCP-012",
+        pos = Vector(-527.000000, -344.000000, 53.000000),
     },
     {
         name = "SCP-079",
@@ -516,16 +519,29 @@ MAP.BUTTONS = {
         pos = Vector(1569.000000, 892.000000, 53.000000),
         clearanceLevel = 2
     },
+    {
+        name = "SCP-860-1",
+        pos = Vector(1289.000000, 2216.000000, 53.000000),
+        clearanceLevel = 5
+    },
 
     -- GATES
     {
         name = "Gate A",
         pos = Vector(-321.000000, 4784.000000, 53.000000),
+        used = function(ply, ent)
+            ents.FindByName("gate_containment_door_l")[1]:Fire("Toggle")
+            ents.FindByName("gate_containment_door_r")[1]:Fire("Toggle")
+        end,
         clearanceLevel = 4
     },
     {
         name = "Gate B",
         pos = Vector(-3790.500000, 2472.500000, 53.000000),
+        used = function(ply, ent)
+            ents.FindByName("gate_b_door_l1")[1]:Fire("Toggle")
+            ents.FindByName("gate_b_door_r1")[1]:Fire("Toggle")
+        end,
         clearanceLevel = 4
     },
 
@@ -550,6 +566,26 @@ MAP.BUTTONS = {
         pos = Vector(2816.000000, -192.000000, 53.000000),
         clearanceLevel = 3
     },
+    {
+        name = "Checkpoint 1",
+        pos = Vector(2968.000000, 273.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 2",
+        pos = Vector(2616.000000, 641.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 3",
+        pos = Vector(792.000000, 3977.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 4",
+        pos = Vector(1688.000000, 4113.000000, 53.000000),
+        clearanceLevel = 3
+    },
 
     -- LCZ
     {
@@ -558,42 +594,8 @@ MAP.BUTTONS = {
         clearanceLevel = 2
     },
     {
-        name = "SCP-035 Storage Room",
-        pos = Vector(5281.000000, -1016.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "Medical Bay",
-        pos = Vector(-1928.000000, 3551.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "Dr. Maynard's Room",
-        pos = Vector(-1288.000000, 2465.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Dr. Harp's Room",
-        pos = Vector(-936.000000, 2465.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Remote Door Control",
-        pos = Vector(-2452.000000, 3876.000000, 309.859985)
-    },
-    {
-        name = "Control room",
-        pos = Vector(-2328.000000, 3775.000000, 53.000000),
-        clearanceLevel = 4
-    },
-    {
-        name = "Armory room",
+        name = "LCZ Armory Room",
         pos = Vector(1801.000000, -1432.000000, 53.000000),
-        useSounds = true,
         clearanceLevel = 4
     },
     {
@@ -602,52 +604,54 @@ MAP.BUTTONS = {
         clearanceLevel = 2
     },
     {
-        name = "Room 13",
+        name = "LCZ Room 13",
         pos = Vector(1393.000000, 728.000000, 53.000000),
         clearanceLevel = 2
     },
+
+    -- HCZ
     {
-        name = "Checkpoint 1",
-        pos = Vector(2968.000000, 273.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Checkpoint 2",
-        pos = Vector(2616.000000, 641.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Checkpoint 3",
-        pos = Vector(792.000000, 3977.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Armory room 2",
-        pos = Vector(1289.000000, 2055.989990, 53.000000),
-        useSounds = true,
-        clearanceLevel = 5
-    },
-    {
-        name = "Portal",
-        pos = Vector(1289.000000, 2216.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 5
+        name = "SCP-035 Storage Room",
+        pos = Vector(5281.000000, -1016.000000, 53.000000),
+        clearanceLevel = 2
     },
     {
         name = "Melon Room",
         pos = Vector(3664.000000, 2156.000000, 59.000000),
-        useSounds = true,
+        clearanceLevel = 5
+    },
+
+    -- EZ
+    {
+        name = "Dr. Maynard's Room",
+        pos = Vector(-1288.000000, 2465.000000, 53.000000),
         clearanceLevel = 3
     },
     {
-        name = "Checkpoint 3-2",
-        pos = Vector(1688.000000, 4113.000000, 53.000000),
-        useSounds = true,
+        name = "Dr. Harp's Room",
+        pos = Vector(-936.000000, 2465.000000, 53.000000),
         clearanceLevel = 3
-    }
+    },
+    {
+        name = "EZ Medical Bay",
+        pos = Vector(-1928.000000, 3551.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "Remote Door Control",
+        pos = Vector(-2452.000000, 3876.000000, 309.859985)
+    },
+    {
+        name = "EZ Electrical Center",
+        pos = Vector(-2328.000000, 3775.000000, 53.000000),
+        clearanceLevel = 4
+    },
+    {
+        name = "EZ Armory Room",
+        pos = Vector(1289.000000, 2055.989990, 53.000000),
+        useSounds = true,
+        clearanceLevel = 5
+    },
 }
 
 --[[

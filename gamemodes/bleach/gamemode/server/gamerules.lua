@@ -105,9 +105,13 @@ function BREACH:CleanUp()
 end
 
 function BREACH:SetupButtons()
-    
-
-
+    for _, ent in pairs(ents.GetAll()) do
+        for _, button in pairs(MAP.BUTTONS) do
+            if button.pos and ent:GetPos() == button.pos then
+                ent.ButtonConfig = button
+            end
+        end
+    end
 end
 
 function BREACH:WinCheck()
@@ -118,7 +122,6 @@ end
 
 function BREACH:SetupItems()
     for name, item in pairs(ITEMS) do
-        print("=======", name, "=======")
         local spawns = table.Copy(item.Spawn)
         local spawnCount = table.Count(spawns)
 
@@ -126,7 +129,6 @@ function BREACH:SetupItems()
             spawnCount = math.floor(spawnCount * item.SpawnFraction)
         end
 
-        print("SpawnCount", spawnCount, #spawns)
         for _ = 1, spawnCount, 1 do
             if item.ChanceFraction then
                 if math.random(0, 100) <= (item.ChanceFraction * 100) then
@@ -140,7 +142,9 @@ function BREACH:SetupItems()
             ent:SetPos(Pick(spawn))
             ent:Spawn()
 
-            print("SPAWNED ", name, "at", ent:GetPos())
+            if item.Spawned then
+                item.Spawned(ent)
+            end
         end
     end
 end
