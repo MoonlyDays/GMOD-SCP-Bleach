@@ -430,6 +430,227 @@ MAP.SPAWN_SCP_1499 = {
 }
 
 --[[
+-- BUTTONS
+--]]
+
+MAP.BUTTONS = {
+    -- PLAYABLE SCP ROOMS
+    {
+        name = "SCP-173", -- Statue
+        pos = Vector(393.000000, 1288.000000, 181.000000),
+    },
+    {
+        name = "SCP-173 Vault",
+        pos = Vector(362.000000, 1592.000000, 294.000000),
+        setupLocked = true
+    },
+    {
+        name = "SCP-173 Control Room",
+        pos = Vector(193.000000, 1768.000000, 309.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "SCP-106", -- Old Man
+        pos = Vector(2200.000000, 4145.000000, 53.000000),
+        setupLocked = true
+    },
+    {
+        name = "SCP-682", -- Invincible Reptile
+        pos = Vector(2570.000000, 3100.000000, -331.250000),
+        setupLocked = true,
+    },
+    {
+        name = "SCP-049",
+        pos = Vector(),
+        setupLocked = true
+    },
+    {
+        name = "SCP-457",
+        pos = Vector(2441.000000, 1896.000000, 53.000000),
+        setupLocked = true
+    },
+    {
+        name = "SCP-096",
+        pos = Vector(4993.000000, 3432.000000, 53.000000),
+        setupLocked = true
+    },
+
+    -- UNPLAYABLE SCP ROOMS
+    {
+        name = "SCP-513",
+        pos = Vector(3896.000000, 3745.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-079",
+        pos = Vector(3723.500000, -1162.000000, -75.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "SCP-860, SCP-1025",
+        pos = Vector(2072.000000, 1185.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-178",
+        pos = Vector(393.000000, -152.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-1123",
+        pos = Vector(737.000000, -1240.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-914",
+        pos = Vector(1264.000000, -958.500000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "SCP-72",
+        pos = Vector(-944.000000, -705.500000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-1162",
+        pos = Vector(1569.000000, 892.000000, 53.000000),
+        clearanceLevel = 2
+    },
+
+    -- GATES
+    {
+        name = "Gate A",
+        pos = Vector(-321.000000, 4784.000000, 53.000000),
+        clearanceLevel = 4
+    },
+    {
+        name = "Gate B",
+        pos = Vector(-3790.500000, 2472.500000, 53.000000),
+        clearanceLevel = 4
+    },
+
+    -- CHECKPOINTS
+    {
+        name = "EZ-HCZ 1",
+        pos = Vector(1536.000000, 3648.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "EZ-HCZ 2",
+        pos = Vector(2176.000000, 2368.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "LCZ-HCZ 1",
+        pos = Vector(2816.000000, 1088.000000, 53.000000),
+        clearanceLevel = 3
+    },
+    {
+        name = "LCZ-HCZ 2",
+        pos = Vector(2816.000000, -192.000000, 53.000000),
+        clearanceLevel = 3
+    },
+
+    -- LCZ
+    {
+        name = "LCZ Early Storage Room",
+        pos = Vector(195.679993, -1387.290039, -75.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "SCP-035 Storage Room",
+        pos = Vector(5281.000000, -1016.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 2
+    },
+    {
+        name = "Medical Bay",
+        pos = Vector(-1928.000000, 3551.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 2
+    },
+    {
+        name = "Dr. Maynard's Room",
+        pos = Vector(-1288.000000, 2465.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Dr. Harp's Room",
+        pos = Vector(-936.000000, 2465.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Remote Door Control",
+        pos = Vector(-2452.000000, 3876.000000, 309.859985)
+    },
+    {
+        name = "Control room",
+        pos = Vector(-2328.000000, 3775.000000, 53.000000),
+        clearanceLevel = 4
+    },
+    {
+        name = "Armory room",
+        pos = Vector(1801.000000, -1432.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 4
+    },
+    {
+        name = "Cells Control Room",
+        pos = Vector(-2239.000000, 1832.000000, 181.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "Room 13",
+        pos = Vector(1393.000000, 728.000000, 53.000000),
+        clearanceLevel = 2
+    },
+    {
+        name = "Checkpoint 1",
+        pos = Vector(2968.000000, 273.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 2",
+        pos = Vector(2616.000000, 641.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 3",
+        pos = Vector(792.000000, 3977.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Armory room 2",
+        pos = Vector(1289.000000, 2055.989990, 53.000000),
+        useSounds = true,
+        clearanceLevel = 5
+    },
+    {
+        name = "Portal",
+        pos = Vector(1289.000000, 2216.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 5
+    },
+    {
+        name = "Melon Room",
+        pos = Vector(3664.000000, 2156.000000, 59.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    },
+    {
+        name = "Checkpoint 3-2",
+        pos = Vector(1688.000000, 4113.000000, 53.000000),
+        useSounds = true,
+        clearanceLevel = 3
+    }
+}
+
+--[[
 -- POCKET DIMENSION
 --]]
 
@@ -596,229 +817,6 @@ MAP.CAMERAS = {
         pos = Vector(-659.140808, 1138.599976, 350.122894),
         ang = Angle(0.000, -173.823, 0.000)
     },
-}
-
-MAP.BUTTONS = {
-    {
-        name = "173 Vault Door",
-        pos = Vector(362.000000, 1592.000000, 294.000000),
-        setupLocked = true
-    },
-    {
-        name = "106 Doors",
-        pos = Vector(2200.000000, 4145.000000, 53.000000),
-        setupLocked = true
-    },
-    {
-        name = "457 Doors",
-        pos = Vector(2441.000000, 1896.000000, 53.000000),
-        setupLocked = true
-    },
-    {
-        name = "096 Doors",
-        pos = Vector(4993.000000, 3432.000000, 53.000000),
-        setupLocked = true
-    },
-
-
-    {
-        name = "SCP 513",
-        pos = Vector(3896.000000, 3745.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "LCZ early storage room",
-        pos = Vector(195.679993, -1387.290039, -75.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "079 Room",
-        pos = Vector(3723.500000, -1162.000000, -75.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "035 Storage Room",
-        pos = Vector(5281.000000, -1016.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "Medical Bay",
-        pos = Vector(-1928.000000, 3551.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "Dr. Maynard's Room",
-        pos = Vector(-1288.000000, 2465.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Dr. Harp's Room",
-        pos = Vector(-936.000000, 2465.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Remote Door Control",
-        pos = Vector(-2452.000000, 3876.000000, 309.859985)
-    },
-    {
-        name = "173 Control Room Doors",
-        pos = Vector(193.000000, 1768.000000, 309.000000),
-        clearanceLevel = 3
-    },
-    {
-        name = "173 Doors",
-        pos = Vector(393.000000, 1288.000000, 181.000000),
-    },
-    {
-        name = "EZ-HCZ 1",
-        pos = Vector(1536.000000, 3648.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "EZ-HCZ 2",
-        pos = Vector(2176.000000, 2368.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "LCZ-HCZ 1",
-        pos = Vector(2816.000000, 1088.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "LCZ-HCZ 2",
-        pos = Vector(2816.000000, -192.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Control room",
-        pos = Vector(-2328.000000, 3775.000000, 53.000000),
-        clearanceLevel = 4
-    },
-    {
-        name = "Gate A",
-        pos = Vector(-321.000000, 4784.000000, 53.000000),
-        clearanceLevel = 4
-    },
-    {
-        name = "Gate B",
-        pos = Vector(-3790.500000, 2472.500000, 53.000000),
-        clearanceLevel = 4
-    },
-    {
-        name = "Armory room",
-        pos = Vector(1801.000000, -1432.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 4
-    },
-    {
-        name = "Cells Control Room",
-        pos = Vector(-2239.000000, 1832.000000, 181.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "SCP 372",
-        pos = Vector(-944.000000, -705.500000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 2
-    },
-    {
-        name = "Room 13",
-        pos = Vector(1393.000000, 728.000000, 53.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "SCP 860, 1025",
-        pos = Vector(2072.000000, 1185.000000, 53.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "SCP 178",
-        pos = Vector(393.000000, -152.000000, 53.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "SCP 1123",
-        pos = Vector(737.000000, -1240.000000, 53.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "SCP 914",
-        pos = Vector(1264.000000, -958.500000, 53.000000),
-        clearanceLevel = 3
-    },
-    {
-        name = "914 Button",
-        pos = POS_914BUTTON,
-        customdenymsg = "",
-        canactivate = function(pl, ent)
-            Use914(ent)
-            return false
-        end
-    },
-    {
-        name = "SCP 1162",
-        pos = Vector(1569.000000, 892.000000, 53.000000),
-        clearanceLevel = 2
-    },
-    {
-        name = "Checkpoint 1",
-        pos = Vector(2968.000000, 273.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Checkpoint 2",
-        pos = Vector(2616.000000, 641.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Checkpoint 3",
-        pos = Vector(792.000000, 3977.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Armory room 2",
-        pos = Vector(1289.000000, 2055.989990, 53.000000),
-        useSounds = true,
-        clearanceLevel = 5
-    },
-    {
-        name = "Portal",
-        pos = Vector(1289.000000, 2216.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 5
-    },
-    {
-        name = "Melon Room",
-        pos = Vector(3664.000000, 2156.000000, 59.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "Checkpoint 3-2",
-        pos = Vector(1688.000000, 4113.000000, 53.000000),
-        useSounds = true,
-        clearanceLevel = 3
-    },
-    {
-        name = "SCP-682 Doors",
-        pos = Vector(2570.000000, 3100.000000, -331.250000),
-        useSounds = true,
-        clearanceLevel = 5
-    }
 }
 
 POS_GATEA = Vector(-6553.655273, -709.003235, 2264.590576)

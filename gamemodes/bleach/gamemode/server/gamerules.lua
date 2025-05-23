@@ -60,6 +60,7 @@ function BREACH:OnRoundSetup()
     self:CleanUp()
     self:SetupPlayers()
     self:SetupItems()
+    self:SetupButtons()
 
     self:BroadcastSound("Alarm2.ogg")
     self:PlayCommotionSound()
@@ -101,6 +102,12 @@ function BREACH:CleanUp()
     self:ResetStats()
     self.roleCount = {}
     self.commotionSounds = table.Copy(MAP.COMMOTION_SOUNDS);
+end
+
+function BREACH:SetupButtons()
+    
+
+
 end
 
 function BREACH:WinCheck()
