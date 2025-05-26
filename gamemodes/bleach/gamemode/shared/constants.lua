@@ -12,12 +12,11 @@ STATS = {
     CLASS_D_ESCAPED = 1,
     STAFF_ESCAPED = 2,
     SCP_ESCAPED = 3,
-    CLASS_D_CAPTURED = 4,
-    STAFF_ESCORTED = 5,
-    PLAYERS_DIED = 6,
-    SCP_106_CAPTURED = 7,
-    SCP_173_SNAPPED = 8,
-    SCP_049_CURED = 9
+    PLAYERS_DIED = 4,
+    SCP_106_CAPTURED = 5,
+    SCP_173_SNAPPED = 6,
+    SCP_049_CURED = 7,
+    SCP_1987_BIT = 8
 }
 
 TEAMS = {
@@ -29,6 +28,33 @@ TEAMS = {
     MTF = 5,
     CHAOS = 6,
     STAFF = 7
+}
+
+SQUAD_SPAWN = {
+    ntfs = {
+        Team = TEAMS.MTF,
+        MinCount = 3,
+        MaxCount = 5
+    },
+    chaos = {
+        Team = TEAMS.CHAOS,
+        MinCount = 3,
+        MaxCount = 5
+    },
+    freddy = {
+        Role = "scp_1987_j",
+        MinCount = 1,
+        MaxCount = 1,
+        BroadcastSound = "breach/scp/freddy_spawn_3.mp3"
+    }
+}
+
+SCP_914_STATUSES = {
+    "rough",
+    "coarse",
+    "1:1",
+    "fine",
+    "very fine"
 }
 
 TEAM_ROLE_LIST = {
@@ -43,7 +69,7 @@ BREACH_ROLE_LIST = {
     TEAMS.STAFF,
     TEAMS.CLASS_D,
     TEAMS.SCIENTIST,
-    TEAMS.CHAOS,
+    --  TEAMS.CHAOS,
     TEAMS.SECURITY,
     TEAMS.SCP,
     TEAMS.CLASS_D,
@@ -51,13 +77,13 @@ BREACH_ROLE_LIST = {
     TEAMS.SECURITY,
     TEAMS.CLASS_D,
     TEAMS.STAFF,
-    TEAMS.CHAOS,
+    -- TEAMS.CHAOS,
     TEAMS.SCIENTIST,
     -- 2 - 32	{8, 5, 4, 5, 6, 4}
     TEAMS.CLASS_D,
     TEAMS.SECURITY,
     TEAMS.SCP,
-    TEAMS.CHAOS,
+    -- TEAMS.CHAOS,
     TEAMS.CLASS_D,
     TEAMS.STAFF,
     TEAMS.SECURITY,
@@ -65,7 +91,7 @@ BREACH_ROLE_LIST = {
     TEAMS.CLASS_D,
     TEAMS.SCIENTIST,
     TEAMS.STAFF,
-    TEAMS.CHAOS,
+    -- TEAMS.CHAOS,
     TEAMS.SECURITY,
     TEAMS.SCP,
     TEAMS.SCIENTIST,
@@ -82,7 +108,7 @@ ROUND_STATES = {
 SCP_173_MODEL = "models/breach173.mdl"
 SCP_049_MODEL = "models/vinrax/player/scp049_player.mdl"
 SCP_049_2_MODEL = "models/player/zombie_classic.mdl"
-SCP_457_MODEL = ""
+SCP_457_MODEL = "models/player/corpse1.mdl"
 SCP_106_MODEL = "models/vinrax/player/scp106_player.mdl"
 SCP_1987_J_MODEL = "models/cktheamazingfrog/player/freddy/freddyvr.mdl"
 

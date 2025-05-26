@@ -26,5 +26,5 @@ function GM:CreateTeams()
     team.SetUp(TEAMS.CLASS_D, "Класс Д Персонал", Color(255, 130, 0))
     team.SetUp(TEAMS.SCIENTIST, "Ученый", Color(66, 188, 244))
     team.SetUp(TEAMS.STAFF, "Сотрудник", Color(141, 58, 196))
-    team.SetUp(TEAMS.CHAOS, "Повстанцы Хаоса", Color(0, 100, 255))
+    team.SetUp(TEAMS.CHAOS, "Повстанцы Хаоса", Color(33, 56, 19))
 end

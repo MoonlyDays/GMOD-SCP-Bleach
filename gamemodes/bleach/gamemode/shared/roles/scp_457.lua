@@ -11,5 +11,4 @@ ROLE.Team = TEAMS.SCP
 ROLE.Health = 2200
 ROLE.Model = SCP_457_MODEL
 ROLE.CanBlink = false
-ROLE.CanPickupWeapons = false
-ROLE.Weapons = { "weapon_scp_049" }
+ROLE.Weapons = { "weapon_stunstick" }

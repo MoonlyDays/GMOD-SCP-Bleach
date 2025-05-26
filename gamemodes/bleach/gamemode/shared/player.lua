@@ -3,6 +3,7 @@ local PLAYER = FindMetaTable("Player")
 
 function BREACH_PLAYER:SetupDataTables()
     self.Player:NetworkVar("String", "Role")
+    self.Player:NetworkVar("String", "VisibleRole")
 end
 
 function PLAYER:ActiveClearanceLevel()
@@ -37,17 +38,28 @@ function PLAYER:IsPlaying()
     return IsValid(self) and self:Alive() and not self:IsSpectating()
 end
 
+function PLAYER:CanEscape()
+    if not self:IsPlaying() then
+        return false
+    end
+
+    local role = self:Role()
+    if role and role.CanEscape ~= nil then
+        return role.CanEscape
+    end
+    return true
+end
+
 function PLAYER:CanBlink()
     if not self:IsPlaying() then
         return false
     end
 
     local role = self:Role()
-    if role then
-        return role.CanBlink or true
+    if role and role.CanBlink ~= nil then
+        return role.CanBlink
     end
-
-    return false
+    return true
 end
 
 function PLAYER:IsSpectating()

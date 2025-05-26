@@ -4,7 +4,7 @@ net.Receive("BroadcastSound", function()
 end)
 
 net.Receive("TimerChanged", function()
-    HUD.timerEndsAt = CurTime() + net.ReadInt(16);
+    HUD.timeRemaining = net.ReadInt(16);
 end)
 
 net.Receive("Blink", function()
@@ -23,7 +23,8 @@ net.Receive("RoundStateChanged", function()
     if state == ROUND_STATES.SETUP then
         HUD:BlackoutScreen(1, 1, 2, 0, 0.3)
         HUD.objectiveTextVisible = true
-        HUD.roundSummaryVisible = false
+        HUD.roundSummary = nil
+        HUD.roundEndReason = ""
     end
 
     if state == ROUND_STATES.ACTIVE then
@@ -31,9 +32,18 @@ net.Receive("RoundStateChanged", function()
     end
 
     if state == ROUND_STATES.CHAT_TIME then
+        HUD.roundEndReason = net.ReadString()
     end
+end)
+
+net.Receive("RoundSummaryChanged", function()
+    HUD.roundSummary = net.ReadTable()
 end)
 
 net.Receive("StaminaChanged", function()
     HUD.stamina = net.ReadFloat()
+end)
+
+net.Receive("PlayerEscaped", function()
+    HUD:BlackoutScreen(1, 1, 0, 5)
 end)

@@ -76,12 +76,14 @@ function SWEP:PrimaryAttack()
         ent = tr.Entity
         if IsValid(ent) then
             if ent:IsPlayer() then
-                if ent:GTeam() == TEAM_SCP then
+                if ent:Team() == TEAMS.SCP then
                     return
                 end
-                if ent:GTeam() == TEAM_SPECTATOR then
+
+                if ent:Team() == TEAMS.SPECTATOR then
                     return
                 end
+
                 local pos = GetPocketPos()
                 if pos then
                     roundstats.teleported = roundstats.teleported + 1

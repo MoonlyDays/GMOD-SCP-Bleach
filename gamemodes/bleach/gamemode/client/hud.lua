@@ -1,4 +1,4 @@
-HUD = {
+HUD = HUD or {
     hideHud = {
         CHudHealth = true,
         CHudBattery = true,
@@ -8,12 +8,11 @@ HUD = {
     },
 
     roundState = ROUND_STATES.WAITING_FOR_PLAYERS,
-    timerEndsAt = 0,
+    timeRemaining = 0,
     objectiveTextVisible = false,
-    roundSummaryVisible = false,
+    roundSummary = nil,
+    roundEndReason = "",
     stamina = MAX_STAMINA,
-
-    roundSummary = {},
 
     blinkTimer = 0,
     currentBlackoutPriority = 0,
@@ -57,7 +56,6 @@ function GM:DrawDeathNotice()
 end
 
 function HUD:DrawObjective(ply)
-
     if not self.objectiveTextVisible then
         return
     end
@@ -91,13 +89,13 @@ function HUD:DrawObjective(ply)
 end
 
 function HUD:PostProcess()
-    local vignette = Material("breach/vignette.png") -- adjust path if needed
-    surface.SetDrawColor(255, 255, 255, 255)
-    surface.SetMaterial(vignette)
-    surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
 end
 
 function HUD:DrawRoundSummary(ply)
+    if not self.roundSummary then
+        return
+    end
+
     draw.TextShadow({
         text = "Игра Окончена!",
         pos = { ScrW() / 2, 100 },
@@ -108,7 +106,7 @@ function HUD:DrawRoundSummary(ply)
     }, 2, 255)
 
     draw.TextShadow({
-        text = "Все игроки были убиты!",
+        text = HUD.roundEndReason,
         pos = { ScrW() / 2, 150 },
         font = "ImpactSmall",
         color = Color(255, 150, 150),
@@ -117,20 +115,19 @@ function HUD:DrawRoundSummary(ply)
     }, 2, 255)
 
     local stats = {
-        "Погибло {num} игроков",
-        "Сбежало {num} классов D",
-        "Сбежало {num} SCP",
-        "Эвакуировано {num} сотрудников комплекса",
-        "Эвакуировано {num} сотрудников комплекса",
-        "Эвакуировано {num} сотрудников комплекса",
-        "Эвакуировано {num} сотрудников комплекса",
-        "Эвакуировано {num} сотрудников комплекса",
-        "Эвакуировано {num} сотрудников комплекса",
+        { "Погибло {num} игроков", STATS.PLAYERS_DIED },
+        { "Сбежало {num} классов D", STATS.CLASS_D_ESCAPED },
+        { "Сбежало {num} SCP", STATS.SCP_ESCAPED },
+        { "Сбежало {num} сотрудников комплекса", STATS.STAFF_ESCAPED },
+        { "SCP-106 захватил {num} жертв в Карманное Измерение", STATS.SCP_106_CAPTURED },
+        { "{num} щей были сломаны руками SCP-173", STATS.SCP_173_SNAPPED },
+        { "SCP-049 \"излечил\" {num} пациентов", STATS.SCP_049_CURED },
+        { "SCP-1987 сделал 87 укусов {num} целям", STATS.SCP_1987_BIT }
     }
 
     for i, stat in pairs(stats) do
         draw.TextShadow({
-            text = stat,
+            text = string.Replace(stat[1], "{num}", tostring(self.roundSummary[stat[2]])),
             pos = { ScrW() / 2, 180 + i * 40 },
             font = "ImpactSmall",
             color = Color(255, 255, 255),
@@ -167,7 +164,6 @@ function HUD:DrawPlayerStatus(ply, width, height)
     -- Team Name
 
     if ply:IsPlaying() and ply:CanBlink() then
-
         if self.blinkTimer > 0 then
             self.blinkTimer = self.blinkTimer - FrameTime()
         end
@@ -188,10 +184,8 @@ function HUD:DrawPlayerStatus(ply, width, height)
         yalign = TEXT_ALIGN_CENTER,
     }, 2, 255)
 
-    local timeRemaining = math.Max(self.timerEndsAt - CurTime(), 0);
-
     draw.TextShadow({
-        text = tostring(string.ToMinutesSeconds(timeRemaining)),
+        text = tostring(string.ToMinutesSeconds(self.timeRemaining)),
         pos = { width - 50, y + 21 },
         font = "TimeLeft",
         color = tclr,

@@ -76,10 +76,10 @@ function SWEP:SecondaryAttack()
     if SERVER then
         local ent = self.Owner:GetEyeTrace().Entity
         if ent:IsPlayer() then
-            if ent:GTeam() == TEAM_SCP then
+            if ent:Team() == TEAMS.SCP then
                 return
             end
-            if ent:GTeam() == TEAM_SPECTATOR then
+            if ent:Team() == TEAMS.SPECTATOR then
                 return
             end
             if ent:GetPos():Distance(self.Owner:GetPos()) < 95 then

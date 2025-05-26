@@ -1,7 +1,7 @@
 AddCSLuaFile()
 if CLIENT then
-	SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_zombie")
-	SWEP.BounceWeaponIcon = false
+    SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_zombie")
+    SWEP.BounceWeaponIcon = false
 end
 
 SWEP.Author = "Kanade"
@@ -37,7 +37,7 @@ SWEP.Range = 100
 SWEP.UseHands = false
 SWEP.DrawCustomCrosshair = true
 SWEP.DeploySpeed = 1
-SWEP.AttackTeams = { TEAM_GUARD, TEAM_CLASS_D, TEAM_SCIENTIST, TEAM_CHAOS, TEAM_STAFF}
+SWEP.AttackTeams = { TEAM_GUARD, TEAM_CLASS_D, TEAM_SCIENTIST, TEAM_CHAOS, TEAM_STAFF }
 SWEP.AttackNPCs = false
 SWEP.ZombieWeapon = true
 SWEP.SoundMiss = "npc/zombie/claw_miss1.wav"
@@ -45,31 +45,43 @@ SWEP.SoundWallHit = "npc/zombie/claw_strike1.wav"
 SWEP.SoundFleshSmall = "npc/zombie/claw_strike2.wav"
 SWEP.SoundFleshLarge = "npc/zombie/claw_strike3.wav"
 function SWEP:SecondaryAttack()
-	self:SetHoldType("knife")
-	--if ( !self:CanSecondaryAttack() ) then return end
-	--if not IsFirstTimePredicted() then return end
-	if self:GetNextSecondaryFire() > CurTime() then return end
-	self.Owner:GetViewModel():SetPlaybackRate(self.Secondary.AnimSpeed)
-	self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
-	self.Owner:DoAnimationEvent(ACT_GMOD_GESTURE_RANGE_ZOMBIE)
-	timer.Create("AttackDelay" .. self.Owner:SteamID(), self.Secondary.NextAttack, 1, function()
-		if IsValid(self) == false then return end
-		self.AttackType = 2
-		self:Stab(2, self.Range)
-	end)
+    self:SetHoldType("knife")
+    --if ( !self:CanSecondaryAttack() ) then return end
+    --if not IsFirstTimePredicted() then return end
+    if self:GetNextSecondaryFire() > CurTime() then
+        return
+    end
+    self.Owner:GetViewModel():SetPlaybackRate(self.Secondary.AnimSpeed)
+    self:SendWeaponAnim(ACT_VM_SECONDARYATTACK)
+    self.Owner:DoAnimationEvent(ACT_GMOD_GESTURE_RANGE_ZOMBIE)
+    timer.Create("AttackDelay" .. self.Owner:SteamID(), self.Secondary.NextAttack, 1, function()
+        if IsValid(self) == false then
+            return
+        end
+        self.AttackType = 2
+        self:Stab(2, self.Range)
+    end)
 
-	self:SetNextPrimaryFire(CurTime() + self.Secondary.AttackDelay)
-	self:SetNextSecondaryFire(CurTime() + self.Secondary.AttackDelay)
+    self:SetNextPrimaryFire(CurTime() + self.Secondary.AttackDelay)
+    self:SetNextSecondaryFire(CurTime() + self.Secondary.AttackDelay)
 end
 
 function SWEP:OnAttackedPlayer(attacktype, ply)
-	if attacktype == 1 then
-		if SERVER then if ply:GTeam() ~= TEAM_SCP then ply:SetSCP0082() end end
-		--self:StabDamage(ent, self.Primary.Damage )
-		self:EmitSound(self.SoundFleshSmall)
-	else
-		if SERVER then if ply:GTeam() ~= TEAM_SCP then ply:SetSCP0082() end end
-		--self:StabDamage(ent, self.Secondary.Damage )
-		self:EmitSound(self.SoundFleshLarge)
-	end
+    if attacktype == 1 then
+        if SERVER then
+            if ply:Team() ~= TEAMS.SCP then
+                ply:SetSCP0082()
+            end
+        end
+        --self:StabDamage(ent, self.Primary.Damage )
+        self:EmitSound(self.SoundFleshSmall)
+    else
+        if SERVER then
+            if ply:Team() ~= TEAMS.SCP then
+                ply:SetSCP0082()
+            end
+        end
+        --self:StabDamage(ent, self.Secondary.Damage )
+        self:EmitSound(self.SoundFleshLarge)
+    end
 end

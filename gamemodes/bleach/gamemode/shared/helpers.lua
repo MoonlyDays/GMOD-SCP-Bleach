@@ -1,11 +1,13 @@
 AddCSLuaFile()
 
-function IsButton(ent, button)
-    return ent:GetPos() == button["pos"];
-end
-
-function FindButtonByName(name, className)
-
+function player.GetPlaying()
+    local dick = {}
+    for _, ply in pairs(player.GetAll()) do
+        if ply:IsPlaying() then
+            table.insert(dick, ply)
+        end
+    end
+    return dick
 end
 
 function Pick(container)

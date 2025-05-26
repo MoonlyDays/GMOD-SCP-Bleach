@@ -53,9 +53,10 @@ function SWEP:Reload()
 end
 
 function SWEP:PrimaryAttack()
-    if self.Owner:GTeam() == TEAM_SCP then
+    if self.Owner:Team() == TEAMS.SCP then
         return
     end
+
     if self.Owner:Health() / self.Owner:GetMaxHealth() <= 0.8 then
         if SERVER then
             self.Owner:SetHealth(self.Owner:GetMaxHealth())
@@ -72,10 +73,10 @@ function SWEP:SecondaryAttack()
     if SERVER then
         local ent = self.Owner:GetEyeTrace().Entity
         if ent:IsPlayer() then
-            if ent:GTeam() == TEAM_SCP then
+            if ent:Team() == TEAMS.SCP then
                 return
             end
-            if ent:GTeam() == TEAM_SPECTATOR then
+            if ent:Team() == TEAMS.SPECTATOR then
                 return
             end
             if ent:GetPos():Distance(self.Owner:GetPos()) < 95 then

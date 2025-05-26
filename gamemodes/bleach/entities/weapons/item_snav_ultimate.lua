@@ -82,8 +82,8 @@ function SWEP:Think()
                 if v == lp then
                     continue
                 end
-                if v:GTeam() ~= TEAM_SPECTATOR then
-                    if v:GTeam() == TEAM_GUARD then
+                if v:Team() ~= TEAMS.SPECTATOR then
+                    if v:Team() == TEAMS.SPECTATOR then
                         table.ForceInsert(self.warnings, "MTF Guard detected")
                         continue
                     elseif v:GTeam() == TEAM_CHAOS then

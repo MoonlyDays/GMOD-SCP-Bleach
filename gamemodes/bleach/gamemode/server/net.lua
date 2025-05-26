@@ -2,10 +2,11 @@ util.AddNetworkString("BroadcastSound")
 util.AddNetworkString("TimerChanged")
 util.AddNetworkString("StaminaChanged")
 util.AddNetworkString("RoundStateChanged")
-util.AddNetworkString("ShowRoundSummary")
 util.AddNetworkString("DropWeapon")
 util.AddNetworkString("Blink")
 util.AddNetworkString("DropCurrentVest")
+util.AddNetworkString("RoundSummaryChanged")
+util.AddNetworkString("PlayerEscaped")
 
 net.Receive("DropWeapon", function(_, ply)
     if not ply:IsPlaying() then

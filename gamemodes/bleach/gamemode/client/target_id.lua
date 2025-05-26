@@ -1,9 +1,7 @@
 local filterEnts = {}
 
 function GM:HUDDrawTargetID()
-    if true then
-        return
-    end
+    return false
     local client = LocalPlayer()
 
     if not trace.Hit then
@@ -30,7 +28,7 @@ function GM:HUDDrawTargetID()
             return
         end
         --if ply:GetPos():Distance(client:GetPos()) > 370 then return end
-        if ply:GTeam() == TEAM_SPECTATOR then
+        if ply:Team() == TEAMS.SPECTATOR then
             return
         end
         if ply:GetNClass() == ROLES.ROLE_SCP966 then

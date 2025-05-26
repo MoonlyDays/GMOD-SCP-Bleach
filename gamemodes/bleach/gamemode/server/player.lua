@@ -2,10 +2,6 @@ local PLAYER = FindMetaTable("Player")
 
 function GM:PlayerInitialSpawn(ply)
     ply:SendInitialUpdate()
-
-    if BREACH.state == ROUND_STATES.WAITING_FOR_PLAYERS then
-        BREACH:AttemptStartRound()
-    end
 end
 
 function GM:PlayerSpawn(ply)
@@ -14,9 +10,77 @@ function GM:PlayerSpawn(ply)
     ply:SetupCurrentRole()
 end
 
+function CreateRagdollPL(victim, attacker, dmgtype)
+    if not IsValid(victim) then
+        return
+    end
+
+    local rag = ents.Create("prop_ragdoll")
+    if not IsValid(rag) then
+        return nil
+    end
+
+    rag:SetPos(victim:GetPos())
+    rag:SetModel(victim:GetModel())
+    rag:SetAngles(victim:GetAngles())
+    rag:SetColor(victim:GetColor())
+
+    rag:Spawn()
+    rag:Activate()
+
+    rag.Info = {}
+    rag.Info.CorpseID = rag:GetCreationID()
+    rag:SetNWInt("CorpseID", rag.Info.CorpseID)
+    rag.Info.Victim = victim:Nick()
+    rag.Info.DamageType = dmgtype
+    rag.Info.Time = CurTime()
+
+    local group = COLLISION_GROUP_DEBRIS_TRIGGER
+    rag:SetCollisionGroup(group)
+    timer.Simple(1, function()
+        if IsValid(rag) then
+            rag:CollisionRulesChanged()
+        end
+    end)
+
+    local num = rag:GetPhysicsObjectCount() - 1
+    local v = victim:GetVelocity() * 0.35
+
+    for i = 0, num do
+        local bone = rag:GetPhysicsObjectNum(i)
+        if IsValid(bone) then
+            local bp, ba = victim:GetBonePosition(rag:TranslatePhysBoneToBone(i))
+            if bp and ba then
+                bone:SetPos(bp)
+                bone:SetAngles(ba)
+            end
+            bone:SetVelocity(v * 1.4)
+        end
+    end
+end
+
+function GM:DoPlayerDeath(ply, attacker, dmgInfo)
+    CreateRagdollPL(ply, attacker, dmgInfo:GetDamageType())
+end
+
 function GM:PlayerDeath(ply)
+    if #ply:GetWeapons() > 0 then
+        local pos = ply:GetPos()
+        for _, wep in pairs(ply:GetWeapons()) do
+            if wep.droppable then
+                local dropped = ents.Create(wep:GetClass())
+                if IsValid(dropped) then
+                    dropped:SetPos(pos)
+                    dropped:Spawn()
+                    dropped.DroppedAmmo = wep:Clip1()
+                end
+            end
+        end
+    end
+
     ply:SetRole("")
     ply:SetTeam(TEAMS.SPECTATOR)
+    BREACH:AddStat(STATS.PLAYERS_DIED, 1)
 end
 
 function GM:PlayerCanPickupWeapon(ply, wep)
@@ -32,9 +96,6 @@ function GM:PlayerCanPickupWeapon(ply, wep)
         end
     end
 
-    if ply:Team() == TEAMS.SCP then
-        return wep.ISSCP == true
-    end
 
     if not ply:IsPlaying() then
         return false
@@ -71,7 +132,7 @@ function GM:PlayerUse(ply, ent)
     end
 
     ply.LastUsedAt = CurTime() + 1
-    print(ent, ent:GetPos())
+    print(ent, ent:GetPos(), ent:GetName())
 
     if ent.ButtonConfig then
         if ent.ButtonConfig.clearanceLevel and ply:ActiveClearanceLevel() < ent.ButtonConfig.clearanceLevel then
@@ -113,7 +174,6 @@ end
 
 function PLAYER:SetupCurrentRole()
     local roleName = self:GetRole()
-    print("role: ", roleName);
     if roleName == "" then
         self:SetupSpectator()
         return
@@ -121,7 +181,6 @@ function PLAYER:SetupCurrentRole()
 
     local role = ROLES[roleName];
     if not role then
-        print("Unknown role name: ", roleName)
         return ;
     end
 
@@ -165,6 +224,10 @@ function PLAYER:SpawnAs(role)
     self:Spawn()
 end
 
+function PLAYER:SpawnAsSpectator()
+    self:SpawnAs("")
+end
+
 function PLAYER:SetupSpectator()
     self:SetTeam(TEAMS.SPECTATOR)
     self:SetNoTarget(true)
@@ -191,10 +254,11 @@ function PLAYER:CleanUp()
     self.UnblinkAt = nil
     self.IsBlinking = false
     self.LastUsedAt = 0
+    self.NextEscapeAttempt = 0
 end
 
 function PLAYER:UpdateBlink()
-    if CurTime() > self.NextBlinkTime then
+    if self:CanBlink() and CurTime() > self.NextBlinkTime then
         self.NextBlinkTime = CurTime() + br_time_blink_delay:GetInt()
         self:Blink(br_time_blink:GetFloat())
     end
@@ -238,12 +302,8 @@ function PLAYER:UpdateStamina()
 end
 
 function PLAYER:SendInitialUpdate()
-    net.Start("TimerChanged")
-    net.WriteInt(BREACH.timerEndsAt - CurTime(), 16)
-    net.Send(self)
-
     net.Start("RoundStateChanged")
-    net.WriteInt(BREACH.state, 4)
+    net.WriteInt(BREACH.currentState, 4)
     net.Send(self)
 end
 

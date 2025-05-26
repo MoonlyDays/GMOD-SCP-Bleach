@@ -507,7 +507,7 @@ MAP.BUTTONS = {
     {
         name = "SCP-914",
         pos = Vector(1264.000000, -958.500000, 53.000000),
-        clearanceLevel = 3
+        clearanceLevel = 5
     },
     {
         name = "SCP-72",
@@ -617,7 +617,7 @@ MAP.BUTTONS = {
     },
     {
         name = "Melon Room",
-        pos = Vector(3664.000000, 2156.000000, 59.000000),
+        pos = Vector(3676.000000, 2156.000000, 59.000000),
         clearanceLevel = 5
     },
 
@@ -823,5 +823,7 @@ MAP.CAMERAS = {
     },
 }
 
-POS_GATEA = Vector(-6553.655273, -709.003235, 2264.590576)
-POS_ESCORT = Vector(-2879.625244, 1709.193481, 2296.031250)
+MAP.ESCAPE_POINTS = {
+    Vector(-6550.868164, -707.204468, 2240.031250)
+}
+
