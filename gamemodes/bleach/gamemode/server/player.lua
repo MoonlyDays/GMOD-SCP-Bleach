@@ -140,10 +140,16 @@ function GM:PlayerUse(ply, ent)
             return false
         end
 
+        if ent.ButtonConfig.setupLocked and BREACH.currentState == ROUND_STATES.SETUP then
+            ply:EmitSound("KeycardUse2.ogg")
+            ply:PrintMessage(HUD_PRINTCENTER, "===[Access Denied]===")
+            return false
+        end
+
         if ent.ButtonConfig.used then
             if ent.ButtonConfig.used(ply, ent) == false then
                 ply:EmitSound("KeycardUse2.ogg")
-                ply:PrintMessage(HUD_PRINTCENTER, "Access denied")
+                ply:PrintMessage(HUD_PRINTCENTER, "===[Access Denied]===")
                 return false
             end
         end
@@ -169,6 +175,20 @@ end
 function GM:PlayerTick(ply)
     ply:UpdateStamina()
     ply:UpdateBlink()
+end
+
+function GM:EntityTakeDamage(target, dmgInfo)
+    if target:IsPlayer() and target:IsPlaying() then
+        local dmgType = dmgInfo:GetDamageType()
+        if dmgType == 268435464 or dmgType == 8 then
+            if target:Team() == TEAMS.SCP then
+                dmgInfo:SetDamage(0)
+                return true
+            elseif target.UsingArmor == "armor_fireproof" then
+                dmgInfo:ScaleDamage(0.60)
+            end
+        end
+    end
 end
 
 function PLAYER:SetupCurrentRole()

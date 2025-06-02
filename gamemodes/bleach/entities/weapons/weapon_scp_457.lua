@@ -1,9 +1,11 @@
 AddCSLuaFile()
+
 if CLIENT then
     SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_457")
     SWEP.BounceWeaponIcon = false
 end
 
+SWEP.Base = "weapon_scp_base"
 SWEP.Author = "Kanade"
 SWEP.Contact = "Look at this gamemode in workshop and search for creators"
 SWEP.Purpose = "Burn"
@@ -13,103 +15,77 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModel = "models/vinrax/props/keycard.mdl"
 SWEP.WorldModel = "models/vinrax/props/keycard.mdl"
 SWEP.PrintName = "SCP-457"
-SWEP.Slot = 0
-SWEP.SlotPos = 0
-SWEP.DrawAmmo = false
-SWEP.DrawCrosshair = false
-SWEP.HoldType = "normal"
-SWEP.Spawnable = false
-SWEP.AdminSpawnable = false
-SWEP.IsSCP = true
-SWEP.Droppable = false
-SWEP.Primary.Ammo = "none"
-SWEP.Primary.ClipSize = -1
-SWEP.Primary.DefaultClip = -1
-SWEP.Primary.Automatic = false
-SWEP.Secondary.Ammo = "none"
-SWEP.Secondary.ClipSize = -1
-SWEP.Secondary.DefaultClip = -1
-SWEP.Secondary.Automatic = false
-SWEP.NextAbilityCheck = 0
-SWEP.SpecialDelay = 4
-SWEP.CColor = Color(0, 255, 0)
-SWEP.NextSpecial = 0
+SWEP.NextThinkTime = 0
+
+function SWEP:ExtinguishOwner()
+    if not SERVER then
+        return
+    end
+
+    if IsValid(self.fire) and IsEntity(self.fire) then
+        self.fire:Remove()
+    end
+end
+
+function SWEP:IgniteOwner()
+    if not SERVER then
+        return
+    end
+
+    self:Extinguish()
+    self.fire = ents.Create("env_fire")
+    self.fire:SetPos(self:GetPos())
+    self.fire:SetKeyValue("health", "512")
+    self.fire:SetKeyValue("firesize", "128")
+    self.fire:SetKeyValue("fireattack", "0")
+    self.fire:SetKeyValue("damagescale", "-1")
+    self.fire:SetKeyValue("ignitionpoint", "1200")
+    self.fire:Spawn()
+    self.fire:Activate()
+    self.fire:Fire("StartFire", "", 0)
+    self.fire:SetParent(self)
+end
 
 function SWEP:OnRemove()
     if not SERVER then
         return
     end
 
-    if IsValid(self.Fire457) then
-        self.Fire457:Remove()
-    end
-
-    if self.Owner:IsPlayer() == true then
-        if self.Owner:GetNClass() ~= ROLES.ROLE_SCP457 then
-            self.Owner:UnIgnitePlayer()
-        end
-    end
+    self:ExtinguishOwner()
 end
 
 function SWEP:Holster()
     if SERVER then
-        if IsValid(self.Fire457) then
-            self.Fire457:Remove()
-        end
-        if self.Owner:IsPlayer() == true then
-            self.Owner:UnIgnitePlayer()
-        end
+        self:ExtinguishOwner()
     end
+
     return true
 end
 
-function SWEP:Deploy()
-    self.Owner:DrawViewModel(false)
-end
+function SWEP:CanTarget(ply)
 
-function SWEP:DrawWorldModel()
-end
-
-function SWEP:Initialize()
-    self:SetHoldType("normal")
-    self:SetNWInt("NextSpecial", 0)
+    return IsValid(ply)
+            and ply:IsPlayer()
+            and ply:IsPlaying()
+            and ply ~= self.Owner
+            and ply:Team() ~= TEAMS.SCP
 end
 
 function SWEP:Think()
-    if not SERVER then
+    if CLIENT then
         return
     end
 
-    if self.NextAbilityCheck < CurTime() then
-        self.Owner:IgnitePlayer()
-        self.NextAbilityCheck = CurTime() + 10
-    end
-
-    for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 130)) do
-        if v:IsPlayer() then
-            if v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SCP and v:Team() ~= TEAM_SCP and v:Alive() then
-                v:Ignite(6, 270)
-            end
-        end
-    end
-end
-
-function SWEP:Reload()
-end
-
-function SWEP:PrimaryAttack()
-    if preparing or postround then
+    if self.NextThinkTime > CurTime() then
         return
     end
-    if not IsFirstTimePredicted() then
-        return
-    end
-    if SERVER then
-        local ent = self.Owner:GetEyeTrace().Entity
-        if ent:GetPos():Distance(self.Owner:GetPos()) < 125 then
-            if ent:GetClass() == "func_breakable" then
-                ent:TakeDamage(1000, self.Owner, self.Owner)
-            end
+
+    self.NextThinkTime = CurTime() + 10
+    self:IgniteOwner()
+
+    for _, ent in pairs(ents.FindInSphere(self.Owner:GetPos(), 130)) do
+        if self:CanTarget(ent) then
+            ent:Ignite(6, 270)
         end
     end
 end
@@ -169,54 +145,4 @@ function SWEP:CreateFire()
         self:SetNWInt("NextSpecial", self.NextSpecial)
     end
     return true
-end
-
-function SWEP:SecondaryAttack()
-    if SERVER then
-        if self.NextSpecial > CurTime() then
-            return
-        end
-        if self:CreateFire() == true then
-            self:CreateFire()
-        end
-    end
-end
-
-function SWEP:CanPrimaryAttack()
-    return true
-end
-
-function SWEP:DrawHUD()
-    local specialStatus = ""
-    local showText = ""
-    local lookColor = Color(0, 255, 0)
-    local showColor = Color(17, 145, 66)
-    local nextSpecial = self:GetNWInt("NextSpecial", 0)
-    if nextSpecial > CurTime() then
-        specialStatus = "ready to use in " .. math.Round(nextSpecial - CurTime())
-        showColor = Color(145, 17, 62)
-    else
-        specialStatus = "ready to use"
-    end
-
-    showText = "Special " .. specialStatus
-    draw.Text({
-        text = showText,
-        pos = { ScrW() / 2, ScrH() - 25 },
-        font = "173font",
-        color = showColor,
-        xalign = TEXT_ALIGN_CENTER,
-        yalign = TEXT_ALIGN_CENTER,
-    })
-
-    local x = ScrW() / 2.0
-    local y = ScrH() / 2.0
-    local scale = 0.3
-    surface.SetDrawColor(self.CColor.r, self.CColor.g, self.CColor.b, 255)
-    local gap = 5
-    local length = gap + 20 * scale
-    surface.DrawLine(x - length, y, x - gap, y)
-    surface.DrawLine(x + length, y, x + gap, y)
-    surface.DrawLine(x, y - length, x, y - gap)
-    surface.DrawLine(x, y + length, x, y + gap)
 end

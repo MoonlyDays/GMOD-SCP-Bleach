@@ -35,7 +35,7 @@ function PLAYER:Role()
 end
 
 function PLAYER:IsPlaying()
-    return IsValid(self) and self:Alive() and not self:IsSpectating()
+    return IsValid(self)  and self:Alive() and not self:IsSpectating()
 end
 
 function PLAYER:CanEscape()

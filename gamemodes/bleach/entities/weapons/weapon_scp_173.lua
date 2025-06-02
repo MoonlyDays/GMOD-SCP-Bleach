@@ -1,7 +1,5 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS("weapon_scp_base")
-
 if CLIENT then
     SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_173")
     SWEP.BounceWeaponIcon = false
@@ -18,7 +16,9 @@ SWEP.ViewModel = "models/vinrax/props/keycard.mdl"
 SWEP.WorldModel = "models/vinrax/props/keycard.mdl"
 SWEP.PrintName = "SCP-173"
 SWEP.SpecialDelay = 30
-SWEP.NextThinkAfter = 0
+SWEP.NextThinkTime = 0
+SWEP.SnapSound = Sound("snap.wav")
+SWEP.HasSpecialAttack = true
 
 function SWEP:IsBeingLookedAtBy(ply)
     local yes = ply:GetAimVector():Dot((self.Owner:GetPos() - ply:GetPos() + Vector(70)):GetNormalized())
@@ -39,11 +39,11 @@ function SWEP:Think()
         return
     end
 
-    if self.NextThinkAfter > CurTime() then
+    if self.NextThinkTime > CurTime() then
         return
     end
 
-    self.NextThinkAfter = CurTime() + 0.5
+    self.NextThinkTime = CurTime() + 0.5
     local watching = 0
     local players = {}
     for _, ply in pairs(player.GetAll()) do
@@ -72,12 +72,20 @@ function SWEP:Think()
 end
 
 function SWEP:PerformAttack(ent)
-    BREACH.AddStat(STATS.SCP_173_SNAPPED, 1)
+    if not SERVER then
+        return
+    end
+
+    BREACH:AddStat(STATS.SCP_173_SNAPPED, 1)
     ent:Kill()
-    ent:EmitSound("snap.wav")
+    ent:EmitSound(self.SnapSound)
 end
 
 function SWEP:PerformSpecial()
+    if not SERVER then
+        return
+    end
+
     BREACH:BroadcastSoundTo(self.Owner, "Horror2.ogg")
     local findEnts = ents.FindInSphere(self.Owner:GetPos(), 600)
     local foundPlayers = {}
@@ -102,7 +110,8 @@ function SWEP:PerformSpecial()
 end
 
 function SWEP:DrawHUD()
-    BaseClass:DrawHUD()
+    self:DrawAttackHUD()
+    self:DrawSpecialHUD()
     self:DrawBlinkHUD()
 end
 
@@ -110,7 +119,7 @@ function SWEP:DrawBlinkHUD()
     local showText = "Никто не палит"
     local available = true
     if self.Owner:IsFrozen() then
-        showText = "кто-то палит сука"
+        showText = "Кто-то палит сука"
         available = false
     end
     self:DrawActionHUD(showText, available, 3)

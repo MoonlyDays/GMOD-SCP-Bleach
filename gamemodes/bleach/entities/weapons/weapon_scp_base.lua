@@ -24,6 +24,7 @@ SWEP.Secondary.Automatic = false
 
 SWEP.NextAttackTime = 0
 SWEP.NextSpecialTime = 0
+SWEP.HasSpecialAttack = false
 SWEP.AttackDelay = 0.25
 SWEP.SpecialDelay = 4
 
@@ -54,11 +55,8 @@ function SWEP:PrimaryAttack()
     end
 
     self.NextAttackTime = CurTime() + self.AttackDelay
-    if not SERVER then
-        return
-    end
 
-    local ent = nil
+    local ent
     local tr = util.TraceHull({
         start = self.Owner:GetShootPos(),
         endpos = self.Owner:GetShootPos() + (self.Owner:GetAimVector() * 100),
@@ -88,6 +86,10 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
+    if not self.HasSpecialAttack then
+        return
+    end
+
     if self.NextSpecialTime > CurTime() then
         return
     end
@@ -97,11 +99,15 @@ function SWEP:SecondaryAttack()
     end
 
     self.NextSpecialTime = CurTime() + self.SpecialDelay
-    if not SERVER then
-        return
-    end
-
     self:PerformSpecial()
+end
+
+function SWEP:CanPrimaryAttack()
+    return true
+end
+
+function SWEP:CanSecondaryAttack()
+    return true
 end
 
 function SWEP:PerformAttack(poorSoul)
@@ -118,8 +124,9 @@ end
 function SWEP:DrawAttackHUD()
     local showText = "Готов к атаке"
     local available = true
-    if not self:CanPrimaryAttack() then
-        showText = "падажжи"
+
+    if CurTime() < self.NextAttackTime then
+        showText = "Падажжи " .. math.Round(self.NextAttackTime - CurTime()) .. " сек"
         available = false
     end
 
@@ -127,10 +134,14 @@ function SWEP:DrawAttackHUD()
 end
 
 function SWEP:DrawSpecialHUD()
-    local showText = "Особое умение готово " .. self.NextSpecialTime
+    if not self.HasSpecialAttack then
+        return
+    end
+
+    local showText = "Особое умение готово"
     local available = true
-    if not self:CanSecondaryAttack() then
-        showText = "Особое умение не готово"
+    if CurTime() < self.NextSpecialTime then
+        showText = "Падажжи бля " .. math.Round(self.NextSpecialTime - CurTime()) .. " сек"
         available = false
     end
 

@@ -4,7 +4,8 @@ BREACH = BREACH or {
     timerEndsAt = 0,
     nextTickAt = 0,
     nextSquadSpawn = 0,
-    roleCount = {}
+    roleCount = {},
+    buttons = {}
 }
 
 hook.Add("Tick", "BreachTick", function()
@@ -12,7 +13,6 @@ hook.Add("Tick", "BreachTick", function()
 end)
 
 function BREACH:SpawnSquad(name)
-
     self.nextSquadSpawn = CurTime() + math.random(
             br_time_squad_enter_delay_min:GetInt(),
             br_time_squad_enter_delay_max:GetInt()
@@ -233,6 +233,8 @@ function BREACH:OnRoundSetup()
 end
 
 function BREACH:OnRoundActive()
+    self:OpenSCPDoors()
+
     local time = br_time_round:GetInt();
     self:SetTimer(time);
     timer.Create("RoundTime", time, 1, function()
@@ -256,6 +258,14 @@ function BREACH:OnRoundEnded()
     end)
 end
 
+function BREACH:OpenSCPDoors()
+    for _, ent in pairs(self.buttons) do
+        if ent.ButtonConfig and ent.ButtonConfig.setupLocked then
+            ForceUse(ent, 1, 1)
+        end
+    end
+end
+
 function BREACH:CleanUp()
     game.CleanUpMap()
 
@@ -270,10 +280,13 @@ function BREACH:CleanUp()
 end
 
 function BREACH:SetupButtons()
+    self.buttons = {}
+
     for _, ent in pairs(ents.GetAll()) do
         for _, button in pairs(MAP.BUTTONS) do
             if button.pos and ent:GetPos() == button.pos then
                 ent.ButtonConfig = button
+                table.ForceInsert(self.buttons, ent)
             end
         end
     end
@@ -331,6 +344,10 @@ function BREACH:SetupPlayers()
         table.remove(roleList, 1)
 
         local roleName = self:FindBestAvailableRole(nextTeam, population)
+        if roleName == nil then
+            print("ERROR! No role available for " .. nextTeam)
+        end
+
         local role = ROLES[roleName]
         population[roleName] = (population[roleName] or 0) + 1
         ply:SpawnAs(roleName)

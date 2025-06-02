@@ -12,4 +12,4 @@ ROLE.StartAssigned = false
 ROLE.Health = 2500
 ROLE.Model = SCP_106_MODEL
 ROLE.CanBlink = false
-ROLE.Weapons = { "weapon_stunstick" }
+ROLE.Weapons = { "weapon_scp_106" }

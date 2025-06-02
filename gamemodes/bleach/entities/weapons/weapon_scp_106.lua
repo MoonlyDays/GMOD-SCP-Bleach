@@ -14,11 +14,16 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModel = "models/vinrax/props/keycard.mdl"
 SWEP.WorldModel = "models/vinrax/props/keycard.mdl"
 SWEP.PrintName = "SCP-106"
+SWEP.EnterSound = Sound("PocketDimension/Enter.ogg")
 
 function SWEP:PerformAttack(ent)
+    if not SERVER then
+        return
+    end
+
     local pos = table.Random(MAP.POCKET_DIMENSION.ENTRANCES)
-    BREACH.AddStat(STATS.SCP_106_CAPTURED, 1)
+    BREACH:AddStat(STATS.SCP_106_CAPTURED, 1)
     self.Owner:SetHealth(self.Owner:Health() + 100)
     ent:SetPos(pos)
-    ent:EmitSound("PocketDimension/Enter.ogg")
+    ent:EmitSound(self.EnterSound)
 end
