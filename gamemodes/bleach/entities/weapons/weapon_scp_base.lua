@@ -1,29 +1,17 @@
 AddCSLuaFile()
+
 if CLIENT then
-    SWEP.WepSelectIcon = surface.GetTextureID("breach/wep_049")
     SWEP.BounceWeaponIcon = false
 end
 
-SWEP.Author = "Kanade"
-SWEP.Contact = "Look at this gamemode in workshop and search for creators"
-SWEP.Purpose = "Cure"
-SWEP.Instructions = "LMB to cure someone"
-SWEP.ViewModelFOV = 62
-SWEP.ViewModelFlip = false
-SWEP.ViewModel = "models/vinrax/props/keycard.mdl"
-SWEP.WorldModel = "models/vinrax/props/keycard.mdl"
-SWEP.PrintName = "SCP-049"
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = false
-SWEP.HoldType = "normal"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
-SWEP.AttackDelay = 0.25
-SWEP.ISSCP = true
-SWEP.droppable = false
-SWEP.teams = { TEAM_SCP }
+SWEP.IsSCP = true
+SWEP.Droppable = false
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
@@ -33,7 +21,11 @@ SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Automatic = false
+
 SWEP.NextAttackTime = 0
+SWEP.NextSpecialTime = 0
+SWEP.AttackDelay = 0.25
+SWEP.SpecialDelay = 4
 
 function SWEP:Deploy()
     self.Owner:DrawViewModel(false)
@@ -53,7 +45,7 @@ function SWEP:Reload()
 end
 
 function SWEP:PrimaryAttack()
-    if not self:CanPrimaryAttack() then
+    if self.NextAttackTime > CurTime() then
         return
     end
 
@@ -61,14 +53,11 @@ function SWEP:PrimaryAttack()
         return
     end
 
-    if self.NextAttackTime > CurTime() then
-        return
-    end
-
     self.NextAttackTime = CurTime() + self.AttackDelay
     if not SERVER then
         return
     end
+
     local ent = nil
     local tr = util.TraceHull({
         start = self.Owner:GetShootPos(),
@@ -89,10 +78,7 @@ function SWEP:PrimaryAttack()
                 return
             end
 
-            local curPos = ent:GetPos();
-            ent:SpawnAs("scp_049_2");
-            ent:SetPos(curPos)
-            BREACH:AddStat(STATS.SCP_049_CURED, 1)
+            self:PerformAttack(ent)
         else
             if ent:GetClass() == "func_breakable" then
                 ent:TakeDamage(100, self.Owner, self.Owner)
@@ -102,8 +88,67 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
+    if self.NextSpecialTime > CurTime() then
+        return
+    end
+
+    if not IsFirstTimePredicted() then
+        return
+    end
+
+    self.NextSpecialTime = CurTime() + self.SpecialDelay
+    if not SERVER then
+        return
+    end
+
+    self:PerformSpecial()
 end
 
-function SWEP:CanPrimaryAttack()
-    return BREACH.currentState == ROUND_STATES.ACTIVE
+function SWEP:PerformAttack(poorSoul)
+end
+
+function SWEP:PerformSpecial()
+end
+
+function SWEP:DrawHUD()
+    self:DrawAttackHUD()
+    self:DrawSpecialHUD()
+end
+
+function SWEP:DrawAttackHUD()
+    local showText = "Готов к атаке"
+    local available = true
+    if not self:CanPrimaryAttack() then
+        showText = "падажжи"
+        available = false
+    end
+
+    self:DrawActionHUD(showText, available, 1)
+end
+
+function SWEP:DrawSpecialHUD()
+    local showText = "Особое умение готово " .. self.NextSpecialTime
+    local available = true
+    if not self:CanSecondaryAttack() then
+        showText = "Особое умение не готово"
+        available = false
+    end
+
+    self:DrawActionHUD(showText, available, 2)
+end
+
+function SWEP:DrawActionHUD(text, available, offsetY)
+    local showColor = Color(255, 0, 0)
+    if available then
+        showColor = Color(0, 255, 0)
+    end
+
+    draw.Text({
+        text = text,
+        pos = { ScrW() / 2, ScrH() - offsetY * 30 },
+        font = "173font",
+        color = showColor,
+        xalign = TEXT_ALIGN_CENTER,
+        yalign = TEXT_ALIGN_CENTER,
+    })
 end

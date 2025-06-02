@@ -1,7 +1,9 @@
 local filterEnts = {}
 
 function GM:HUDDrawTargetID()
-    return false
+    if true then
+        return false
+    end
     local client = LocalPlayer()
 
     if not trace.Hit then

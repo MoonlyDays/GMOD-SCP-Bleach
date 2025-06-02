@@ -20,9 +20,8 @@ SWEP.DrawCrosshair = false
 SWEP.HoldType = "normal"
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false
-SWEP.ISSCP = true
-SWEP.droppable = false
-SWEP.teams = { TEAM_SCP }
+SWEP.IsSCP = true
+SWEP.Droppable = false
 SWEP.Primary.Ammo = "none"
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
@@ -31,27 +30,31 @@ SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
-SWEP.NextCheck = 0
+SWEP.NextAbilityCheck = 0
 SWEP.SpecialDelay = 4
 SWEP.CColor = Color(0, 255, 0)
+SWEP.NextSpecial = 0
 
 function SWEP:OnRemove()
-    if SERVER then
-        if IsValid(self.fire457) then
-            self.fire457:Remove()
-        end
-        if self.Owner:IsPlayer() == true then
-            if self.Owner:GetNClass() ~= ROLES.ROLE_SCP457 then
-                self.Owner:UnIgnitePlayer()
-            end
+    if not SERVER then
+        return
+    end
+
+    if IsValid(self.Fire457) then
+        self.Fire457:Remove()
+    end
+
+    if self.Owner:IsPlayer() == true then
+        if self.Owner:GetNClass() ~= ROLES.ROLE_SCP457 then
+            self.Owner:UnIgnitePlayer()
         end
     end
 end
 
 function SWEP:Holster()
     if SERVER then
-        if IsValid(self.fire457) then
-            self.fire457:Remove()
+        if IsValid(self.Fire457) then
+            self.Fire457:Remove()
         end
         if self.Owner:IsPlayer() == true then
             self.Owner:UnIgnitePlayer()
@@ -73,24 +76,19 @@ function SWEP:Initialize()
 end
 
 function SWEP:Think()
-    if SERVER then
-        if self.NextCheck < CurTime() then
-            self.Owner:IgnitePlayer()
-            self.NextCheck = CurTime() + 10
-        end
+    if not SERVER then
+        return
+    end
 
-        for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 130)) do
-            if v:IsPlayer() then
-                if v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SCP and v:Team() ~= TEAM_SCP and v:Alive() then
-                    v:Ignite(6, 270)
-                    if self.Owner.nextexp == nil then
-                        self.Owner.nextexp = 0
-                    end
-                    if self.Owner.nextexp < CurTime() then
-                        self.Owner:AddExp(1)
-                        self.Owner.nextexp = CurTime() + 1
-                    end
-                end
+    if self.NextAbilityCheck < CurTime() then
+        self.Owner:IgnitePlayer()
+        self.NextAbilityCheck = CurTime() + 10
+    end
+
+    for k, v in pairs(ents.FindInSphere(self.Owner:GetPos(), 130)) do
+        if v:IsPlayer() then
+            if v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SPECTATOR and v:Team() ~= TEAM_SCP and v:Team() ~= TEAM_SCP and v:Alive() then
+                v:Ignite(6, 270)
             end
         end
     end
@@ -130,8 +128,8 @@ function SWEP:CreateFire()
         return false
     end
     if SERVER then
-        if IsValid(self.fire457) then
-            self.fire457:Remove()
+        if IsValid(self.Fire457) then
+            self.Fire457:Remove()
         end
         --[[
         self.fire457 = ents.Create("env_steam")
@@ -152,28 +150,27 @@ function SWEP:CreateFire()
         self.fire457.scpFire = true
         ]]
         sound.Play("ambient/fire/ignite.wav", tr.HitPos, 72, 100)
-        self.fire457 = ents.Create("env_fire")
-        if not self.fire457 or not self.fire457:IsValid() then
+        self.Fire457 = ents.Create("env_fire")
+        if not self.Fire457 or not self.Fire457:IsValid() then
             return false
         end
-        self.fire457:SetPos(tr.HitPos)
-        self.fire457:SetKeyValue("health", "512")
-        self.fire457:SetKeyValue("firesize", "128")
-        self.fire457:SetKeyValue("fireattack", "1")
-        self.fire457:SetKeyValue("damagescale", "16")
-        self.fire457:SetKeyValue("ignitionpoint", "0")
-        self.fire457:Spawn()
-        self.fire457:Activate()
-        self.fire457:Fire("StartFire", "", 0)
-        self.fire457.owner = self.Owner
-        self.fire457.scpFire = true
+        self.Fire457:SetPos(tr.HitPos)
+        self.Fire457:SetKeyValue("health", "512")
+        self.Fire457:SetKeyValue("firesize", "128")
+        self.Fire457:SetKeyValue("fireattack", "1")
+        self.Fire457:SetKeyValue("damagescale", "16")
+        self.Fire457:SetKeyValue("ignitionpoint", "0")
+        self.Fire457:Spawn()
+        self.Fire457:Activate()
+        self.Fire457:Fire("StartFire", "", 0)
+        self.Fire457.owner = self.Owner
+        self.Fire457.scpFire = true
         self.NextSpecial = CurTime() + self.SpecialDelay
         self:SetNWInt("NextSpecial", self.NextSpecial)
     end
     return true
 end
 
-SWEP.NextSpecial = 0
 function SWEP:SecondaryAttack()
     if SERVER then
         if self.NextSpecial > CurTime() then
@@ -190,27 +187,24 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:DrawHUD()
-    if disablehud == true then
-        return
-    end
-    local specialstatus = ""
-    local showtext = ""
-    local lookcolor = Color(0, 255, 0)
-    local showcolor = Color(17, 145, 66)
-    local gnextspecial = self:GetNWInt("NextSpecial", 0)
-    if gnextspecial > CurTime() then
-        specialstatus = "ready to use in " .. math.Round(gnextspecial - CurTime())
-        showcolor = Color(145, 17, 62)
+    local specialStatus = ""
+    local showText = ""
+    local lookColor = Color(0, 255, 0)
+    local showColor = Color(17, 145, 66)
+    local nextSpecial = self:GetNWInt("NextSpecial", 0)
+    if nextSpecial > CurTime() then
+        specialStatus = "ready to use in " .. math.Round(nextSpecial - CurTime())
+        showColor = Color(145, 17, 62)
     else
-        specialstatus = "ready to use"
+        specialStatus = "ready to use"
     end
 
-    showtext = "Special " .. specialstatus
+    showText = "Special " .. specialStatus
     draw.Text({
-        text = showtext,
+        text = showText,
         pos = { ScrW() / 2, ScrH() - 25 },
         font = "173font",
-        color = showcolor,
+        color = showColor,
         xalign = TEXT_ALIGN_CENTER,
         yalign = TEXT_ALIGN_CENTER,
     })

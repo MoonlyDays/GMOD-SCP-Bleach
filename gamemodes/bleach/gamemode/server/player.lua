@@ -10,7 +10,7 @@ function GM:PlayerSpawn(ply)
     ply:SetupCurrentRole()
 end
 
-function CreateRagdollPL(victim, attacker, dmgtype)
+function CreateRagdoll(victim, attacker, dmgType)
     if not IsValid(victim) then
         return
     end
@@ -32,7 +32,7 @@ function CreateRagdollPL(victim, attacker, dmgtype)
     rag.Info.CorpseID = rag:GetCreationID()
     rag:SetNWInt("CorpseID", rag.Info.CorpseID)
     rag.Info.Victim = victim:Nick()
-    rag.Info.DamageType = dmgtype
+    rag.Info.DamageType = dmgType
     rag.Info.Time = CurTime()
 
     local group = COLLISION_GROUP_DEBRIS_TRIGGER
@@ -60,7 +60,7 @@ function CreateRagdollPL(victim, attacker, dmgtype)
 end
 
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
-    CreateRagdollPL(ply, attacker, dmgInfo:GetDamageType())
+    CreateRagdoll(ply, attacker, dmgInfo:GetDamageType())
 end
 
 function GM:PlayerDeath(ply)
@@ -96,9 +96,8 @@ function GM:PlayerCanPickupWeapon(ply, wep)
         end
     end
 
-
-    if not ply:IsPlaying() then
-        return false
+    if ply:Team() == TEAMS.SCP then
+        return wep.IsSCP == true
     end
 
     for _, v in pairs(ply:GetWeapons()) do

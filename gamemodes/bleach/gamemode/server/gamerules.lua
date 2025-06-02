@@ -420,6 +420,12 @@ function BREACH:BroadcastSound(sound)
     net.Broadcast()
 end
 
+function BREACH:BroadcastSoundTo(ply, sound)
+    net.Start("BroadcastSound")
+    net.WriteString(sound)
+    net.Send(ply)
+end
+
 function BREACH:ChangeState(state, why)
     if state == ROUND_STATES.WAITING_FOR_PLAYERS then
         self:OnWaitingForPlayers()

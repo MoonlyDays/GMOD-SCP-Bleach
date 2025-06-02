@@ -57,4 +57,5 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:CanPrimaryAttack()
+
 end

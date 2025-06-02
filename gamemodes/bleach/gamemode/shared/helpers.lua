@@ -52,3 +52,24 @@ function Approach(current, target, step)
         return target
     end
 end
+
+function table.Map(input, func)
+    local out = {}
+    for k, v in pairs(input) do
+        out[k] = func(v);
+    end
+    return out;
+end
+
+function table.Join(input, del)
+    local out = "";
+    for i = 0, #input do
+        local val = input[i] or "";
+        if i == 1 then
+            out = val;
+        else
+            out = out .. del .. val;
+        end
+    end
+    return out
+end

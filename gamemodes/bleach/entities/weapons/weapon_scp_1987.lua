@@ -6,7 +6,7 @@ end
 
 SWEP.Author = "Kanade"
 SWEP.Contact = "Look at this gamemode in workshop and search for creators"
-SWEP.Purpose = "Kill people"
+SWEP.Purpose = "Kill humans"
 SWEP.Instructions = "LMB to kill someone"
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
@@ -35,7 +35,7 @@ SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = 0
 SWEP.Secondary.Automatic = false
-SWEP.NextAttackW = 0
+SWEP.NextAttackTime = 0
 
 function SWEP:Deploy()
     self.Owner:DrawViewModel(false)
