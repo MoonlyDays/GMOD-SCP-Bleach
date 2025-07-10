@@ -23,4 +23,3 @@ ROLE.Weapons = {
 }
 ROLE.Requires = { guard_officer = 1 }
 ROLE.Ammo = { { "SMG1", 200 } }
-ROLE.Requires = {}

@@ -146,17 +146,14 @@ function GM:PlayerUse(ply, ent)
             return false
         end
 
-        if ent.ButtonConfig.used then
-            if ent.ButtonConfig.used(ply, ent) == false then
-                ply:EmitSound("KeycardUse2.ogg")
-                ply:PrintMessage(HUD_PRINTCENTER, "===[Access Denied]===")
-                return false
-            end
+        if ent.ButtonConfig.used and ent.ButtonConfig.used(ply, ent) == false then
+            ply:EmitSound("KeycardUse2.ogg")
+            ply:PrintMessage(HUD_PRINTCENTER, "===[Access Denied]===")
+            return false
         end
 
         ply:EmitSound("KeycardUse1.ogg")
         ply:PrintMessage(HUD_PRINTCENTER, "Access granted to " .. ent.ButtonConfig.name)
-        return true
     end
 
     return true

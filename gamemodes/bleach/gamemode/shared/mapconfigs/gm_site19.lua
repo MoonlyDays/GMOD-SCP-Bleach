@@ -461,6 +461,7 @@ MAP.BUTTONS = {
     },
     {
         name = "SCP-049",
+        pos = Vector(5040.000000, -2376.000000, 54.000000),
         setupLocked = true
     },
     {

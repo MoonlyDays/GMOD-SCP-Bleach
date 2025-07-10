@@ -12,8 +12,6 @@ ROLE.Spawn = MAP.SPAWN_GUARD
 ROLE.Team = TEAMS.SECURITY
 ROLE.Model = RESEARCHER_MODELS
 ROLE.Armor = "armor_sec_officer"
-ROLE.Weapons = { "br_holster", "keycard_level2" }
-ROLE.Ammo = { { "SMG1", 200 } }
 ROLE.Weapons = {
     "br_holster",
     "keycard_level3",
@@ -24,3 +22,4 @@ ROLE.Weapons = {
     "weapon_mtf_ump45",
     "scpid_guard"
 }
+ROLE.Ammo = { { "SMG1", 200 } }

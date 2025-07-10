@@ -13,7 +13,7 @@ SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
 SWEP.ViewModel = "models/vinrax/props/keycard.mdl"
 SWEP.WorldModel = "models/vinrax/props/keycard.mdl"
-SWEP.PrintName = "SCP-049"
+SWEP.PrintName = "SCP-049-2"
 SWEP.NextThinkTime = 0
 
 function SWEP:PerformAttack(ent)
@@ -21,8 +21,5 @@ function SWEP:PerformAttack(ent)
         return
     end
 
-    local curPos = ent:GetPos();
-    ent:SpawnAs("scp_049_2");
-    ent:SetPos(curPos)
-    BREACH:AddStat(STATS.SCP_049_CURED, 1)
+    ent:TakeDamage(35)
 end

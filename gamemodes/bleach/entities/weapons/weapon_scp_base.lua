@@ -67,20 +67,23 @@ function SWEP:PrimaryAttack()
     })
 
     ent = tr.Entity
-    if IsValid(ent) then
-        if ent:IsPlayer() then
-            if ent:Team() == TEAMS.SCP then
-                return
-            end
-            if ent:Team() == TEAMS.SPECTATOR then
-                return
-            end
+    if not IsValid(ent) then
+        return
+    end
 
-            self:PerformAttack(ent)
-        else
-            if ent:GetClass() == "func_breakable" then
-                ent:TakeDamage(100, self.Owner, self.Owner)
-            end
+    if ent:IsPlayer() then
+        if ent:Team() == TEAMS.SCP then
+            return
+        end
+        if ent:Team() == TEAMS.SPECTATOR then
+            return
+        end
+
+        self:PerformAttack(ent)
+    else
+
+        if SERVER and ent:GetClass() == "func_breakable" then
+            ent:TakeDamage(100, self.Owner, self.Owner)
         end
     end
 end
@@ -140,6 +143,7 @@ function SWEP:DrawSpecialHUD()
 
     local showText = "Особое умение готово"
     local available = true
+
     if CurTime() < self.NextSpecialTime then
         showText = "Падажжи бля " .. math.Round(self.NextSpecialTime - CurTime()) .. " сек"
         available = false

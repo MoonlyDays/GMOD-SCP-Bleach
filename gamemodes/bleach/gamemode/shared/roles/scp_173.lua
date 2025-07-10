@@ -9,9 +9,9 @@ ROLE.Objective = {
 }
 ROLE.Spawn = MAP.SPAWN_SCP_173
 ROLE.Team = TEAMS.SCP
-ROLE.StartAssigned = false
 ROLE.Health = 1500
 ROLE.Model = SCP_173_MODEL
 ROLE.CanBlink = false
 ROLE.MoveSpeed = 2.5
+ROLE.StartAssigned = false
 ROLE.Weapons = { "weapon_scp_173" }

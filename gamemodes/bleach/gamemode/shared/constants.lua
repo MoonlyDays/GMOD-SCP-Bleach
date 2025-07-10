@@ -62,6 +62,7 @@ TEAM_ROLE_LIST = {
 }
 
 BREACH_ROLE_LIST = {
+    TEAMS.SCP,
     -- 1 - 16	{4, 2, 2, 3, 3, 2}
     TEAMS.CLASS_D,
     TEAMS.SCP,

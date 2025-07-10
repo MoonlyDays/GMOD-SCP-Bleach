@@ -375,6 +375,7 @@ function BREACH:FindBestAvailableRole(team, population)
 end
 
 function BREACH:IsRoleAvailable(roleName, population)
+    print("BREACH:IsRoleAvailable " .. roleName)
     local role = ROLES[roleName]
 
     if role.StartAssigned ~= nil and not role.StartAssigned then
@@ -383,8 +384,11 @@ function BREACH:IsRoleAvailable(roleName, population)
 
     if role.Requires then
         for requiredRole, requiredCount in pairs(role.Requires) do
+            print("- requiredRole " .. requiredRole .. " " .. requiredCount)
             local currentCount = population[requiredRole] or 0
+            print("- population[" .. requiredRole .. "] " .. currentCount)
             if currentCount < requiredCount then
+                print("- Unavailable!")
                 return false
             end
         end
@@ -396,6 +400,7 @@ function BREACH:IsRoleAvailable(roleName, population)
         end
     end
 
+    print("- Available!")
     return true
 end
 

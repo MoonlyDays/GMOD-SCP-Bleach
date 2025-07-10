@@ -7,8 +7,7 @@ ROLE.Objective = {
 }
 ROLE.Spawn = MAP.SPAWN_SCP_049
 ROLE.Team = TEAMS.SCP
-ROLE.StartAssigned = false
 ROLE.Health = 1650
 ROLE.Model = SCP_049_MODEL
 ROLE.CanBlink = false
-ROLE.Weapons = { "weapon_stunstick" }
+ROLE.Weapons = { "weapon_scp_049" }

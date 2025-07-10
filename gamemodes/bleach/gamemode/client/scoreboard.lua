@@ -106,7 +106,7 @@ function ShowScoreBoard()
             playerPanel:Dock(TOP)
             playerPanel:DockMargin(0, 5, 0, 0)
             playerPanel:SetSize(0, width)
-            playerPanel.Paint = function(self, w, h)
+            playerPanel.Paint = function(_, w, h)
                 draw.RoundedBox(0, 0, 0, w, h, bgColor)
                 draw.Text({
                     text = string.sub(ply:Nick(), 1, 16),
@@ -119,7 +119,7 @@ function ShowScoreBoard()
 
                 draw.RoundedBox(0, width + 150, 0, 125, h, Color(0, 0, 0, 120))
                 draw.Text({
-                    text = team.GetName(teamIndex),
+                    text =  ply:GetRole(),
                     pos = { width + 212, h / 2 },
                     font = "sb_names",
                     color = fgColor,
